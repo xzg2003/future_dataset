@@ -36,6 +36,6 @@ class FCT_Bias_1:
         '''
 
         # 返回结果
-        result = df[['trading_date', 'signal']].copy()
+        result = df[['trading_date', 'FCT_Bias_1']].copy()
         return result
 

@@ -45,5 +45,5 @@ class FCT_Ac_Tr_1:
         '''
 
         # 返回结果
-        result = df[['trading_date', 'OUT']].copy()
+        result = df[['trading_date', 'FCT_Ac_Tr_1']].copy()
         return result

@@ -28,5 +28,5 @@ class FCT_Ar_1:
         df['feature'] = (df['ar1'] - df['ar2']) / (df['ar1'] + df['ar2'])
 
         # 返回结果
-        result = df[['trading_date', 'feature']].copy()
+        result = df[['trading_date', 'FCT_Ar_1']].copy()
         return result
