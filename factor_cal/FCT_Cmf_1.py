@@ -23,5 +23,5 @@ class FCT_Cmf_1:
         df['CMF'] = df['MFV'].rolling(window=length).sum() / df['volume'].rolling(window=length).sum()
 
         # 返回结果
-        result = df[['trading_date', 'FCT_Cmf_1']].copy()
+        result = df[['trading_date', 'CMF']].copy()
         return result

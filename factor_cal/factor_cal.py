@@ -12,12 +12,12 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 class factor_calculator:
     def __init__(self, instruments, k_line_type, lengths):
-        '''
+        """
         初始化因子计算器
         :param instruments: 期货品种列表
         :param k_line_type: K线类型
         :param lengths:     滑动平均长度列表
-        '''
+        """
         self.instruments = instruments
         self.k_line_type = k_line_type
         self.lengths = lengths

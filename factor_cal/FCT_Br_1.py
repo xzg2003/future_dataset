@@ -32,5 +32,5 @@ class FCT_Br_1:
         df['feature'] = (df['br1'] - df['br2']) / (df['br1'] + df['br2'])
 
         # 返回特征值
-        result = df[['trading_date', 'FCT_Br_1']].copy()
+        result = df[['trading_date', 'feature']].copy()
         return result
