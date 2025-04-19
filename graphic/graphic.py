@@ -5,28 +5,22 @@ import os
 # 设置相对路径
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
-# 设置期货类型列表
-instruments = ['A', 'AG', 'AL', 'AP', 'AU', 'BU', 'C', 'CF', 'CJ', 'CS',
-               'CU', 'EB', 'EG', 'FG', 'FU', 'HC', 'I', 'IC', 'IF', 'IH',
-               'J', 'JD', 'JM', 'L', 'LU', 'LH', 'M', 'MA', 'NI', 'OI', 'P',
-               'PB', 'PF', 'PG', 'PK', 'PP', 'RB', 'RM', 'RU', 'SA', 'SF',
-               'SM', 'SN', 'SP', 'SR', 'SC', 'SS', 'TA', 'T', 'TF', 'UR', 'V', 'Y', 'ZN']
-
 # 创建一个分布图，并设置其大小
 plt.figure(figsize=(14,10))
 
-for instrument in instruments:
-    # 设置文件读取路径，并读取其中的数据
-    data_path = f'../data/5m/{instrument}/FCT_Ac_Tr_1@10.csv'
-    df = pd.read_csv(data_path)
-    try:
-        # 绘制曲线图
-        plt.plot(df['OUT'], label=instrument)
 
-    except FileExistsError:
-        print(f"错误：文件{data_path}未找到")
-    except Exception as e:
-        print(f"发生未知错误：{e}")
+
+# 设置文件读取路径，并读取其中的数据
+data_path = (f'../data/merge/5m/FCT_Ac_Tr_1@10.csv')
+df = pd.read_csv(data_path)
+try:
+    # 绘制曲线图
+    plt.plot(df['FCT_Ac_Tr_1@10'])
+
+except FileExistsError:
+    print(f"错误：文件{data_path}未找到")
+except Exception as e:
+    print(f"发生未知错误：{e}")
 
 """
 title:  设置图表的名称
