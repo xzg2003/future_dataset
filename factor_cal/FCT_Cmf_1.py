@@ -20,8 +20,8 @@ class FCT_Cmf_1:
         df['MFV'] = ((2 * df['close'] - df['low'] - df['high']) / (df['high'] - df['low'])) * df['volume']
 
         # 计算CMF
-        df['CMF'] = df['MFV'].rolling(window=length).sum() / df['volume'].rolling(window=length).sum()
+        df['FCT_Cmf_1'] = df['MFV'].rolling(window=length).sum() / df['volume'].rolling(window=length).sum()
 
         # 返回结果
-        result = df[['trading_date', 'CMF']].copy()
+        result = df[['trading_date', 'FCT_Cmf_1']].copy()
         return result

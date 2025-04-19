@@ -29,8 +29,8 @@ class FCT_Br_1:
         df['br2'] = df['down'].rolling(window=length).sum()
 
         # 计算特征值
-        df['feature'] = (df['br1'] - df['br2']) / (df['br1'] + df['br2'])
+        df['FCT_Br_1'] = (df['br1'] - df['br2']) / (df['br1'] + df['br2'])
 
         # 返回特征值
-        result = df[['trading_date', 'feature']].copy()
+        result = df[['trading_date', 'FCT_Br_1']].copy()
         return result

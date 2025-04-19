@@ -37,13 +37,13 @@ class FCT_Ac_Tr_1:
         )
 
         # 计算输出结果，这里没有最小变动单位，没有办法进行分类处理
-        df['OUT'] = df['AC'] / df['Tr'].rolling(window=length).mean()
+        df['FCT_Ac_Tr_1'] = df['AC'] / df['Tr'].rolling(window=length).mean()
 
         '''
         以下是正确的处理函数
-        df['OUT'] = numpy.where(df['Tr'].rolling(window=length).mean() < df['mindiff'], 0, df['AC'] / df['Tr'].rolling(length).mean())
+        df['FCT_Ac_Tr_1'] = numpy.where(df['Tr'].rolling(window=length).mean() < df['mindiff'], 0, df['AC'] / df['Tr'].rolling(length).mean())
         '''
 
         # 返回结果
-        result = df[['trading_date', 'OUT']].copy()
+        result = df[['trading_date', 'FCT_Ac_Tr_1']].copy()
         return result

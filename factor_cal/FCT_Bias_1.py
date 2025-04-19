@@ -28,14 +28,14 @@ class FCT_Bias_1:
         )
 
         # 计算因子，缺失mindiff，故这个函数是没有比较的
-        df['signal'] = (df['close'] - df['close'].rolling(window=length).mean()) / df['Tr'].rolling(window=length).mean()
+        df['FCT_Bias_1'] = (df['close'] - df['close'].rolling(window=length).mean()) / df['Tr'].rolling(window=length).mean()
 
         '''
         正确的计算函数
-        df['signal'] = numpy.where(df['Tr'].rolling(window=length).mean() < df['mindiff'], 0, (df['close'] - df['close'].rolling(window=length).mean()) / df['Tr'].rolling(window=length).mean())
+        df['FCT_Bias_1'] = numpy.where(df['Tr'].rolling(window=length).mean() < df['mindiff'], 0, (df['close'] - df['close'].rolling(window=length).mean()) / df['Tr'].rolling(window=length).mean())
         '''
 
         # 返回结果
-        result = df[['trading_date', 'signal']].copy()
+        result = df[['trading_date', 'FCT_Bias_1']].copy()
         return result
 
