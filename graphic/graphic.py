@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 import os
+import numpy as np
 
 # 设置相对路径
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
@@ -8,19 +9,21 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 # 创建一个分布图，并设置其大小
 plt.figure(figsize=(14,10))
 
-
+# 自定义区间范围
+bins = np.linspace(-15, 20, 40000)
 
 # 设置文件读取路径，并读取其中的数据
 data_path = (f'../data/merge/5m/FCT_Ac_Tr_1@10.csv')
 df = pd.read_csv(data_path)
-try:
-    # 绘制曲线图
-    plt.plot(df['FCT_Ac_Tr_1@10'])
 
-except FileExistsError:
-    print(f"错误：文件{data_path}未找到")
-except Exception as e:
-    print(f"发生未知错误：{e}")
+# 统计每个区间内的数据点数量
+hist, _ = np.histogram(df['FCT_Ac_Tr_1@10'], bins=bins)
+
+# 计算每个区间的中心位置
+interval_centers = bins[:-1] + np.diff(bins) / 2
+
+# 绘制柱状图
+plt.bar(interval_centers, hist, width=np.diff(bins)[0], edgecolor='black')
 
 """
 title:  设置图表的名称
