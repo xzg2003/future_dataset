@@ -1,5 +1,7 @@
 import os       # 与路径操作相关的包，用于管理文件
 import pandas
+
+from graphic.merge import data_path
 from .FCT_Ac_Tr_1   import      FCT_Ac_Tr_1
 from .FCT_Ar_1      import      FCT_Ar_1
 from .FCT_Bias_1    import      FCT_Bias_1
@@ -35,57 +37,52 @@ class factor_calculator:
             "Tr":           Tr(),
         }
 
-
     def factors_cal(self):
         # 调用所有计算器，计算相应因子并保存到文件夹中
-        # 首先遍历所有的期货种类
+        # 首先遍历所有期货种类
         for instrument in self.instruments:
-            # 构建数据路径data_path
+            # 构建数据路径
             data_path = f'../data/{self.k_line_type}/{instrument}/{instrument}.csv'
             if not os.path.exists(data_path):
-                print(f"数据不存在:{data_path}")
+                print(f"数据不存在：{data_path}")
                 continue
 
-            # 读取数据，并设置传入参数param
+            # 读取数据
             df = pandas.read_csv(data_path)
-            param = {'df': df}
 
             # 遍历因子字典，逐个计算因子
             for factor_name, calculator in self.factors_dict.items():
+                for length in self.lengths:
+                    # 构建param字典，包含df和length
+                    param = {
+                        'df':       df,
+                        'length':   length
+                    }
+
                 try:
-                    # 如果因子需要滑动长度，还需要遍历相应的长度列表
+                    # 由于文件命名的不同，这里仍然需要分开命名
                     if factor_name != "Tr":
-                        for length in self.lengths:
-                            # 设置保存路径，保存数据并命名为{factor_name}@{length}.csv
-                            save_path = f'../data/{self.k_line_type}/{instrument}/{factor_name}@{length}.csv'
+                        # 设置保存路径，保存数据并命名为{factor_name}@{length}.csv
+                        save_path = f'../data/{self.k_line_type}/{instrument}/{factor_name}@{length}.csv'
 
-                            # 计算每一个因子，调用calculator.formula并传入参数进行计算
-                            result = calculator.formula(param, length)
-
-                            # 利用os.makedirs设置一个路径，并利用to_csv保存结果
-                            os.makedirs(os.path.dirname(save_path), exist_ok=True)
-                            result.to_csv(save_path, index=False)
-
-                            # 保存成功信息汇报
-                            print(f"instrument:{instrument} factor:{factor_name}    length:{length} success:{save_path}")
+                        # 计算每一个因子，调用calculator.formula并传入参数进行计算
+                        result = calculator.formula(param)
                     else:
-                        # Tr 因子不需要滑动长度，因此单独处理
                         # 设置保存路径，保存数据并命名为{factor_name}.csv
-                        save_path = f"../data/{self.k_line_type}/{instrument}/{factor_name}.csv"
+                        save_path = f'../data/{self.k_line_type}/{instrument}/{factor_name}.csv'
 
-                        # 计算每一个因子
+                        # 计算每一个因子，调用calculator.formula并传入参数进行计算
                         result = calculator.formula(param)
 
-                        # 利用os.makedirs设置一个路径，并利用to_csv保存结果
-                        os.makedirs(os.path.dirname(save_path), exist_ok=True)
-                        result.to_csv(save_path, index=False)
+                    # 利用os.makedirs设置一个路径，并利用to_csv保存结果
+                    os.makedirs(os.path.dirname(save_path), exist_ok=True)
+                    result.to_csv(save_path, index=False)
 
-                        # 保存成功信息汇报
-                        print(f"instrument:{instrument} factor:{factor_name}    success:{save_path}")
+                    # 保存成功信息汇报
+                    print(f"instrument:{instrument} factor:{factor_name} success:{save_path}")
                 except Exception as e:
                     # 当因子计算出错时报错
-                    print(f"计算{factor_name}因子时出错：{e}")
-
+                    print(f"error at{save_path}, {e}")
 
 # 主程序入口
 if __name__ == "__main__":

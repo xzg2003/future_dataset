@@ -17,6 +17,9 @@ class FCT_Bias_1:
         if not isinstance(df, pandas.DataFrame):
             raise TypeError("'df' 必须是 pandas.DataFrame 类型")
 
+        # 从字典中读取参数
+        length = param.get('length', None)
+
         # 计算震荡指标（这里直接照搬了前面Tr的计算代码）
         # 前一k线的收盘价
         df['close_pre'] = df['close'].shift(1)
@@ -28,14 +31,14 @@ class FCT_Bias_1:
         )
 
         # 计算因子，缺失mindiff，故这个函数是没有比较的
-        df['FCT_Bias_1'] = (df['close'] - df['close'].rolling(window=length).mean()) / df['Tr'].rolling(window=length).mean()
+        df[f'FCT_Bias_1@{length}'] = (df['close'] - df['close'].rolling(window=length).mean()) / df['Tr'].rolling(window=length).mean()
 
         '''
         正确的计算函数
-        df['FCT_Bias_1'] = numpy.where(df['Tr'].rolling(window=length).mean() < df['mindiff'], 0, (df['close'] - df['close'].rolling(window=length).mean()) / df['Tr'].rolling(window=length).mean())
+        df[f'FCT_Bias_1@{length}'] = numpy.where(df['Tr'].rolling(window=length).mean() < df['mindiff'], 0, (df['close'] - df['close'].rolling(window=length).mean()) / df['Tr'].rolling(window=length).mean())
         '''
 
         # 返回结果
-        result = df[['trading_date', 'FCT_Bias_1']].copy()
+        result = df[['trading_date', f'FCT_Bias_1@{length}']].copy()
         return result
 

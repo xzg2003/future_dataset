@@ -7,7 +7,7 @@ class FCT_Ac_Tr_1:
     def __init__(self):
         self.factor_name = 'FCT_Ac_Tr_1'
 
-    def formula(self, param, length):
+    def formula(self, param):
         # 从字典中提取DataFrame
         df = param.get('df', None)
         if df is None:
@@ -16,6 +16,9 @@ class FCT_Ac_Tr_1:
         # 确保df是pandas.DataFrame类型
         if not isinstance(df, pandas.DataFrame):
             raise TypeError("'df' 必须是 pandas.DataFrame 类型")
+
+        # 从字典中读取参数
+        length = param.get('length', None)
 
         # 计算价格均值，这里取价格的最高价与最低价的平均
         df['MP'] = (df['high'] + df['low']) / 2
@@ -37,13 +40,13 @@ class FCT_Ac_Tr_1:
         )
 
         # 计算输出结果，这里没有最小变动单位，没有办法进行分类处理
-        df['FCT_Ac_Tr_1'] = df['AC'] / df['Tr'].rolling(window=length).mean()
+        df[f'FCT_Ac_Tr_1@{length}'] = df['AC'] / df['Tr'].rolling(window=length).mean()
 
-        '''
+        f'''
         以下是正确的处理函数
-        df['FCT_Ac_Tr_1'] = numpy.where(df['Tr'].rolling(window=length).mean() < df['mindiff'], 0, df['AC'] / df['Tr'].rolling(length).mean())
+        df[f'FCT_Ac_Tr_1@{length}'] = numpy.where(df['Tr'].rolling(window=length).mean() < df['mindiff'], 0, df['AC'] / df['Tr'].rolling(length).mean())
         '''
 
         # 返回结果
-        result = df[['trading_date', 'FCT_Ac_Tr_1']].copy()
+        result = df[['trading_date', f'FCT_Ac_Tr_1@{length}']].copy()
         return result

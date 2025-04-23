@@ -6,7 +6,7 @@ class FCT_Ar_1:
     def __init__(self):
         self.factor_name = 'FCT_Ar_1'
 
-    def formula(self, param, length):
+    def formula(self, param):
         # 从字典中提取DataFrame
         df = param.get('df', None)
         if df is None:
@@ -15,6 +15,9 @@ class FCT_Ar_1:
         # 确保df是pandas.DataFrame类型
         if not isinstance(df, pandas.DataFrame):
             raise TypeError("'df' 必须是 pandas.DataFrame 类型")
+
+        # 从字典中读取参数
+        length = param.get('length', None)
 
         # 计算开盘价与最高、最低价的差值
         df['up']   = df['high'] - df['open']
@@ -25,8 +28,8 @@ class FCT_Ar_1:
         df['ar2'] = df['down'].rolling(window=length).sum()
 
         # 计算特征值
-        df['FCT_Ar_1'] = (df['ar1'] - df['ar2']) / (df['ar1'] + df['ar2'])
+        df[f'FCT_Ar_1@{length}'] = (df['ar1'] - df['ar2']) / (df['ar1'] + df['ar2'])
 
         # 返回结果
-        result = df[['trading_date', 'FCT_Ar_1']].copy()
+        result = df[['trading_date', f'FCT_Ar_1@{length}']].copy()
         return result

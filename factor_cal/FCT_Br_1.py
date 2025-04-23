@@ -17,6 +17,9 @@ class FCT_Br_1:
         if not isinstance(df, pandas.DataFrame):
             raise TypeError("'df' 必须是 pandas.DataFrame 类型")
 
+        # 从字典中读取参数
+        length = param.get('length', None)
+
         # 得到前一个收盘价
         df['close_pre'] = df['close'].shift(1)
 
@@ -29,8 +32,8 @@ class FCT_Br_1:
         df['br2'] = df['down'].rolling(window=length).sum()
 
         # 计算特征值
-        df['FCT_Br_1'] = (df['br1'] - df['br2']) / (df['br1'] + df['br2'])
+        df[f'FCT_Br_1@{length}'] = (df['br1'] - df['br2']) / (df['br1'] + df['br2'])
 
         # 返回特征值
-        result = df[['trading_date', 'FCT_Br_1']].copy()
+        result = df[['trading_date', f'FCT_Br_1@{length}']].copy()
         return result

@@ -16,12 +16,15 @@ class FCT_Cmf_1:
         if not isinstance(df, pandas.DataFrame):
             raise TypeError("'df' 必须是 pandas.DataFrame 类型")
 
+        # 从字典中读取参数
+        length = param.get('length', None)
+
         # 计算MFV
         df['MFV'] = ((2 * df['close'] - df['low'] - df['high']) / (df['high'] - df['low'])) * df['volume']
 
         # 计算CMF
-        df['FCT_Cmf_1'] = df['MFV'].rolling(window=length).sum() / df['volume'].rolling(window=length).sum()
+        df[f'FCT_Cmf_1@{length}'] = df['MFV'].rolling(window=length).sum() / df['volume'].rolling(window=length).sum()
 
         # 返回结果
-        result = df[['trading_date', 'FCT_Cmf_1']].copy()
+        result = df[['trading_date', f'FCT_Cmf_1@{length}']].copy()
         return result

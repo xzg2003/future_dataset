@@ -2,8 +2,6 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import os
 
-from setuptools.sandbox import save_path
-
 # 设置相对路径
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
