@@ -61,7 +61,8 @@
 
 - **增加内容1**：增加了graphic文件夹用于绘制因子相关图像。但是目前只做了一个函数，还没有像factor_cal文件那样利用类对这些函数进行封装。
 - **增加内容2**：增加了image文件夹，用于存储相关图像。
-- 相关图像如下![img.png](images/Tr.png)![img.png](images/FCT_Ac_Tr_1@10.png)
+
+相关图像如下![img.png](images/Tr.png)![img.png](images/FCT_Ac_Tr_1@10.png)
 
 #### 2025-4-19  **Task_1_1.0.2**
 
@@ -77,3 +78,41 @@
 - **因子计算器的优化**：在先前的计算器中，计算出来的因子名称为"{factor}"而不包含任何滑动长度的信息。这次更新将得到的结果改为正确的"{factor}@{length}"的形式。
 - **传参的优化**：在先前的factor_calculator程序将带有length和不带length的因子计算分开处理，导致代码十分冗长。这次更新，优化了字典的传参，利用param传入length，以实现factor.formula(param)传参的统一，两种情况的重复代码也归并为同一种，仅保留因文件命名不同导致不同的代码部分。
 - **后续工作**：现有的代码仍然没有考虑mindiff的问题，这次会议之后下载了mindiff的数据包，但是来不及对相关代码进行修改。后续将针对这一部分进行处理。
+
+#### 2025-5-1 Task_1_1.0.4
+
+根据之前存在的问题进行了相应的改动
+
+- **加入mindiff参数**：根据之前会议的讨论结果，在这次的更新中，更新了关于mindiff（最小变动单位）的读入、比较与使用。进而完善了因子计算器，得到的结果也更加完整。具体的调用流程为：在 main 中读取 mindiff.csv 文件、设置字典、因子计算器计算。
+
+- **优化计算器**：在先前的计算器中，每次都要重新计算一次滑动平均，大大增加了计算量。在此次更新中，通过修改计算逻辑，减少了相关的计算量。同时，修改了存储的时间格式，改为存储datetime
+
+- `\# 计算 TR 的滚动均值并处理 NaN`
+
+  ​    `rolling_mean_tr = df['Tr'].rolling(window=length).mean().fillna(0)`
+
+  ​    `\# 计算收盘价的滚动均值`
+
+  ​    `rolling_mean_close = df['close'].rolling(window=length).mean().fillna(0)`
+
+  ​    `\# 打印调试信息`
+
+  ​    `print(f"rolling_mean_tr: {rolling_mean_tr}")`
+
+  ​    `print(f"rolling_mean_close: {rolling_mean_close}")`
+
+  ​    `\# 使用 numpy.where 进行分类处理`
+
+  ​    `df[f'FCT_Bias_1@{length}'] = numpy.where(`
+
+  ​      `rolling_mean_tr < mindiff,`
+
+  ​      `0,`
+
+  ​      `(df['close'] - rolling_mean_close) / rolling_mean_tr`
+
+  ​    `)`
+
+- 优化了 main.py 中的循环逻辑，简化了循环代码段，并利用判断语句，为循环提供出口，减少程序的计算量
+
+- 增加各处的报错信息，便于差错
