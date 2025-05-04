@@ -27,6 +27,6 @@ class Tr:
         )
 
         # 返回包含日期和Tr的结果
-        result = df[['trading_date', 'Tr']].copy()
+        result = df[['datetime', 'Tr']].copy()
         return result
 
