@@ -6,25 +6,36 @@ class FCT_Cmf_1:
     def __init__(self):
         self.factor_name = 'FCT_Cmf_1'
 
-    def formula(self, param, length):
-    # 从字典中提取DataFrame
+    def formula(self, param):
+
+        # 从字典中提取 DataFrame
         df = param.get('df', None)
         if df is None:
-            raise ValueError("参数 'param' 中缺少 'df' 键或其值为空")
+            raise ValueError("no 'df' in param")
 
-        # 确保df是pandas.DataFrame类型
+        # 确保 df 是 pandas.DataFrame 类型
         if not isinstance(df, pandas.DataFrame):
-            raise TypeError("'df' 必须是 pandas.DataFrame 类型")
+            raise TypeError("df must be DataFrame")
 
-        # 从字典中读取参数
+        """
+        从字典中读取 length
+        获取 instrument 名称，用于提取mindiff中的数据
+        """
         length = param.get('length', None)
+        if length is None:
+            raise ValueError("param missing 'length'")
+        print(f"Using length: {length}")
 
         # 计算MFV
         df['MFV'] = ((2 * df['close'] - df['low'] - df['high']) / (df['high'] - df['low'])) * df['volume']
 
         # 计算CMF
-        df[f'FCT_Cmf_1@{length}'] = df['MFV'].rolling(window=length).sum() / df['volume'].rolling(window=length).sum()
+        rolling_sum_mfv     = df['MFV'].rolling(window=length).sum().fillna(0)
+        rolling_sum_volume  = df['volume'].rolling(window=length).sum().fillna(0)
+
+        # 计算最终的值
+        df[f'FCT_Cmf_1@{length}'] = rolling_sum_mfv / rolling_sum_volume
 
         # 返回结果
-        result = df[['trading_date', f'FCT_Cmf_1@{length}']].copy()
+        result = df[['datetime', f'FCT_Cmf_1@{length}']].copy()
         return result
