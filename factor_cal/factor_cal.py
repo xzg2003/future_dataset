@@ -1,7 +1,7 @@
 import os       # 与路径操作相关的包，用于管理文件
 import pandas
 
-from graphic.merge import data_path
+# from graphic.merge import data_path
 from .FCT_Ac_Tr_1   import      FCT_Ac_Tr_1
 from .FCT_Ar_1      import      FCT_Ar_1
 from .FCT_Bias_1    import      FCT_Bias_1
@@ -13,7 +13,7 @@ from .Tr            import      Tr
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 class factor_calculator:
-    def __init__(self, instruments, k_line_type, lengths):
+    def __init__(self, instruments, k_line_type, lengths, instruments_mindiff):
         """
         初始化因子计算器
         :param instruments: 期货品种列表
@@ -23,6 +23,7 @@ class factor_calculator:
         self.instruments = instruments
         self.k_line_type = k_line_type
         self.lengths = lengths
+        self.instruments_mindiff = instruments_mindiff
 
         '''
         初始化所有因子计算器
@@ -38,52 +39,65 @@ class factor_calculator:
         }
 
     def factors_cal(self):
-        # 调用所有计算器，计算相应因子并保存到文件夹中
-        # 首先遍历所有期货种类
+        """
+        调用所有计算器，计算相应因子并保存到文件夹中
+        """
         for instrument in self.instruments:
             # 构建数据路径
-            data_path = f'../data/{self.k_line_type}/{instrument}/{instrument}.csv'
+            data_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/5m/A/A.csv')
+            print(f"Trying to read the file:{data_path}")
             if not os.path.exists(data_path):
-                print(f"数据不存在：{data_path}")
+                print(f"Not exist:{data_path}")
                 continue
 
-            # 读取数据
-            df = pandas.read_csv(data_path)
+            try:
+                # 读取数据
+                df = pandas.read_csv(data_path)
+            except Exception as e:
+                print(f'Read failed:{data_path}, error info:{e}')
+                continue
 
             # 遍历因子字典，逐个计算因子
             for factor_name, calculator in self.factors_dict.items():
                 for length in self.lengths:
                     # 构建param字典，包含df和length
                     param = {
-                        'df':       df,
-                        'length':   length
+                        'df':           df,
+                        'instrument':   instrument,
+                        'length':       length,
+                        'mindiff':      self.instruments_mindiff.get(instrument, None)
                     }
 
-                try:
-                    # 由于文件命名的不同，这里仍然需要分开命名
-                    if factor_name != "Tr":
-                        # 设置保存路径，保存数据并命名为{factor_name}@{length}.csv
-                        save_path = f'../data/{self.k_line_type}/{instrument}/{factor_name}@{length}.csv'
+                    # 检查 mindiff 是否存在
+                    if param['mindiff'] is None:
+                        print(f"No mindiff for {instrument}, skip")
+                        continue
 
-                        # 计算每一个因子，调用calculator.formula并传入参数进行计算
+                    try:
+                        # 设置保存路径，根据命名规则分开讨论
+                        if factor_name != "Tr":
+                            save_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/{self.k_line_type}/{instrument}/{factor_name}@{length}.csv')
+                        else:
+                            save_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/{self.k_line_type}/{instrument}/{factor_name}.csv')
+
+                        # 检查文件是否存在，以跳出当前因子计算的循环
+                        if os.path.exists(save_path):
+                            break
+
+                        # 计算每一个因子，调用 calculator.formula 并传入参数进行计算
                         result = calculator.formula(param)
-                    else:
-                        # 设置保存路径，保存数据并命名为{factor_name}.csv
-                        save_path = f'../data/{self.k_line_type}/{instrument}/{factor_name}.csv'
 
-                        # 计算每一个因子，调用calculator.formula并传入参数进行计算
-                        result = calculator.formula(param)
+                        # 利用 os.makedirs 设置一个路径，并利用to_csv保存结果
+                        os.makedirs(os.path.dirname(save_path), exist_ok=True)
+                        result.to_csv(save_path, index=False)
 
-                    # 利用os.makedirs设置一个路径，并利用to_csv保存结果
-                    os.makedirs(os.path.dirname(save_path), exist_ok=True)
-                    result.to_csv(save_path, index=False)
+                        # 保存成功信息回报
+                        print(f"instrument:{instrument} factor:{save_path} success.")
+                    except Exception as e:
+                        # 当因子计算出错时报错
+                        print(f"error at{save_path}, {e}")
 
-                    # 保存成功信息汇报
-                    print(f"instrument:{instrument} factor:{factor_name} success:{save_path}")
-                except Exception as e:
-                    # 当因子计算出错时报错
-                    print(f"error at{save_path}, {e}")
-
+"""
 # 主程序入口
 if __name__ == "__main__":
     '''
@@ -97,7 +111,8 @@ if __name__ == "__main__":
     lengths = [10, 20, 40, 80, 120, 180]
 
     # 创建因子计算器实例，以调用内部的函数
-    calculator = factor_calculator(instruments, k_line_type, lengths)
+    calculator = factor_calculator(instruments, k_line_type, lengths, mindiff)
 
     # 计算所有因子
     calculator.factors_cal()
+"""
