@@ -2,6 +2,7 @@
 
 import pandas
 import numpy
+import os
 
 class FCT_Bias_1:
     def __init__(self):
@@ -41,11 +42,18 @@ class FCT_Bias_1:
         # 前一k线的收盘价
         df['close_pre'] = df['close'].shift(1)
 
-        # 逐行取三种差值的最大值作为 TR
-        df['Tr'] = df[['close_pre', 'high', 'low']].apply(
-            lambda row: max(row['high'] - row['close_pre'], row['high'] - row['low'], row['close_pre'] - row['low']),
-            axis=1
-        )
+        # 判断 Tr.csv 文件是否存在，用于调用
+        tr_data_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/5m/{instrument}/Tr.csv')
+        if not os.path.exists(tr_data_path):
+            raise FileNotFoundError(F"Tr file not found:{tr_data_path}")
+
+        tr_df = pandas.read_csv(tr_data_path)
+        # Tr.csv 有 datetime 和 Tr 两列，且与主 df 按 datetime 对齐
+        if 'datetime' in df.columns and 'datetime' in tr_df.columns:
+            df = df.merge(tr_df[['datetime', 'Tr']], on='datetime', how='left')
+        else:
+            # 如果没有 datetime 列，直接用index对齐
+            df['Tr'] = tr_df['Tr']
 
         """
         # 计算因子，缺失mindiff，故这个函数是没有比较的
@@ -53,16 +61,16 @@ class FCT_Bias_1:
         """
 
         # 计算 Tr 的滚动均值并处理NaN
-        rolling_mean_Tr = df['Tr'].rolling(window=length).mean().fillna(0)
+        rolling_mean_tr = df['Tr'].rolling(window=length).mean().fillna(0)
 
         # 计算收盘价的滚动均值
         rolling_mean_close = df['close'].rolling(window=length).mean().fillna(0)
 
         # 正确的计算函数
         df[f'FCT_Bias_1@{length}'] = numpy.where(
-            rolling_mean_Tr < mindiff,
+            rolling_mean_tr < mindiff,
             0,
-            (df['close'] - rolling_mean_close) / rolling_mean_Tr
+            (df['close'] - rolling_mean_close) / rolling_mean_tr
         )
 
         # 返回结果
