@@ -25,17 +25,20 @@ class factor_calculator:
         self.lengths = lengths
         self.instruments_mindiff = instruments_mindiff
 
-        '''
+        """
         初始化所有因子计算器
         以字典的形式，将每个计算器与其名称进行对应，便于在程序中调用
-        '''
+        
+        这里优先计算 Tr 因子，因为后续很多因子计算都需要调用 Tr 的数据
+        先计算 Tr，在计算其他因子时可以调用 Tr.csv 文件中的数据，简化计算
+        """
         self.factors_dict = {
+            "Tr": Tr(),
             "FCT_Ac_Tr_1":  FCT_Ac_Tr_1(),
             "FCT_Ar_1":     FCT_Ar_1(),
             "FCT_Bias_1":   FCT_Bias_1(),
             "FCT_Br_1":     FCT_Br_1(),
             "FCT_Cmf_1":    FCT_Cmf_1(),
-            "Tr":           Tr(),
         }
 
     def factors_cal(self):
@@ -44,7 +47,7 @@ class factor_calculator:
         """
         for instrument in self.instruments:
             # 构建数据路径
-            data_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/5m/A/A.csv')
+            data_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/5m/{instrument}/{instrument}.csv')
             print(f"Trying to read the file:{data_path}")
             if not os.path.exists(data_path):
                 print(f"Not exist:{data_path}")
