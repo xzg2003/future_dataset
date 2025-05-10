@@ -1,5 +1,7 @@
 # Welcome
 
+[TOC]
+
 这里是李亦凡的分支。用于分享、存储李亦凡的代码。
 
 ## lee.md文档说明
@@ -20,6 +22,41 @@
 
 因子计算文件，内部包括几个因子的.py计算文件，并通过类的封装全部集成在**factor_cal.py**，供程序调用。
 
+各种因子如下（按字母名称排序）：
+
+|           因子名称           |                     因子意义及其计算方式                     |
+| :--------------------------: | :----------------------------------------------------------: |
+|         FCT_Ac_Tr_1          |                  技术指标AC除以MA(TR)去量纲                  |
+|           FCT_Ar_1           |          人气意愿指标，high、open、low差值累加对比           |
+|          FCT_Bias_1          |                      乖离率除以Tr去量纲                      |
+|           FCT_Br_1           |       人气意愿指标high, ref(close, 1), low差值累加对比       |
+|          FCT_Cmf_1           | 资金流量指标，若收盘价在上半部分，且成交量放大，表示做多积极 |
+|          FCT_Pubu_1          |                                                              |
+|      FCT_Pubu_Atr_Dfive      |                                                              |
+|      FCT_Pubu_Vol_Dfive      |                                                              |
+|        FCT_R_Div_RStd        |                                                              |
+|     FCT_Return_Cumsum_1      |                                                              |
+|          FCT_Rsi_1           |                                                              |
+|          FCT_Sdrm_1          |                                                              |
+|      FCT_Sdrm_Atr_Dfive      |                                                              |
+|            FCT_Si            |                                                              |
+|           FCT_Srmi           |                                                              |
+|   FCT_Support_Close_Thr_1    |                                                              |
+| FCT_Support_Close_Thr_Boll_1 |                                                              |
+|          FCT_Tsi_1           |                                                              |
+|      FCT_Tsi_Atr_Dfive       |                                                              |
+|        FCT_TSI_Ref_1         |                                                              |
+|      FCT_Tsi_Vol_Dfive       |                                                              |
+|          FCT_Vmacd           |                                                              |
+|     FCT_Vol_Close_Corr_1     |                                                              |
+|       FCT_Vol_Cumsum_1       |                                                              |
+|       FCT_Vol_DFive_1        |                                                              |
+|    FCT_Vol_Return_Corr_1     |                                                              |
+|            FCT_Vr            |                                                              |
+|              Tr              | 波动幅度，当前k线的高低点与上根k线收盘价三者两两做差取绝对值最大的作为Tr波幅 |
+
+
+
 ### graphic
 
 - graphic.py：图像绘制文件，利用计算得到的数据绘制图表。
@@ -35,14 +72,14 @@
 
 ## 更新日志
 
-### 2025-4-10：期货数据集的搭建与因子计算
+### 2025-04-10：期货数据集的搭建与因子计算
 
-#### 2025-4-14
+#### 2025-04-14
 
 - 尝试通过ricequant下载数据集，但由于相关问题，我本地的数据集构建并没有成功。
 - 后面处理所用的数据集都是直接利用子栩学长提供的数据包进行操作的。
 
-#### 2025-4-15
+#### 2025-04-15
 
 - **基础学习内容**：学习了python中的类、类的封装等概念，并完善了字典等数据类型的理解。
 - **进阶学习内容**：学习了pandas中对于数据处理的相关函数，包括：对csv文件的操作，滑动平均计算等内容。
@@ -51,27 +88,27 @@
 - **存在的问题**：在所给的数据包中，没有找到mindiff(期货品种的最小变动单位)这个变量，因此，相关的函数直接输出结果，而没有进行相应的判断。正确的函数参考注释部分。
 - 学习内容来源主要参考B站上的python学习视频，同时利用了copilot和豆包这两个ai进行程序设计上的辅助。
 
-#### 2025-4-16
+#### 2025-04-16
 
 - **修改内容**：调整了Tr因子的计算方法，删除了内部冗余的计算步骤，简化算法、
 - 补充了相关的注释，使程序的可读性更强。
 - 同时完成因子数据分布图的绘制
 
-#### 2025-4-18  **Task_1_1.0.1**
+#### 2025-04-18  **Task_1_1.0.1**
 
 - **增加内容1**：增加了graphic文件夹用于绘制因子相关图像。但是目前只做了一个函数，还没有像factor_cal文件那样利用类对这些函数进行封装。
 - **增加内容2**：增加了image文件夹，用于存储相关图像。
 
 相关图像如下![img.png](images/Tr.png)![img.png](images/FCT_Ac_Tr_1@10.png)
 
-#### 2025-4-19  **Task_1_1.0.2**
+#### 2025-04-19  **Task_1_1.0.2**
 
 - **增加内容1**：在graphic文件夹下增加了merge.py文件，用于将在不同期货类型中的同种因子合并在一个csv文件下面。
 - **增加内容2**：为了存储这个合并的csv文件，在data文件夹下，新增了一个./merge/5m/路径，用于存储合并后的csv文件，得到的csv文件命名为{factor}@{length}.csv。
 - 最后利用graphic绘制图像
 - **后续工作**：目前的merge和graphic文件都没有利用循环对所有因子、所有长度进行计算，如有需要，下一步工作将把这个函数封装为一个类，并将所有因子的图像绘制出来。
 
-#### 2025-4-23  **Task_1_1.0.3**
+#### 2025-04-23  **Task_1_1.0.3**
 
 周常会议之后，根据子栩学长建议做出了优化。
 
@@ -79,40 +116,36 @@
 - **传参的优化**：在先前的factor_calculator程序将带有length和不带length的因子计算分开处理，导致代码十分冗长。这次更新，优化了字典的传参，利用param传入length，以实现factor.formula(param)传参的统一，两种情况的重复代码也归并为同一种，仅保留因文件命名不同导致不同的代码部分。
 - **后续工作**：现有的代码仍然没有考虑mindiff的问题，这次会议之后下载了mindiff的数据包，但是来不及对相关代码进行修改。后续将针对这一部分进行处理。
 
-#### 2025-5-1 Task_1_1.0.4
+#### 2025-05-01 **Task_1_1.0.4**
 
 根据之前存在的问题进行了相应的改动
 
 - **加入mindiff参数**：根据之前会议的讨论结果，在这次的更新中，更新了关于mindiff（最小变动单位）的读入、比较与使用。进而完善了因子计算器，得到的结果也更加完整。具体的调用流程为：在 main 中读取 mindiff.csv 文件、设置字典、因子计算器计算。
-
 - **优化计算器**：在先前的计算器中，每次都要重新计算一次滑动平均，大大增加了计算量。在此次更新中，通过修改计算逻辑，减少了相关的计算量。同时，修改了存储的时间格式，改为存储datetime
 
-- `\# 计算 TR 的滚动均值并处理 NaN`
+```python
+# TR 的滚动均值并处理 NaN
+rolling_mean_tr = df['Tr'].rolling(window=length).mean().fillna(0)
 
-  ​    `rolling_mean_tr = df['Tr'].rolling(window=length).mean().fillna(0)`
+# 计算收盘价的滚动均值
+rolling_mean_close = df['close'].rolling(window=length).mean().fillna(0)
 
-  ​    `\# 计算收盘价的滚动均值`
+# 打印调试信息
+print(f"rolling_mean_tr: {rolling_mean_tr}")
+print(f"rolling_mean_close: {rolling_mean_close}")
 
-  ​    `rolling_mean_close = df['close'].rolling(window=length).mean().fillna(0)`
-
-  ​    `\# 打印调试信息`
-
-  ​    `print(f"rolling_mean_tr: {rolling_mean_tr}")`
-
-  ​    `print(f"rolling_mean_close: {rolling_mean_close}")`
-
-  ​    `\# 使用 numpy.where 进行分类处理`
-
-  ​    `df[f'FCT_Bias_1@{length}'] = numpy.where(`
-
-  ​      `rolling_mean_tr < mindiff,`
-
-  ​      `0,`
-
-  ​      `(df['close'] - rolling_mean_close) / rolling_mean_tr`
-
-  ​    `)`
+# 使用 numpy.where 进行分类处理
+df[f'FCT_Bias_1@{length}'] = numpy.where(
+ 	rolling_mean_tr < mindiff,
+	0,
+	(df['close'] - rolling_mean_close) / rolling_mean_tr
+ )
+```
 
 - 优化了 main.py 中的循环逻辑，简化了循环代码段，并利用判断语句，为循环提供出口，减少程序的计算量
+- 增加各处的报错信息，便于查错
 
-- 增加各处的报错信息，便于差错
+#### 2025-05-10
+
+- 修改 lee_README.md 文档，增加因子说明部分
+- **算法优化**：先计算 Tr 因子，后续的因子里，当需要调用 Tr 因子的时候，可以直接读取 Tr.csv 文件来计算。可以简化运算。
