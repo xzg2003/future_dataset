@@ -1,4 +1,5 @@
 # TSMOM: 常见的动量因子，用于衡量资产在过去一段时间内的累积收益情况
+# 后续很多计算器需要调用 TSMOM 的计算结果
 
 import pandas
 import numpy
