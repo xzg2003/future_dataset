@@ -9,6 +9,8 @@ from .FCT_Br_1      import      FCT_Br_1
 from .FCT_Cmf_1     import      FCT_Cmf_1
 from .Tr            import      Tr
 
+from .TSMOM         import      TSMOM
+
 # 设置工作目录为当前脚本所在的目录
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
@@ -33,7 +35,8 @@ class factor_calculator:
         先计算 Tr，在计算其他因子时可以调用 Tr.csv 文件中的数据，简化计算
         """
         self.factors_dict = {
-            "Tr": Tr(),
+            "TSMOM":        TSMOM(),
+            "Tr":           Tr(),
             "FCT_Ac_Tr_1":  FCT_Ac_Tr_1(),
             "FCT_Ar_1":     FCT_Ar_1(),
             "FCT_Bias_1":   FCT_Bias_1(),
