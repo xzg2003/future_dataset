@@ -38,7 +38,7 @@ class RSI:
         avg_down = df['dwon'].rolling(window=length).mean()
 
         # 计算 RSI
-        rs = avg_up / (avg_down + 1e-10)    # 防止除零的情啊哭给你
+        rs = avg_up / (avg_down + 1e-10)    # 防止除零的情况
         df[f'RSI@{length}'] = 100 - (100 / (1 + rs))
 
         # 返回结果
