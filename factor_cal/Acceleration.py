@@ -1,4 +1,4 @@
-# Acceleration: 动量变化率
+# Acceleration: 动量变化率。调用了 TSMOM 的计算结果
 
 import pandas
 import numpy
