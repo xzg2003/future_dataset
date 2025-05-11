@@ -1,4 +1,4 @@
-# IDMOM：日内动量
+# IDMOM：日内动量。这里IDMOM进行了简写
 
 import pandas
 import numpy
