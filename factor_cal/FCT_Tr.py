@@ -1,9 +1,9 @@
 import pandas as pd
-import os
 
 class FCT_Tr():
     def __init__(self):
         self.factor_name = 'FCT_Tr'
+        self.require_length = False
 
     def formula(self, param):
         df = param['df'].copy()
@@ -17,11 +17,12 @@ class FCT_Tr():
         tr2 = (df['high'] - df['low']).abs()
         tr3 = (df['close_pre'] - df['low']).abs()
 
-        df[self.factor_name] = pd.concat([tr1, tr2, tr3], axis=1).max(axis=1)
+        out = pd.concat([tr1, tr2, tr3], axis=1).max(axis=1)
 
-        result = df[['datetime', self.factor_name]].copy()
-        result.rename(columns={'datetime': 'date'}, inplace=True)
+        result = pd.DataFrame({
+            'datetime': df['datetime'],
+            self.factor_name: out
+        })
 
-        output_path = f'./data/{k_line}/{instrument}/{self.factor_name}.csv'
-        os.makedirs(os.path.dirname(output_path), exist_ok=True)
-        result.to_csv(output_path, index=False)
+        save_path = f'./data/{k_line}/{instrument}/{self.factor_name}.csv'
+        result.to_csv(save_path, index=False)

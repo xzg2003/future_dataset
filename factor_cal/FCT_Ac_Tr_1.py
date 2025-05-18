@@ -1,30 +1,50 @@
 import pandas as pd
-import os
+import numpy as np
 
-class FCT_Ac_Tr_1:
+class FCT_Ac_Tr_1():
     def __init__(self):
         self.factor_name = 'FCT_Ac_Tr_1'
+        self.require_length = True
+
+    def MA(self, series, length):
+        return series.rolling(window=length).mean()
 
     def formula(self, param):
         df = param['df'].copy()
-        N = param.get('length', 10)  # 默认为10期移动平均
+        length = param['length']
+        mindiff = param['mindiff']
         k_line = param['k_line']
         instrument = param['instrument']
 
-        # 首先确保 FCT_Tr 存在（已计算）
-        tr_path = f'./data/{k_line}/{instrument}/FCT_Tr.csv'
-        if not os.path.exists(tr_path):
-            raise FileNotFoundError(f'FCT_Tr.csv not found at {tr_path}')
-        
-        tr_df = pd.read_csv(tr_path)
-        tr_df = tr_df.dropna()
-        
-        # 计算累计指标，这里用简单移动平均作为示例
-        tr_df[self.factor_name] = tr_df['FCT_Tr'].rolling(N).mean()
-        
-        # 只保留日期和因子列
-        out_df = tr_df[['date', self.factor_name]]
-        
-        # 保存
-        save_path = f'./data/{k_line}/{instrument}/{self.factor_name}.csv'
-        out_df.to_csv(save_path, index=False)
+        # 计算 Tr
+        close_pre = df['close'].shift(1)
+        high = df['high']
+        low = df['low']
+
+        tr1 = (high - close_pre).abs()
+        tr2 = (high - low).abs()
+        tr3 = (close_pre - low).abs()
+        tr = pd.concat([tr1, tr2, tr3], axis=1).max(axis=1)
+
+        ma_tr = self.MA(tr, length)
+
+        # 计算 AC
+        mp = (high + low) / 2
+        ao = self.MA(mp, length) - self.MA(mp, 4 * length)
+        ac = ao - self.MA(ao, length)
+
+        # 构造 OUT
+        out = pd.Series(0, index=df.index, dtype='float64')  # Explicitly set dtype to float64
+        mask = (ma_tr >= mindiff) 
+        out[mask] = ac[mask] / ma_tr[mask]
+        mask = (ac.isna()) | (ma_tr.isna())
+        out[mask] = np.nan
+
+        # 保存结果
+        result = pd.DataFrame({
+            'datetime': df['datetime'],
+            self.factor_name + f'@{length}': out
+        })
+
+        save_path = f'./data/{k_line}/{instrument}/{self.factor_name}@{length}.csv'
+        result.to_csv(save_path, index=False)
