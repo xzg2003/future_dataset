@@ -1,5 +1,9 @@
 from .FCT_Tr import FCT_Tr
 from .FCT_Ac_Tr_1 import FCT_Ac_Tr_1
+from .FCT_Ar_1 import FCT_Ar_1
+from .FCT_Bias_1 import FCT_Bias_1
+from .FCT_Br_1 import FCT_Br_1
+from .FCT_Cmf_1 import FCT_Cmf_1
 import pandas as pd
 
 
@@ -30,10 +34,17 @@ def factors_cal():
                  'J','JD','JM','L','LU','LH','M','MA','NI','OI','P',
                  'PB','PF','PG','PK','PP','RB','RM','RU','SA','SF',
                  'SM','SN','SP','SR','SC','SS','TA','T','TF','UR','V','Y','ZN']
+
+    # instrument_list = ['A']
+
     factor_list = []
 
     factor_list.append(FCT_Tr())
     factor_list.append(FCT_Ac_Tr_1())
+    factor_list.append(FCT_Ar_1())
+    factor_list.append(FCT_Bias_1())
+    factor_list.append(FCT_Br_1())
+    factor_list.append(FCT_Cmf_1())
 
     for f in factor_list:
         for instr in instrument_list:

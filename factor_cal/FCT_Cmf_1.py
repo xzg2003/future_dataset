@@ -1,9 +1,9 @@
 import pandas as pd
 import numpy as np
 
-class FCT_Ar_1():
+class FCT_Cmf_1():
     def __init__(self):
-        self.factor_name = 'FCT_Ar_1'
+        self.factor_name = 'FCT_Cmf_1'
         self.require_length = True
 
     def MA(self, series, length):
@@ -17,18 +17,18 @@ class FCT_Ar_1():
 
         high = df['high']
         low = df['low']
-        open = df['open']
+        close = df['close']
+        volume = df['volume']
 
-        # 计算 up 和 down
-        up = (high - open).clip(lower=0)
-        down = (open - low).clip(lower=0)
+        # 计算 MFV
+        mfv = ((close - low) - (high - close)) / (high - low) * volume
 
-        # 计算 ar1 和 ar2
-        ar1 = up.rolling(window=length).sum()
-        ar2 = down.rolling(window=length).sum()
+        # 计算 CMF
+        cmf = mfv.rolling(window=length).sum() / volume.rolling(window=length).sum()
 
-        # 计算特征值
-        out = (ar1 + ar2) / (ar1 - ar2)
+        # 构造 OUT
+        out = cmf
+
         # 保存结果
         result = pd.DataFrame({
             'datetime': df['datetime'],
