@@ -39,22 +39,22 @@
 |        FCT_R_Div_RStd        | 收益率与波动率比值因子，衡量单位波动下的收益率（动量/风险调整） |
 |     FCT_Return_Cumsum_1      |        累积收益率因子，衡量从起始到当前的累积对数收益        |
 |          FCT_Rsi_1           |                         相对强弱指标                         |
-|          FCT_Sdrm_1          |                                                              |
-|      FCT_Sdrm_Atr_Dfive      |                                                              |
-|            FCT_Si            |                                                              |
-|           FCT_Srmi           |                                                              |
-|   FCT_Support_Close_Thr_1    |                                                              |
-| FCT_Support_Close_Thr_Boll_1 |                                                              |
-|          FCT_Tsi_1           |                                                              |
-|      FCT_Tsi_Atr_Dfive       |                                                              |
-|        FCT_TSI_Ref_1         |                                                              |
-|      FCT_Tsi_Vol_Dfive       |                                                              |
-|          FCT_Vmacd           |                                                              |
-|     FCT_Vol_Close_Corr_1     |                                                              |
-|       FCT_Vol_Cumsum_1       |                                                              |
-|       FCT_Vol_DFive_1        |                                                              |
-|    FCT_Vol_Return_Corr_1     |                                                              |
-|            FCT_Vr            |                                                              |
+|          FCT_Sdrm_1          |        标准动量差因子，衡量收盘价在指定窗口内的波动性        |
+|      FCT_Sdrm_Atr_Dfive      |  标准差动量与 ATR 归一化因子，衡量价格波动性与波动率的关系   |
+|            FCT_Si            |     SI（波动率指标）因子，衡量收盘价的绝对变化幅度的均值     |
+|           FCT_Srmi           | SRMI（相对动量指数）因子，衡量收盘价在指定窗口内的相对强弱位置 |
+|   FCT_Support_Close_Thr_1    | 收盘价接近支撑位的次数因子，衡量收盘价在窗口内低于一定分位数的次数 |
+| FCT_Support_Close_Thr_Boll_1 | 收盘价接近布林带下轨的次数因子，衡量收盘价在窗口内低于下轨的次数 |
+|          FCT_Tsi_1           |                   TSI（趋势强度指标）因子                    |
+|      FCT_Tsi_Atr_Dfive       |     趋势强度与 ATR 归一化因子，衡量单位波动下的趋势强度      |
+|        FCT_TSI_Ref_1         |    TSI（真实强度指标）参考因子，衡量价格趋势的强弱和方向     |
+|      FCT_Tsi_Vol_Dfive       |    趋势强度与成交量归一化因子，衡量单位成交量下的趋势强度    |
+|          FCT_Vmacd           |       成交量 MACD 因子，衡量成交量的趋势变化和动能拐点       |
+|     FCT_Vol_Close_Corr_1     | 成交量与收盘价相关系数因子，衡量指定窗口内成交量与收盘价的相关性 |
+|       FCT_Vol_Cumsum_1       |         成交量累计因子，衡量从起始到当前的累计成交量         |
+|       FCT_Vol_DFive_1        | 成交量动量因子，衡量成交量在指定窗口内的变化幅度（如标准差或均值） |
+|    FCT_Vol_Return_Corr_1     | 成交量与收益率相关系数因子，衡量指定窗口内成交量与收益率的相关性 |
+|            FCT_Vr            |    量比因子，衡量当前成交量与过去一段时间平均成交量的比值    |
 |              Tr              | 波动幅度，当前k线的高低点与上根k线收盘价三者两两做差取绝对值最大的作为Tr波幅 |
 
 #### 动量因子
@@ -217,6 +217,29 @@ df[f'FCT_Bias_1@{length}'] = numpy.where(
 - **增加的内容：**
   - 在 lee_README.md （即本文）中增加了一个待办模块。程序编写、会议中提到的各种问题都被记录在这个小节中。
   - 补充部分因子说明
+  
+#### 2025-05-17
+
+-   **因子计算器：**
+  - 增加因子计算器 FCT_Sdrm_1，标准动量差因子。
+  - 增加因子计算器 FCT_Si，SI（波动率指标）因子。
+  - 增加因子计算器 FCT_Srmi，SRMI（相对动量指数）因子。
+  - 增加因子计算器 FCT_Support_Close_Thr_1，收盘价接近支撑位的次数因子。目前缺乏 thr 这一比例，暂定为0.3
+  - 增加因子计算器 FCT_Support_Close_Thr_Boll_1，收盘价接近布林带下轨的次数因子。目前缺乏 n_std 这一布林带标准差倍数，暂定为2
+  - 增加因子计算器 FCT_Tsi_1，TSI（趋势强度指标）因子。缺少 long 和 short
+  - 增加因子计算器 FCT_Vmacd，成交量 MACD 因子。缺少 fast，slow，signal 长度。
+
+#### 2025-05-19	**Task_2_1.0.9**
+
+- **因子计算器**
+  - 增加因子计算器 FCT_Tsi_Atr_Dfive，趋势强度与ATR归一化因子。目前缺乏 short 和 long 的定义，无法完全完成计算。同时，计算器中可以调用 ATR 的计算结果进行计算，后续可以进行优化。
+  - 增加因子计算器 FCT_TSI_Ref_1，TSI（真实强度指标）参考因子。目前缺乏 short 和 long 的定义，无法完全完成计算。同时，计算器中可以调用 EMA、TSI 的计算结果。
+  - 增加因子计算器 FCT_Tsi_Vol_Dfive，趋势强度与成交量归一化因子。目前缺乏 short 和 long 的定义，无法完全完成计算。同时，计算器中可以调用 EMA、TSI 的计算结果。
+  - 增加因子计算器 FCT_Vol_Close_Corr_1，成交量与收盘价相关系数因子。
+  - 增加因子计算器 FCT_Vol_Cumsum_1，成交量累计因子。
+  - 增加因子计算器 FCT_Vol_DFive_1，成交量动量因子。
+  - 增加因子计算器 FCT_Vol_Return_Corr_1，成交量与收益率相关系数因子。
+  - 增加因子计算器 FCT_Vr，量比因子。
 
 ## 待办
 
@@ -225,4 +248,17 @@ df[f'FCT_Bias_1@{length}'] = numpy.where(
     - [ ] 更新的计算器中缺少长期均线、短期均线和ATR窗口长度的定义，目前使用默认窗口长度进行计算，后续需要进行补全
     - [ ] 因子计算器的命名需要格式化，目前的命名暂定为"factor@{short}_{long}"
   - [ ] 部分因子的计算可以调用其他因子已计算得到的结果进行计算，简化代码
+- 2025-05-17
+  - [ ] FCT_Support_Close_Thr_1 因子计算器中，缺少 thr 比例.
+  - [ ] FCT_Support_Close_Thr_Boll_1 因子计算器中，缺少 n_std
+  - [ ] FCT_Tsi_1 因子计算器中，缺少 long 和 short
+- 2025-05-19
+  - [ ] FCT_Tsi_Atr_Dfive 因子计算器中，缺少 long 和 short。
+  - [ ] FCT_Tsi_Atr_Dfive 因子计算器中，可以调用 ATR 的计算结果进行优化
+  - [ ] FCT_TSI_Ref_1 因子计算器中，缺少 long 和 short
+  - [ ] FCT_TSI_Ref_1 因子计算器中，可以调用 TSI 的计算结果
+  - [ ] FCT_Tsi_Vol_Dfive 因子计算器中，缺少 long 和 short
+  - [ ] FCT_Tsi_Vol_Dfive 因子计算器中，可以调用 TSI 的计算结果
+  - [ ] FCT_Vmacd 因子计算器中，缺少 fast、slow、signal 几个长度。
+
 
