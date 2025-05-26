@@ -19,7 +19,7 @@ class FCT_Pubu_1:
         df = param.get('df', None)
         if df is None:
             raise ValueError("no 'df' in param")
-        if not isinstance("df must be DataFrame"):
+        if not isinstance(df, pandas.DataFrame):
             raise TypeError("df must be DataFrame")
 
         # 均线周期调用
