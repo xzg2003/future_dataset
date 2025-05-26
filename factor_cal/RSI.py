@@ -35,7 +35,7 @@ class RSI:
 
         # 计算平均涨幅和平均跌幅
         avg_up   = df['up'].rolling(window=length).mean()
-        avg_down = df['dwon'].rolling(window=length).mean()
+        avg_down = df['down'].rolling(window=length).mean()
 
         # 计算 RSI
         rs = avg_up / (avg_down + 1e-10)    # 防止除零的情况
