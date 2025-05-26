@@ -22,6 +22,7 @@ def main():
                    'J','JD','JM','L','LU','LH','M','MA','NI','OI','P',
                    'PB','PF','PG','PK','PP','RB','RM','RU','SA','SF',
                    'SM','SN','SP','SR','SC','SS','TA','T','TF','UR','V','Y','ZN']
+    # instruments = ['A']
     k_line_type = '5m'
     lengths = [10, 20, 40, 80, 120, 180]
 
