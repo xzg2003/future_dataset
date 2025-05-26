@@ -35,7 +35,8 @@ class Acceleration:
         if instrument is None:
             raise ValueError("param miss instrument")
 
-        TSMOM_data_path = os.path.join(os.path.abspath(__path__), f'../data/5m/{instrument}/TSMOM@{length}.csv')
+        TSMOM_data_path = os.path.join(os.path.dirname(__file__), f'../data/5m/{instrument}/TSMOM@{length}.csv')
+        TSMOM_data_path = os.path.normpath(TSMOM_data_path)
         if not os.path.exists(TSMOM_data_path):
             raise FileNotFoundError(f"TSMOM_data_path not found:{TSMOM_data_path}")
 
@@ -50,5 +51,5 @@ class Acceleration:
         df[f'Acceleration@{length}'] = df[f'TSMOM@{length}'].pct_change(periods=length)
 
         # 返回结果
-        result = df[['datetime', f'TSMOM@{length}']].copy()
+        result = df[['datetime', f'Acceleration@{length}']].copy()
         return result
