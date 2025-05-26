@@ -94,6 +94,14 @@
 - merge：存储不同期货品种的相同因子的合并数据集。
 - mindiff：存储每个期货品种的最小变动单位。
 
+### factor_judge
+
+因子结果评估程序。具体方法已集成，结果会被存储在一个HTML文件中
+
+### result（仅本地）
+
+用于存储因子计算评估的结果
+
 ## 更新日志
 
 ### 2025-04-10：期货数据集的搭建与因子计算
@@ -241,6 +249,51 @@ df[f'FCT_Bias_1@{length}'] = numpy.where(
   - 增加因子计算器 FCT_Vol_Return_Corr_1，成交量与收益率相关系数因子。
   - 增加因子计算器 FCT_Vr，量比因子。
 
+### 2025-05-07：因子计算评估
+
+#### 2025-05-24
+
+- **因子计算评价程序：**
+  - 将所给的因子计算评价程序合并到本分支中，成功带入并计算、评估部分因子的计算结果。为防止新的 main 程序与原程序形成冲突，这里将调用因子计算评价程序的主函数命名为 main_judge
+  - 但是，学长原给的程序中存在部分问题，包括文件路径、时间类型等，在此为适应本地数据集，进行了相应的修改。
+  - 此外，针对factor_name的读取问题进行了优化。在 factor_name.csv 中只留下因子名称，在主程序中利用循环，给每个因子名称加上后面的 @{length}，这样便于调用。
+  - 在 main_judge 中还增加了一个判断语句，用于跳过已经评估过的因子。
+- **代码调试：**
+  - 修复 Acceleration 中存在的问题，保证因子计算器能正常进行运算。该因子计算器直接调用 TSMOM 的计算结果进行计算。同时对该因子进行计算评估
+  - 修复 Bias 中存在的问题，保证因子计算器能正常进行运算。同时对该因子进行计算评估。
+- 优化 factor_cal.py 的计算逻辑，保证计算过的因子不会再次被计算。
+- 完善 delete程序，保证其正常运行
+
+#### 2025-05-25
+
+- **代码调试：**
+
+  - 修复 XSMOM 中存在的问题，保证因子计算器能正常进行计算。同时对该因子进行计算评估。
+  - 修复 RSI 中存在的问题，保证因子计算器能正常进行计算。同时对该因子进行评估。
+  - 修复 IntradayMOM 中存在的问题，保证因子计算器能正常进行计算。
+  - 修复 OvernightMOM 中存在的问题，保证因子计算器能正常进行计算。
+  - 修复 RobustMOM 中存在的问题，保证因子计算器能正常进行计算，同时对该因子进行评估。
+  - 修复 TrendStrengh 中存在的问题，保证因子计算器能正常进行计算，同时对该因子进行评估。
+  - 修复 FCT_Pubu_1 中存在的问题，保证因子计算器能正常进行计算。
+
+- **factor_cal优化：**
+
+  - 由于不同各因子的名命名规则不同，因此，在 factor_cal 中进行了优化，通过列表的方式，对不同类型的因子进行分别处理。
+
+    ```python
+    # 设置保存路径，根据命名规则分开讨论
+    if factor_name in self.no_length:
+                                save_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/{self.k_line_type}/{instrument}/{factor_name}.csv')
+    elif factor_name in self.short_long:
+                                save_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/{self.k_line_type}/{instrument}/{factor_name}@{short}_{long}.csv')
+    else:
+                                save_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/{self.k_line_type}/{instrument}/{factor_name}@{length}.csv')
+    ```
+
+#### 2025-05-26	**Task_3_1.1.1**
+
+- 文件上传至 github 仓库，并更新版本号。
+
 ## 待办
 
 - 2025-05-16
@@ -260,5 +313,7 @@ df[f'FCT_Bias_1@{length}'] = numpy.where(
   - [ ] FCT_Tsi_Vol_Dfive 因子计算器中，缺少 long 和 short
   - [ ] FCT_Tsi_Vol_Dfive 因子计算器中，可以调用 TSI 的计算结果
   - [ ] FCT_Vmacd 因子计算器中，缺少 fast、slow、signal 几个长度。
+- 2025-05-25
+  - [ ] 在 main 的计算过程中出现新的问题：每次调用 main 进行计算时都会陷入循环调用 “FCT_Ar_Tr_1" 这个因子库，但后续的计算依然可以进行。相关问题尚未找到。
 
 
