@@ -1,15 +1,26 @@
 import os       # 与路径操作相关的包，用于管理文件
 import pandas
 
+from FCT_Pubu_1 import FCT_Pubu_1
+from RobustMOM import RobustMOM
 # from graphic.merge import data_path
 from .FCT_Ac_Tr_1   import      FCT_Ac_Tr_1
 from .FCT_Ar_1      import      FCT_Ar_1
 from .FCT_Bias_1    import      FCT_Bias_1
 from .FCT_Br_1      import      FCT_Br_1
 from .FCT_Cmf_1     import      FCT_Cmf_1
+from FCT_Ac_Tr_1    import      FCT_Ac_Tr_1
 from .Tr            import      Tr
 
 from .TSMOM         import      TSMOM
+from .IDMOM         import      IDMOM
+from .XSMOM         import      XSMOM
+from .Acceleration  import      Acceleration
+from .Bias          import      Bias
+from .RSI           import      RSI
+from .IntradayMOM   import      IntradayMOM
+from .OvernightMOM  import      OvernightMOM
+from .TrendStrength import      TrendStrength
 
 # 设置工作目录为当前脚本所在的目录
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
@@ -36,13 +47,27 @@ class factor_calculator:
         """
         self.factors_dict = {
             "TSMOM":        TSMOM(),
+            "IDMOM":        IDMOM(),
+            "XSMOM":        XSMOM(),
+            "Acceleration": Acceleration(),
+            "Bias":         Bias(),
+            "RSI":          RSI(),
+            "IntradayMOM":  IntradayMOM(),
+            "OvernightMOM": OvernightMOM(),
+            "RobustMOM":    RobustMOM(),
+            "TrendStrength":TrendStrength(),
+
             "Tr":           Tr(),
             "FCT_Ac_Tr_1":  FCT_Ac_Tr_1(),
             "FCT_Ar_1":     FCT_Ar_1(),
             "FCT_Bias_1":   FCT_Bias_1(),
             "FCT_Br_1":     FCT_Br_1(),
             "FCT_Cmf_1":    FCT_Cmf_1(),
+            "FCT_Pubu_1":   FCT_Pubu_1(),
         }
+
+        self.no_length = ["Tr", "IDMOM", "IntradayMOM", "OvernightMOM"]
+        self.short_long = ["FCT_Pubu_1"]
 
     def factors_cal(self):
         """
@@ -71,8 +96,13 @@ class factor_calculator:
                         'df':           df,
                         'instrument':   instrument,
                         'length':       length,
-                        'mindiff':      self.instruments_mindiff.get(instrument, None)
+                        'mindiff':      self.instruments_mindiff.get(instrument, None),
+                        'short':        5,
+                        'long':         20
                     }
+
+                    short = 5
+                    long = 20
 
                     # 检查 mindiff 是否存在
                     if param['mindiff'] is None:
@@ -81,14 +111,17 @@ class factor_calculator:
 
                     try:
                         # 设置保存路径，根据命名规则分开讨论
-                        if factor_name != "Tr":
-                            save_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/{self.k_line_type}/{instrument}/{factor_name}@{length}.csv')
-                        else:
+                        if factor_name in self.no_length:
                             save_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/{self.k_line_type}/{instrument}/{factor_name}.csv')
+                        elif factor_name in self.short_long:
+                            save_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/{self.k_line_type}/{instrument}/{factor_name}@{short}_{long}.csv')
+                        else:
+                            save_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/{self.k_line_type}/{instrument}/{factor_name}@{length}.csv')
 
                         # 检查文件是否存在，以跳出当前因子计算的循环
                         if os.path.exists(save_path):
-                            break
+                            print(f"{save_path}已存在，跳过该因子该长度的计算")
+                            continue
 
                         # 计算每一个因子，调用 calculator.formula 并传入参数进行计算
                         result = calculator.formula(param)
