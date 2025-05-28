@@ -1,26 +1,44 @@
 import os       # 与路径操作相关的包，用于管理文件
 import pandas
 
-from FCT_Pubu_1 import FCT_Pubu_1
-from RobustMOM import RobustMOM
-# from graphic.merge import data_path
-from .FCT_Ac_Tr_1   import      FCT_Ac_Tr_1
-from .FCT_Ar_1      import      FCT_Ar_1
-from .FCT_Bias_1    import      FCT_Bias_1
-from .FCT_Br_1      import      FCT_Br_1
-from .FCT_Cmf_1     import      FCT_Cmf_1
-from FCT_Ac_Tr_1    import      FCT_Ac_Tr_1
-from .Tr            import      Tr
+from .FCT_Ac_Tr_1                   import      FCT_Ac_Tr_1
+from .FCT_Ar_1                      import      FCT_Ar_1
+from .FCT_Bias_1                    import      FCT_Bias_1
+from .FCT_Br_1                      import      FCT_Br_1
+from .FCT_Cmf_1                     import      FCT_Cmf_1
+from .FCT_Pubu_1                    import      FCT_Pubu_1
+from .FCT_Pubu_Atr_Dfive            import      FCT_Pubu_Atr_Dfive
+from .FCT_Pubu_Vol_Dfive            import      FCT_Pubu_Vol_Dfive
+from .FCT_R_Div_RStd                import      FCT_R_Div_RStd
+from .FCT_Return_Cumsum_1           import      FCT_Return_Cumsum_1
+from .FCT_Sdrm_1                    import      FCT_Sdrm_1
+from .FCT_Sdrm_Atr_Dfive            import      FCT_Sdrm_Atr_Dfive
+from .FCT_Si                        import      FCT_Si
+from .FCT_Srmi                      import      FCT_Srmi
+from .FCT_Support_Close_Thr_1       import      FCT_Support_Close_Thr_1
+from .FCT_Support_Close_Thr_Boll_1  import      FCT_Support_Close_Thr_Boll_1
+from .FCT_Tsi_1                     import      FCT_Tsi_1
+from .FCT_Tsi_Atr_Dfive             import      FCT_Tsi_Atr_Dfive
+from .FCT_TSI_Ref_1                 import      FCT_TSI_Ref_1
+from .FCT_Tsi_Vol_Dfive             import      FCT_Tsi_Vol_Dfive
+from .FCT_Vmacd                     import      FCT_Vmacd
+from .FCT_Vol_Close_Corr_1          import      FCT_Vol_Close_Corr_1
+from .FCT_Vol_Cumsum_1              import      FCT_Vol_Cumsum_1
+from .FCT_Vol_DFive_1               import      FCT_Vol_DFive_1
+from .FCT_Vol_Return_Corr_1         import      FCT_Vol_Return_Corr_1
+from .FCT_Vr                        import      FCT_Vr
+from .Tr                            import      Tr
 
-from .TSMOM         import      TSMOM
-from .IDMOM         import      IDMOM
-from .XSMOM         import      XSMOM
-from .Acceleration  import      Acceleration
-from .Bias          import      Bias
-from .RSI           import      RSI
-from .IntradayMOM   import      IntradayMOM
-from .OvernightMOM  import      OvernightMOM
-from .TrendStrength import      TrendStrength
+from .TSMOM                         import      TSMOM
+from .IDMOM                         import      IDMOM
+from .XSMOM                         import      XSMOM
+from .RobustMOM                     import      RobustMOM
+from .Acceleration                  import      Acceleration
+from .Bias                          import      Bias
+from .RSI                           import      RSI
+from .IntradayMOM                   import      IntradayMOM
+from .OvernightMOM                  import      OvernightMOM
+from .TrendStrength                 import      TrendStrength
 
 # 设置工作目录为当前脚本所在的目录
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
@@ -46,28 +64,53 @@ class factor_calculator:
         先计算 Tr，在计算其他因子时可以调用 Tr.csv 文件中的数据，简化计算
         """
         self.factors_dict = {
-            "TSMOM":        TSMOM(),
-            "IDMOM":        IDMOM(),
-            "XSMOM":        XSMOM(),
-            "Acceleration": Acceleration(),
-            "Bias":         Bias(),
-            "RSI":          RSI(),
-            "IntradayMOM":  IntradayMOM(),
-            "OvernightMOM": OvernightMOM(),
-            "RobustMOM":    RobustMOM(),
-            "TrendStrength":TrendStrength(),
-
-            "Tr":           Tr(),
-            "FCT_Ac_Tr_1":  FCT_Ac_Tr_1(),
-            "FCT_Ar_1":     FCT_Ar_1(),
-            "FCT_Bias_1":   FCT_Bias_1(),
-            "FCT_Br_1":     FCT_Br_1(),
-            "FCT_Cmf_1":    FCT_Cmf_1(),
-            "FCT_Pubu_1":   FCT_Pubu_1(),
+            "TSMOM":                        TSMOM(),
+            "IDMOM":                        IDMOM(),
+            "XSMOM":                        XSMOM(),
+            "Acceleration":                 Acceleration(),
+            "Bias":                         Bias(),
+            "RSI":                          RSI(),
+            "IntradayMOM":                  IntradayMOM(),
+            "OvernightMOM":                 OvernightMOM(),
+            "RobustMOM":                    RobustMOM(),
+            "TrendStrength":                TrendStrength(),
+            "Tr":                           Tr(),
+            "FCT_Ac_Tr_1":                  FCT_Ac_Tr_1(),
+            "FCT_Ar_1":                     FCT_Ar_1(),
+            "FCT_Bias_1":                   FCT_Bias_1(),
+            "FCT_Br_1":                     FCT_Br_1(),
+            "FCT_Cmf_1":                    FCT_Cmf_1(),
+            "FCT_Pubu_1":                   FCT_Pubu_1(),
+            "FCT_Pubu_Atr_Dfive":           FCT_Pubu_Atr_Dfive(),
+            "FCT_Pubu_Vol_Dfive":           FCT_Pubu_Vol_Dfive(),
+            "FCT_R_Div_RStd":               FCT_R_Div_RStd(),
+            "FCT_Return_Cumsum_1":          FCT_Return_Cumsum_1(),
+            "FCT_Sdrm_1":                   FCT_Sdrm_1(),
+            "FCT_Sdrm_Atr_Dfive":           FCT_Sdrm_Atr_Dfive(),
+            "FCT_Si":                       FCT_Si(),
+            "FCT_Srmi":                     FCT_Srmi(),
+            "FCT_Support_Close_Thr_1":      FCT_Support_Close_Thr_1(),
+            "FCT_Support_Close_Thr_Boll_1": FCT_Support_Close_Thr_Boll_1(),
+            "FCT_Tsi_1":                    FCT_Tsi_1(),
+            "FCT_Tsi_Atr_Dfive":            FCT_Tsi_Atr_Dfive(),
+            "FCT_TSI_Ref_1":                FCT_TSI_Ref_1(),
+            "FCT_Tsi_Vol_Dfive":            FCT_Tsi_Vol_Dfive(),
+            "FCT_Vmacd":                    FCT_Vmacd(),
+            "FCT_Vol_Close_Corr_1":         FCT_Vol_Close_Corr_1(),
+            "FCT_Vol_Cumsum_1":             FCT_Vol_Cumsum_1(),
+            "FCT_Vol_DFive_1":              FCT_Vol_DFive_1(),
+            "FCT_Vol_Return_Corr_1":        FCT_Vol_Return_Corr_1(),
+            "FCT_Vr":                       FCT_Vr(),
         }
 
-        self.no_length = ["Tr", "IDMOM", "IntradayMOM", "OvernightMOM"]
-        self.short_long = ["FCT_Pubu_1"]
+        self.no_length = ["Tr", "IDMOM", "IntradayMOM", "OvernightMOM", "FCT_Return_Cumsum_1", "FCT_Vmacd", "FCT_Vol_Cumsum_1"]
+        self.length_atr = ["FCT_Sdrm_Atr_Dfive"]
+        self.length_thr = ["FCT_Support_Close_Thr_1"]
+        self.length_n_std = ["FCT_Support_Close_Thr_Boll_1"]
+        self.short_long = ["FCT_Pubu_1", "FCT_Tsi_1", "FCT_TSI_Ref_1"]
+        self.short_long_atr = ["FCT_Pubu_Atr_Dfive", "FCT_Tsi_Atr_Dfive"]
+        self.short_long_vol = ["FCT_Pubu_Vol_Dfive", "FCT_Tsi_Vol_Dfive"]
+        self.fast_slow_signal = ["FCT_Vmacd"]
 
     def factors_cal(self):
         """
@@ -98,11 +141,20 @@ class factor_calculator:
                         'length':       length,
                         'mindiff':      self.instruments_mindiff.get(instrument, None),
                         'short':        5,
-                        'long':         20
-                    }
+                        'long':         20,
 
-                    short = 5
-                    long = 20
+                        'atr_length':   14,
+
+                        'vol_length':   14,
+
+                        'thr':          0.3,
+
+                        'n_std':        2,
+
+                        'fast':         12,
+                        'slow':         26,
+                        'signal':       9,
+                    }
 
                     # 检查 mindiff 是否存在
                     if param['mindiff'] is None:
@@ -114,7 +166,17 @@ class factor_calculator:
                         if factor_name in self.no_length:
                             save_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/{self.k_line_type}/{instrument}/{factor_name}.csv')
                         elif factor_name in self.short_long:
-                            save_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/{self.k_line_type}/{instrument}/{factor_name}@{short}_{long}.csv')
+                            save_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/{self.k_line_type}/{instrument}/{factor_name}@{param["short"]}_{param["long"]}.csv')
+                        elif factor_name in self.length_thr:
+                            save_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/{self.k_line_type}/{instrument}/{factor_name}@{length}_{param["thr"]}.csv')
+                        elif factor_name in self.length_atr:
+                            save_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/{self.k_line_type}/{instrument}/{factor_name}@{length}_{param["atr_length"]}.csv')
+                        elif factor_name in self.length_n_std:
+                            save_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/{self.k_line_type}/{instrument}/{factor_name}@{length}_{param["n_std"]}.csv')
+                        elif factor_name in self.short_long_atr:
+                            save_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/{self.k_line_type}/{instrument}/{factor_name}@{param["short"]}_{param["long"]}_{param["atr_length"]}.csv')
+                        elif factor_name in self.short_long_vol:
+                            save_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/{self.k_line_type}/{instrument}/{factor_name}@{param["short"]}_{param["long"]}_{param["vol_length"]}.csv')
                         else:
                             save_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/{self.k_line_type}/{instrument}/{factor_name}@{length}.csv')
 
@@ -135,6 +197,7 @@ class factor_calculator:
                     except Exception as e:
                         # 当因子计算出错时报错
                         print(f"error at{save_path}, {e}")
+
 
 """
 # 主程序入口
