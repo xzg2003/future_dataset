@@ -18,6 +18,7 @@ def delete_factor(k_line, factor_lists):
             name_csv = name + '.csv'
         else:
             name_csv = name
+
         deleted = False
         for i in instruments:
             file_path = f'./data/{k_line}/{i}/{name_csv}'
@@ -26,14 +27,19 @@ def delete_factor(k_line, factor_lists):
                 print(f'已删除: {file_path}')
                 deleted = True
         if not deleted:
-            print(f'{name_csv} 在 {k_line} 下未找到对应文件')
+            print(f'{name} 在 {k_line} 下未找到对应文件')
 
 
 if __name__ == '__main__':
     # 支持多周期
     k_lines = ['1d', '5m']
     factor_lists = [
-        "FCT_Pubu_1@5_20"
+        "FCT_Vol_Close_Corr_1@10",
+        "FCT_Vol_Close_Corr_1@20",
+        "FCT_Vol_Close_Corr_1@40",
+        "FCT_Vol_Close_Corr_1@80",
+        "FCT_Vol_Close_Corr_1@120",
+        "FCT_Vol_Close_Corr_1@180",
     ]
     for k_line in k_lines:
         delete_factor(k_line, factor_lists)
