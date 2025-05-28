@@ -6,6 +6,8 @@ import os
 
 from torchgen.api.types import longT
 
+from graphic.merge import instrument
+
 # 设置工作目录为当前脚本所在的目录
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
@@ -22,21 +24,31 @@ class FCT_Pubu_Atr_Dfive:
             raise TypeError("df must be DataFrame")
 
         # 均线和 ATR 周期参数
-        short = param.get('short', 5)   # 默认为5
-        long  = param.get('long', 20)   # 默认为20
-        atr_length = param.get('atr_length', 14)
+        short = param.get('short', 5)               # 默认为5
+        long  = param.get('long', 20)               # 默认为20
+        atr_length = param.get('atr_length', 14)    # 默认为14
         print(f"Using short: {short}, long: {long}, atr_length: {atr_length}")
 
-        # 计算短期均线和长期均线
-        df['ma_short'] = df['close'].rolling(window=short).mean()
-        df['ma_long']  = df['close'].rolling(window=long).mean()
+        # 获取 instrument
+        instrument = param.get('instrument', None)
+        if instrument is None:
+            raise ValueError("param miss instrument")
 
-        # 计算 ATR（这里应该可以直接调用 Tr 里面的计算结果）
-        high_low    = df['high'] - df['low']
-        high_close  = numpy.abs(df['high'] - df['close'].shift(1))
-        low_close   = numpy.abs(df['low'] - df['close'].shift(1))
-        tr          = pandas.concat([high_low, high_close, low_close], axis=1).max(axis=1)
-        df['ATR']   = tr.rolling(window=atr_length).mean()
+        # 判断 Tr.csv 文件是否存在，便于调用
+        tr_data_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/5m/{instrument}/Tr.csv')
+        if not os.path.exists(tr_data_path):
+            raise FileNotFoundError(F"Tr file noot fount: {tr_data_path}")
+
+        tr_df = pandas.read_csv(tr_data_path)
+        # Tr.csv 有datetime 和 Tr 两列，且与主 df 按 datetime 对齐
+        if 'datetime' in df.columns and 'datetime' in tr_df.columns:
+            df = df.merge(tr_df[['datetime', 'Tr']], on='datetime', how='left')
+        else:
+            # 如果没有 datetime 列，直接用 index 对齐
+            df['Tr'] = tr_df['Tr']
+
+        # 计算 ATR
+        df['ATR'] = df['Tr'].rolling(window=atr_length).mean()
 
         # 计算短期均线在长期窗口内的分位数位置
         def pubu_percentile(x):
@@ -45,10 +57,21 @@ class FCT_Pubu_Atr_Dfive:
                 return numpy.nan
             return numpy.sum(window <= window[-1]) / long
 
-        df['pubu'] = df['ma_short'].rolling(window=long, min_periods=long).apply(pubu_percentile, raw=True)
+        # 判断 FCT_Pubu@{short}_{long}.csv 文件是否存在，便于调用
+        pubu_data_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/5m/{instrument}/FCT_Pubu_1@{short}_{long}.csv')
+        if not os.path.exists(pubu_data_path):
+            raise FileNotFoundError(F"Pubu file noot fount: {pubu_data_path}")
+
+        pubu_df = pandas.read_csv(pubu_data_path)
+        # FCT_Pubu_q@{short}_{long}.csv 有datetime 和 FCT_Pubu@{short}_{long} 两列，且与主 df 按 datetime 对齐
+        if 'datetime' in df.columns and 'datetime' in pubu_df.columns:
+            df = df.merge(pubu_df[['datetime', f'FCT_Pubu_1@{short}_{long}']], on='datetime', how='left')
+        else:
+            # 如果没有 datetime 列，直接用 index 对齐
+            df[f'FCT_Pubu_1@{short}_{long}'] = pubu_df[f'FCT_Pubu_1@{short}_{long}']
 
         # 用 ATR 归一化
-        df[f'FCT_Pubu_Atr_Dfive@{short}_{long}_{atr_length}'] = df['pubu'] / (df['ATR'] + 1e-10)
+        df[f'FCT_Pubu_Atr_Dfive@{short}_{long}_{atr_length}'] = df[f'FCT_Pubu_1@{short}_{long}'] / (df['ATR'] + 1e-10)
 
         # 返回结果
         result = df[['datetime', f'FCT_Pubu_Atr_Dfive@{short}_{long}_{atr_length}']].copy()
