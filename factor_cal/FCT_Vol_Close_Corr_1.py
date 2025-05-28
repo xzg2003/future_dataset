@@ -27,13 +27,20 @@ class FCT_Vol_Close_Corr_1:
 
         # 计算滑动窗口相关系数
         def corr_func(x):
-            return numpy.corrcoef(x[:, 0], x[:, 1])[0, 1] if numpy.std(x[:, 0]) > 0 and numpy.std(x[:, 1]) > 0 else numpy.nan\
+            x = numpy.asarray(x)
+            if x.ndim == 1:
+                x = x.reshape(-1, 2)
+            return numpy.corrcoef(x[:, 0], x[:, 1])[0, 1] if numpy.std(x[:, 0]) > 0 and numpy.std(x[:, 1]) > 0 else numpy.nan
 
-        df[f'FCT_Vol_Close_Corr_1@{length}'] = (
+        # 只保留两列，rolling后apply返回Series
+        corr_series = (
             df[['volume', 'close']]
             .rolling(window=length, min_periods=length)
             .apply(corr_func, raw=True)
         )
+
+        # apply后返回的是DataFrame，取一列即可
+        df[f'FCT_Vol_Close_Corr_1@{length}'] = corr_series.iloc[:, 0]
 
         # 返回结果
         result = df[['datetime', f'FCT_Vol_Close_Corr_1@{length}']].copy()
