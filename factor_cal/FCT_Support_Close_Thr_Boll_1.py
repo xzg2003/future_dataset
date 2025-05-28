@@ -48,3 +48,4 @@ class FCT_Support_Close_Thr_Boll_1:
         df[f'FCT_Support_Close_Thr_Boll_1@{length}_{n_std}'] = counts
 
         # 返回结果
+        return df
