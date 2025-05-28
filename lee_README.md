@@ -293,27 +293,59 @@ df[f'FCT_Bias_1@{length}'] = numpy.where(
 #### 2025-05-26	**Task_3_1.1.1**
 
 - 文件上传至 github 仓库，并更新版本号。
+- **代码调试：**
+  - 修复 FCT_Pubu_Atr_Dfive 中存在的问题，保证因子计算器能正常进行计算。同时，对该部分代码进行了优化，通过直接调用已经计算过的 Tr 和 FCT_Pubu_1 因子进行计算，大大简化计算量。
+  - 修复 FCT_Pubu_Vol_Dfive 中存在的问题，保证因子计算器能正常进行计算。同时，对该部分代码进行了优化，通过直接调用已经计算过的 FCT_Pubu_1 因子进行计算，简化计算量。
+  - 修复 FCT_R_Div_RStd 中存在的问题，保证因子计算器能正常进行计算。
+
+#### 2025-05-27	**Task_3_1.1.2**
+
+- **代码调试：**
+
+  - 修复 FCT_Return_Cumsum_1 中存在的问题，保证因子计算器能正常进行计算。
+  - 修复 FCT_Sdrm_Atr_Dfive 中存在的问题，保证因子计算器能正常进行计算。
+  - 修复 FCT_Si 中存在的问题，保证因子计算器能正常进行计算。
+  - 修复 FCT_Srmi 中存在的问题，保证因子计算器能正常进行计算。
+  - 修复 FCT_Support_Close_Thr_1 中存在的问题，保证因子计算器能正常进行计算。
+  - 修复 FCT_Support_Close_Thr_Boll_1 中存在的问题，保证因子计算器能正常进行计算。
+  - 修复 FCT_Tsi_1 中存在的问题，保证因子计算器能正常进行计算。
+  - 修复 FCT_Tsi_Atr_Dfive 中存在的问题，保证因子计算器能正常进行计算。
+  - 修复 FCT_TSI_Ref_1 中存在的问题，保证因子计算器能正常进行计算。
+  - 修复 FCT_Vmacd 中存在的问题，保证因子计算器能正常进行计算。
+  - 修复 FCT_Vol_Cumsum_1 中存在的问题，保证因子计算器能正常进行计算。
+  - 修复 FCT_Vol_DFive_1 中存在的问题，保证因子计算器能正常进行计算。
+  - 修复 FCT_Vol_Return_Corr_1 中存在的问题，保证因子计算器能正常进行计算。
+  - 修复 FCT_Vr 中存在的问题，保证因子计算器能正常进行计算。
+
+  至此，目前所有的因子计算器都进行完调试。后续将利用评估程序对各个因子的计算结果进行评估。同时，还会针对代码中的相关问题进行风格上、逻辑上的优化。
+
 
 ## 待办
 
 - 2025-05-16
-  - [ ] 时间窗口
-    - [ ] 更新的计算器中缺少长期均线、短期均线和ATR窗口长度的定义，目前使用默认窗口长度进行计算，后续需要进行补全
-    - [ ] 因子计算器的命名需要格式化，目前的命名暂定为"factor@{short}_{long}"
-  - [ ] 部分因子的计算可以调用其他因子已计算得到的结果进行计算，简化代码
+  - [x] 时间窗口
+    - [x] 更新的计算器中缺少长期均线、短期均线和ATR窗口长度的定义，目前使用默认窗口长度进行计算，后续需要进行补全
+    - [x] 因子计算器的命名需要格式化，目前的命名暂定为"factor@{short}_{long}"
+  - [x] 部分因子的计算可以调用其他因子已计算得到的结果进行计算，简化代码
 - 2025-05-17
-  - [ ] FCT_Support_Close_Thr_1 因子计算器中，缺少 thr 比例.
-  - [ ] FCT_Support_Close_Thr_Boll_1 因子计算器中，缺少 n_std
-  - [ ] FCT_Tsi_1 因子计算器中，缺少 long 和 short
+  - [x] FCT_Support_Close_Thr_1 因子计算器中，缺少 thr 比例.
+  - [x] FCT_Support_Close_Thr_Boll_1 因子计算器中，缺少 n_std.
+  - [x] FCT_Tsi_1 因子计算器中，缺少 long 和 short
 - 2025-05-19
-  - [ ] FCT_Tsi_Atr_Dfive 因子计算器中，缺少 long 和 short。
-  - [ ] FCT_Tsi_Atr_Dfive 因子计算器中，可以调用 ATR 的计算结果进行优化
-  - [ ] FCT_TSI_Ref_1 因子计算器中，缺少 long 和 short
-  - [ ] FCT_TSI_Ref_1 因子计算器中，可以调用 TSI 的计算结果
-  - [ ] FCT_Tsi_Vol_Dfive 因子计算器中，缺少 long 和 short
-  - [ ] FCT_Tsi_Vol_Dfive 因子计算器中，可以调用 TSI 的计算结果
-  - [ ] FCT_Vmacd 因子计算器中，缺少 fast、slow、signal 几个长度。
+  - [x] FCT_Tsi_Atr_Dfive 因子计算器中，缺少 long 和 short。
+  - [x] FCT_Tsi_Atr_Dfive 因子计算器中，可以调用 ATR 的计算结果进行优化
+  - [x] FCT_TSI_Ref_1 因子计算器中，缺少 long 和 short
+  - [x] FCT_TSI_Ref_1 因子计算器中，可以调用 TSI 的计算结果
+  - [x] FCT_Tsi_Vol_Dfive 因子计算器中，缺少 long 和 short
+  - [x] FCT_Tsi_Vol_Dfive 因子计算器中，可以调用 TSI 的计算结果
+  - [x] FCT_Vmacd 因子计算器中，缺少 fast、slow、signal 几个长度。
 - 2025-05-25
   - [ ] 在 main 的计算过程中出现新的问题：每次调用 main 进行计算时都会陷入循环调用 “FCT_Ar_Tr_1" 这个因子库，但后续的计算依然可以进行。相关问题尚未找到。
+- 2025-05-27
+  - [ ] factor_cal
+    - [ ] 在 factor_cal 总因子计算器中，为满足不同因子的命名名称，在 param 中增加了不同的约定，并对不同命名方式的因子进行了分类，在循环中进行分类
+    - [ ] 在 factor_cal 总因子计算器中，双层循环存在问题，该问题导致没有 length 的因子会在 length 循环中重复计算6次。后续需要修改循环逻辑对这个问题进行优化。
+    - [ ] 在 factor_cal 总因子计算器中，前面的导入部分过长，可以进行相应的优化。
 
+  - [ ] 在 FCT_Vol_Close_Corr_1 因子计算器中，存在数据无法读入的问题，强行将数据变成二维的 dataframe 后，计算得到的结果恐怕有误。
 
