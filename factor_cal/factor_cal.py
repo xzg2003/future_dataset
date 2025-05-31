@@ -1,47 +1,24 @@
 import os       # 与路径操作相关的包，用于管理文件
 import pandas
+import importlib
 
-from .FCT_Ac_Tr_1                   import      FCT_Ac_Tr_1
-from .FCT_Ar_1                      import      FCT_Ar_1
-from .FCT_Bias_1                    import      FCT_Bias_1
-from .FCT_Br_1                      import      FCT_Br_1
-from .FCT_Cmf_1                     import      FCT_Cmf_1
-from .FCT_Pubu_1                    import      FCT_Pubu_1
-from .FCT_Pubu_Atr_Dfive            import      FCT_Pubu_Atr_Dfive
-from .FCT_Pubu_Vol_Dfive            import      FCT_Pubu_Vol_Dfive
-from .FCT_R_Div_RStd                import      FCT_R_Div_RStd
-from .FCT_Return_Cumsum_1           import      FCT_Return_Cumsum_1
-from .FCT_Sdrm_1                    import      FCT_Sdrm_1
-from .FCT_Sdrm_Atr_Dfive            import      FCT_Sdrm_Atr_Dfive
-from .FCT_Si                        import      FCT_Si
-from .FCT_Srmi                      import      FCT_Srmi
-from .FCT_Support_Close_Thr_1       import      FCT_Support_Close_Thr_1
-from .FCT_Support_Close_Thr_Boll_1  import      FCT_Support_Close_Thr_Boll_1
-from .FCT_Tsi_1                     import      FCT_Tsi_1
-from .FCT_Tsi_Atr_Dfive             import      FCT_Tsi_Atr_Dfive
-from .FCT_TSI_Ref_1                 import      FCT_TSI_Ref_1
-from .FCT_Tsi_Vol_Dfive             import      FCT_Tsi_Vol_Dfive
-from .FCT_Vmacd                     import      FCT_Vmacd
-from .FCT_Vol_Close_Corr_1          import      FCT_Vol_Close_Corr_1
-from .FCT_Vol_Cumsum_1              import      FCT_Vol_Cumsum_1
-from .FCT_Vol_DFive_1               import      FCT_Vol_DFive_1
-from .FCT_Vol_Return_Corr_1         import      FCT_Vol_Return_Corr_1
-from .FCT_Vr                        import      FCT_Vr
-from .Tr                            import      Tr
-
-from .TSMOM                         import      TSMOM
-from .IDMOM                         import      IDMOM
-from .XSMOM                         import      XSMOM
-from .RobustMOM                     import      RobustMOM
-from .Acceleration                  import      Acceleration
-from .Bias                          import      Bias
-from .RSI                           import      RSI
-from .IntradayMOM                   import      IntradayMOM
-from .OvernightMOM                  import      OvernightMOM
-from .TrendStrength                 import      TrendStrength
+from config import factor_names
+from config import factor_categories
+from config import default_data
 
 # 设置工作目录为当前脚本所在的目录
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
+# 动态调用各个因子计算器
+def get_factor_name(factor_name):
+    # 这里假设每个因子模块名和类名都与 factor_name 一致
+    try:
+        module = importlib.import_module(f'.{factor_name}', __package__)
+        factor_class = getattr(module, factor_name)
+        return factor_class
+    except Exception as e:
+        print(f"导入{factor_name}失败：{e}")
+        return None
 
 class factor_calculator:
     def __init__(self, instruments, k_line_type, lengths, instruments_mindiff):
@@ -62,55 +39,15 @@ class factor_calculator:
         
         这里优先计算 Tr 因子，因为后续很多因子计算都需要调用 Tr 的数据
         先计算 Tr，在计算其他因子时可以调用 Tr.csv 文件中的数据，简化计算
+        
+        经过程序结构的优化，这里改为自动化导入
+        在对字典导入的同时，导入每个因子计算器的类
         """
-        self.factors_dict = {
-            "TSMOM":                        TSMOM(),
-            "IDMOM":                        IDMOM(),
-            "XSMOM":                        XSMOM(),
-            "Acceleration":                 Acceleration(),
-            "Bias":                         Bias(),
-            "RSI":                          RSI(),
-            "IntradayMOM":                  IntradayMOM(),
-            "OvernightMOM":                 OvernightMOM(),
-            "RobustMOM":                    RobustMOM(),
-            "TrendStrength":                TrendStrength(),
-            "Tr":                           Tr(),
-            "FCT_Ac_Tr_1":                  FCT_Ac_Tr_1(),
-            "FCT_Ar_1":                     FCT_Ar_1(),
-            "FCT_Bias_1":                   FCT_Bias_1(),
-            "FCT_Br_1":                     FCT_Br_1(),
-            "FCT_Cmf_1":                    FCT_Cmf_1(),
-            "FCT_Pubu_1":                   FCT_Pubu_1(),
-            "FCT_Pubu_Atr_Dfive":           FCT_Pubu_Atr_Dfive(),
-            "FCT_Pubu_Vol_Dfive":           FCT_Pubu_Vol_Dfive(),
-            "FCT_R_Div_RStd":               FCT_R_Div_RStd(),
-            "FCT_Return_Cumsum_1":          FCT_Return_Cumsum_1(),
-            "FCT_Sdrm_1":                   FCT_Sdrm_1(),
-            "FCT_Sdrm_Atr_Dfive":           FCT_Sdrm_Atr_Dfive(),
-            "FCT_Si":                       FCT_Si(),
-            "FCT_Srmi":                     FCT_Srmi(),
-            "FCT_Support_Close_Thr_1":      FCT_Support_Close_Thr_1(),
-            "FCT_Support_Close_Thr_Boll_1": FCT_Support_Close_Thr_Boll_1(),
-            "FCT_Tsi_1":                    FCT_Tsi_1(),
-            "FCT_Tsi_Atr_Dfive":            FCT_Tsi_Atr_Dfive(),
-            "FCT_TSI_Ref_1":                FCT_TSI_Ref_1(),
-            "FCT_Tsi_Vol_Dfive":            FCT_Tsi_Vol_Dfive(),
-            "FCT_Vmacd":                    FCT_Vmacd(),
-            "FCT_Vol_Close_Corr_1":         FCT_Vol_Close_Corr_1(),
-            "FCT_Vol_Cumsum_1":             FCT_Vol_Cumsum_1(),
-            "FCT_Vol_DFive_1":              FCT_Vol_DFive_1(),
-            "FCT_Vol_Return_Corr_1":        FCT_Vol_Return_Corr_1(),
-            "FCT_Vr":                       FCT_Vr(),
-        }
-
-        self.no_length = ["Tr", "IDMOM", "IntradayMOM", "OvernightMOM", "FCT_Return_Cumsum_1", "FCT_Vmacd", "FCT_Vol_Cumsum_1"]
-        self.length_atr = ["FCT_Sdrm_Atr_Dfive"]
-        self.length_thr = ["FCT_Support_Close_Thr_1"]
-        self.length_n_std = ["FCT_Support_Close_Thr_Boll_1"]
-        self.short_long = ["FCT_Pubu_1", "FCT_Tsi_1", "FCT_TSI_Ref_1"]
-        self.short_long_atr = ["FCT_Pubu_Atr_Dfive", "FCT_Tsi_Atr_Dfive"]
-        self.short_long_vol = ["FCT_Pubu_Vol_Dfive", "FCT_Tsi_Vol_Dfive"]
-        self.fast_slow_signal = ["FCT_Vmacd"]
+        self.factors_dict = {}
+        for name in factor_names:
+            factor_class = get_factor_name(name)
+            if factor_class is not None:
+                self.factors_dict[name] = factor_class()
 
     def factors_cal(self):
         """
@@ -140,20 +77,15 @@ class factor_calculator:
                         'instrument':   instrument,
                         'length':       length,
                         'mindiff':      self.instruments_mindiff.get(instrument, None),
-                        'short':        5,
-                        'long':         20,
-
-                        'atr_length':   14,
-
-                        'vol_length':   14,
-
-                        'thr':          0.3,
-
-                        'n_std':        2,
-
-                        'fast':         12,
-                        'slow':         26,
-                        'signal':       9,
+                        'short':        default_data["short"],
+                        'long':         default_data["long"],
+                        'atr_length':   default_data["atr_length"],
+                        'vol_length':   default_data["vol_length"],
+                        'thr':          default_data["thr"],
+                        'n_std':        default_data["n_std"],
+                        'fast':         default_data["fast"],
+                        'slow':         default_data["slow"],
+                        'signal':       default_data["signal"],
                     }
 
                     # 检查 mindiff 是否存在
@@ -163,19 +95,19 @@ class factor_calculator:
 
                     try:
                         # 设置保存路径，根据命名规则分开讨论
-                        if factor_name in self.no_length:
+                        if factor_name in factor_categories["no_length"]:
                             save_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/{self.k_line_type}/{instrument}/{factor_name}.csv')
-                        elif factor_name in self.short_long:
+                        elif factor_name in factor_categories["short_long"]:
                             save_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/{self.k_line_type}/{instrument}/{factor_name}@{param["short"]}_{param["long"]}.csv')
-                        elif factor_name in self.length_thr:
+                        elif factor_name in factor_categories["length_thr"]:
                             save_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/{self.k_line_type}/{instrument}/{factor_name}@{length}_{param["thr"]}.csv')
-                        elif factor_name in self.length_atr:
+                        elif factor_name in factor_categories["length_atr"]:
                             save_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/{self.k_line_type}/{instrument}/{factor_name}@{length}_{param["atr_length"]}.csv')
-                        elif factor_name in self.length_n_std:
+                        elif factor_name in factor_categories["length_n_std"]:
                             save_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/{self.k_line_type}/{instrument}/{factor_name}@{length}_{param["n_std"]}.csv')
-                        elif factor_name in self.short_long_atr:
+                        elif factor_name in factor_categories["short_long_atr"]:
                             save_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/{self.k_line_type}/{instrument}/{factor_name}@{param["short"]}_{param["long"]}_{param["atr_length"]}.csv')
-                        elif factor_name in self.short_long_vol:
+                        elif factor_name in factor_categories["short_long_vol"]:
                             save_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/{self.k_line_type}/{instrument}/{factor_name}@{param["short"]}_{param["long"]}_{param["vol_length"]}.csv')
                         else:
                             save_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/{self.k_line_type}/{instrument}/{factor_name}@{length}.csv')
