@@ -1,45 +1,74 @@
 # 删除期货因子的代码，万一大家算出来的因子有问题可以删了重新算
 import os
 
-# 期货类型
-instruments = [
-    'A', 'AG', 'AL', 'AP', 'AU', 'BU', 'C', 'CF', 'CJ', 'CS',
-    'CU', 'EB', 'EG', 'FG', 'FU', 'HC', 'I', 'IC', 'IF', 'IH',
-    'J', 'JD', 'JM', 'L', 'LU', 'LH', 'M', 'MA', 'NI', 'OI', 'P',
-    'PB', 'PF', 'PG', 'PK', 'PP', 'RB', 'RM', 'RU', 'SA', 'SF',
-    'SM', 'SN', 'SP', 'SR', 'SC', 'SS', 'TA', 'T', 'TF', 'UR', 'V', 'Y', 'ZN'
-]
+from multipart import file_path
+from sympy.matrices.expressions.matmul import factor_in_front
 
+from config import instruments
+from config import factor_names
+from config import lengths
+from config import factor_categories
+from config import default_data
+from config import k_line_type
 
-def delete_factor(k_line, factor_lists):
-    for name in factor_lists:
-        # 保证有.csv后缀
-        if not name.endswith('.csv'):
-            name_csv = name + '.csv'
+def get_factor_file_names(factor_name):
+    file_names = []
+
+    for length in lengths:
+        if factor_name in factor_categories.get("no_length", []):
+            file_names.append(f"{factor_name}")
+            break  # 只生成一次
+        elif factor_name in factor_categories.get("short_long", []):
+            file_names.append(f"{factor_name}@{default_data['short']}_{default_data['long']}")
+            break
+        elif factor_name in factor_categories.get("length_thr", []):
+            file_names.append(f"{factor_name}@{length}_{default_data['thr']}")
+        elif factor_name in factor_categories.get("length_atr", []):
+            file_names.append(f"{factor_name}@{length}_{default_data['atr_length']}")
+        elif factor_name in factor_categories.get("length_n_std", []):
+            file_names.append(f"{factor_name}@{length}_{default_data['n_std']}")
+        elif factor_name in factor_categories.get("short_long_atr", []):
+            file_names.append(f"{factor_name}@{default_data['short']}_{default_data['long']}_{default_data['atr_length']}")
+            break
+        elif factor_name in factor_categories.get("short_long_vol", []):
+            file_names.append(f"{factor_name}@{default_data['short']}_{default_data['long']}_{default_data['vol_length']}")
+            break
         else:
-            name_csv = name
+            file_names.append(f"{factor_name}@{length}")
 
+    return file_names
+
+def delete_factor(k_line, factor_files):
+    for name in factor_files:
+        # 对文件名称加 .csv 后缀
+        name_csv = name if name.endswith('.csv') else name + '.csv'
         deleted = False
-        for i in instruments:
-            file_path = f'./data/{k_line}/{i}/{name_csv}'
+        for instrument in instruments:
+            file_path = f'./data/{k_line}/{instrument}/{name_csv}'
             if os.path.exists(file_path):
                 os.remove(file_path)
-                print(f'已删除: {file_path}')
+                print(f'已删除：{file_path}')
                 deleted = True
+
         if not deleted:
             print(f'{name} 在 {k_line} 下未找到对应文件')
 
-
 if __name__ == '__main__':
-    # 支持多周期
-    k_lines = ['1d', '5m']
-    factor_lists = [
-        "FCT_Vol_Close_Corr_1@10",
-        "FCT_Vol_Close_Corr_1@20",
-        "FCT_Vol_Close_Corr_1@40",
-        "FCT_Vol_Close_Corr_1@80",
-        "FCT_Vol_Close_Corr_1@120",
-        "FCT_Vol_Close_Corr_1@180",
-    ]
-    for k_line in k_lines:
-        delete_factor(k_line, factor_lists)
+    k_lines = k_line_type
+
+    """
+    主循环，允许用户删除多个因子计算结果，用户输入0以结束程序
+    """
+    while True:
+        factor_input = input("请输入需要删除的因子名称，输入0以结束程序：")
+        if factor_input =='0':
+            print("程序结束。")
+            break
+        if factor_input not in factor_names:
+            print("因子名称不存在，请重新输入。")
+            continue
+
+        factor_files = get_factor_file_names(factor_input)
+
+        for k_line in k_lines:
+            delete_factor(k_line, factor_files)
