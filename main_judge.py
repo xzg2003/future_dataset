@@ -7,6 +7,10 @@ from factor_judge.mutal_IC import mutal_IC
 from factor_judge.layer_yield import layer_yield
 from factor_judge.statistic import statistic
 
+from config import lengths
+from config import factor_names
+from config import factor_categories
+from config import default_data
 
 class run_factor_judge():
     def __init__(self, factor, method, k_line):
@@ -126,12 +130,34 @@ class run_factor_judge():
 
 
 if __name__ == '__main__':
-    length_list = [10, 20, 40, 80, 120, 180]
+    """
+    直接利用 config.py 的情况下，就不需要读取csv文件了
     factors = pd.read_csv('factor_name.csv', encoding='utf-8')
+    """
 
-    for i in factors['name']:
-        for length in length_list:
-            factor = f'{i}@{length}'
+    for factor_name in factor_names:
+        for length in lengths:
+
+            """
+            这里依然对每个不同命名规则的因子进行分类
+            """
+            if factor_name in factor_categories["no_length"]:
+                factor = f'{factor_name}'
+            elif factor_name in factor_categories["short_long"]:
+                factor = f'{factor_name}@{default_data["short"]}_{default_data["long"]}'
+            elif factor_name in factor_categories["length_thr"]:
+                factor = f'{factor_name}@{length}_{default_data["thr"]}'
+            elif factor_name in factor_categories["length_atr"]:
+                factor = f'{factor_name}@{length}_{default_data["atr_length"]}'
+            elif factor_name in factor_categories["length_n_std"]:
+                factor = f'{factor_name}@{length}_{default_data["n_std"]}'
+            elif factor_name in factor_categories["short_long_atr"]:
+                factor = f'{factor_name}@{default_data["short"]}_{default_data["long"]}_{default_data["atr_length"]}'
+            elif factor_name in factor_categories["short_long_vol"]:
+                factor = f'{factor_name}@{default_data["short"]}_{default_data["long"]}_{default_data["vol_length"]}'
+            else:
+                factor = f'{factor_name}@{length}'
+
             report_path = f'./result/5m/{factor}/{factor}_report.html'
             if os.path.exists(report_path):
                 print(f"{factor} 已经评估过，跳过。")
