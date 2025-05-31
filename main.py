@@ -2,6 +2,11 @@ from factor_cal.factor_cal import factor_calculator
 import os
 import csv
 
+# 从 config 中导入默认参数
+from config import instruments
+from config import k_line_type
+from config import lengths
+
 # 设置工作区相对路径
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
@@ -9,23 +14,6 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 mindiff_file_path = './data/mindiff/mindiff.csv'
 
 def main():
-    """
-    各个参数的设置，
-    instruments:    期货品种
-    k_line_type:    k线类型
-    lengths:        滑动平均长度
-    mindiff:        最小变化单位
-    """
-
-    instruments = ['A','AG','AL','AP','AU','BU','C','CF','CJ','CS',
-                   'CU','EB','EG','FG','FU','HC','I','IC','IF','IH',
-                   'J','JD','JM','L','LU','LH','M','MA','NI','OI','P',
-                   'PB','PF','PG','PK','PP','RB','RM','RU','SA','SF',
-                   'SM','SN','SP','SR','SC','SS','TA','T','TF','UR','V','Y','ZN']
-    # instruments = ['A']
-    k_line_type = '5m'
-    lengths = [10, 20, 40, 80, 120, 180]
-
     # 初始化 mindiff 字典
     instruments_mindiff = {}
 
