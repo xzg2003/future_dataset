@@ -9,7 +9,7 @@ from config import factor_names
 from config import lengths
 from config import factor_categories
 from config import default_data
-from config import k_line_type
+from config import k_line_types
 
 def get_factor_file_names(factor_name):
     file_names = []
@@ -54,16 +54,27 @@ def delete_factor(k_line, factor_files):
             print(f'{name} 在 {k_line} 下未找到对应文件')
 
 if __name__ == '__main__':
-    k_lines = k_line_type
+    k_lines = k_line_types   # 修改为列表
 
     """
     主循环，允许用户删除多个因子计算结果，用户输入0以结束程序
     """
     while True:
-        factor_input = input("请输入需要删除的因子名称，输入0以结束程序：")
-        if factor_input =='0':
+        factor_input = input("请输入需要删除的因子名称，输入0以结束程序，输入all删除所有因子：")
+        if factor_input == '0':
             print("程序结束。")
             break
+        if factor_input == 'all':
+            confirm = input("确定要删除所有因子吗？此操作不可恢复，输入yes确认：")
+            if confirm.lower() == 'yes':
+                for factor in factor_names:
+                    factor_files = get_factor_file_names(factor)
+                    for k_line in k_lines:
+                        delete_factor(k_line, factor_files)
+                print("所有因子已删除。")
+            else:
+                print("已取消全部删除操作。")
+            continue
         if factor_input not in factor_names:
             print("因子名称不存在，请重新输入。")
             continue
