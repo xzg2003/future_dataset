@@ -20,8 +20,13 @@ class factor_judge():
                 df = pd.read_csv(f'./data/{k_line}/{i}/{self.name}.csv', encoding='utf-8')
                 df = df.replace([np.inf, -np.inf], np.nan)
                 df1 = pd.read_csv(f'./data/{k_line}/{i}/{i}.csv', encoding='utf-8')
+                # 支持更多K线类型
                 if k_line == '5m':
-                    df['yield'] = (df1['open'].shift(-24) - df1['open']) / df1['open']
+                    shift_n = 24
                 elif k_line == '1d':
-                    df['yield'] = (df1['open'].shift(-1) - df1['open']) / df1['open']
+                    shift_n = 1
+                else:
+                    # 可根据实际情况补充其它周期
+                    shift_n = 1
+                df['yield'] = (df1['open'].shift(-shift_n) - df1['open']) / df1['open']
                 self.df[i] = df

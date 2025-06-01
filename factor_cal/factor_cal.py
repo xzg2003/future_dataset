@@ -21,7 +21,7 @@ def get_factor_name(factor_name):
         return None
 
 class factor_calculator:
-    def __init__(self, instruments, k_line_type, lengths, instruments_mindiff):
+    def __init__(self, instruments, k_line_types, lengths, instruments_mindiff):
         """
         初始化因子计算器
         :param instruments: 期货品种列表
@@ -29,7 +29,7 @@ class factor_calculator:
         :param lengths:     滑动平均长度列表
         """
         self.instruments = instruments
-        self.k_line_type = k_line_type
+        self.k_line_types = k_line_types
         self.lengths = lengths
         self.instruments_mindiff = instruments_mindiff
 
@@ -69,66 +69,70 @@ class factor_calculator:
                 continue
 
             # 遍历因子字典，逐个计算因子
-            for factor_name, calculator in self.factors_dict.items():
-                for length in self.lengths:
-                    # 构建param字典，包含df和length
-                    param = {
-                        'df':           df,
-                        'instrument':   instrument,
-                        'length':       length,
-                        'mindiff':      self.instruments_mindiff.get(instrument, None),
-                        'short':        default_data["short"],
-                        'long':         default_data["long"],
-                        'atr_length':   default_data["atr_length"],
-                        'vol_length':   default_data["vol_length"],
-                        'thr':          default_data["thr"],
-                        'n_std':        default_data["n_std"],
-                        'fast':         default_data["fast"],
-                        'slow':         default_data["slow"],
-                        'signal':       default_data["signal"],
-                    }
+            for k_line_type in self.k_line_types:
+                for factor_name, calculator in self.factors_dict.items():
+                    for length in self.lengths:
+                        # 构建param字典，包含df和length
+                        param = {
+                            'df':           df,
+                            'instrument':   instrument,
+                            'length':       length,
+                            'mindiff':      self.instruments_mindiff.get(instrument, None),
+                            'short':        default_data["short"],
+                            'long':         default_data["long"],
+                            'atr_length':   default_data["atr_length"],
+                            'vol_length':   default_data["vol_length"],
+                            'thr':          default_data["thr"],
+                            'n_std':        default_data["n_std"],
+                            'fast':         default_data["fast"],
+                            'slow':         default_data["slow"],
+                            'signal':       default_data["signal"],
+                        }
 
-                    # 检查 mindiff 是否存在
-                    if param['mindiff'] is None:
-                        print(f"No mindiff for {instrument}, skip")
-                        continue
-
-                    try:
-                        # 设置保存路径，根据命名规则分开讨论
-                        if factor_name in factor_categories["no_length"]:
-                            save_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/{self.k_line_type}/{instrument}/{factor_name}.csv')
-                        elif factor_name in factor_categories["short_long"]:
-                            save_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/{self.k_line_type}/{instrument}/{factor_name}@{param["short"]}_{param["long"]}.csv')
-                        elif factor_name in factor_categories["length_thr"]:
-                            save_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/{self.k_line_type}/{instrument}/{factor_name}@{length}_{param["thr"]}.csv')
-                        elif factor_name in factor_categories["length_atr"]:
-                            save_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/{self.k_line_type}/{instrument}/{factor_name}@{length}_{param["atr_length"]}.csv')
-                        elif factor_name in factor_categories["length_n_std"]:
-                            save_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/{self.k_line_type}/{instrument}/{factor_name}@{length}_{param["n_std"]}.csv')
-                        elif factor_name in factor_categories["short_long_atr"]:
-                            save_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/{self.k_line_type}/{instrument}/{factor_name}@{param["short"]}_{param["long"]}_{param["atr_length"]}.csv')
-                        elif factor_name in factor_categories["short_long_vol"]:
-                            save_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/{self.k_line_type}/{instrument}/{factor_name}@{param["short"]}_{param["long"]}_{param["vol_length"]}.csv')
-                        else:
-                            save_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/{self.k_line_type}/{instrument}/{factor_name}@{length}.csv')
-
-                        # 检查文件是否存在，以跳出当前因子计算的循环
-                        if os.path.exists(save_path):
-                            print(f"{save_path}已存在，跳过该因子该长度的计算")
+                        # 检查 mindiff 是否存在
+                        if param['mindiff'] is None:
+                            print(f"No mindiff for {instrument}, skip")
                             continue
 
-                        # 计算每一个因子，调用 calculator.formula 并传入参数进行计算
-                        result = calculator.formula(param)
+                        try:
+                            # 设置保存路径，根据命名规则分开讨论
+                            if factor_name in factor_categories["no_length"]:
+                                save_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/{k_line_type}/{instrument}/{factor_name}.csv')
+                            elif factor_name in factor_categories["short_long"]:
+                                save_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/{k_line_type}/{instrument}/{factor_name}@{param["short"]}_{param["long"]}.csv')
+                            elif factor_name in factor_categories["length_thr"]:
+                                save_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/{k_line_type}/{instrument}/{factor_name}@{length}_{param["thr"]}.csv')
+                            elif factor_name in factor_categories["length_atr"]:
+                                save_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/{k_line_type}/{instrument}/{factor_name}@{length}_{param["atr_length"]}.csv')
+                            elif factor_name in factor_categories["length_n_std"]:
+                                save_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/{k_line_type}/{instrument}/{factor_name}@{length}_{param["n_std"]}.csv')
+                            elif factor_name in factor_categories["short_long_atr"]:
+                                save_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/{k_line_type}/{instrument}/{factor_name}@{param["short"]}_{param["long"]}_{param["atr_length"]}.csv')
+                            elif factor_name in factor_categories["short_long_vol"]:
+                                save_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/{k_line_type}/{instrument}/{factor_name}@{param["short"]}_{param["long"]}_{param["vol_length"]}.csv')
+                            else:
+                                save_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/{k_line_type}/{instrument}/{factor_name}@{length}.csv')
 
-                        # 利用 os.makedirs 设置一个路径，并利用to_csv保存结果
-                        os.makedirs(os.path.dirname(save_path), exist_ok=True)
-                        result.to_csv(save_path, index=False)
+                            # 检查文件是否存在，以跳出当前因子计算的循环
+                            if os.path.exists(save_path):
+                                print(f"{save_path}已存在，跳过该因子该长度的计算")
+                                continue
 
-                        # 保存成功信息回报
-                        print(f"instrument:{instrument} factor:{save_path} success.")
-                    except Exception as e:
-                        # 当因子计算出错时报错
-                        print(f"error at{save_path}, {e}")
+                            # 因子计算信息回报
+                            print(f"instrument:{instrument} factor:{save_path} calculating.")
+
+                            # 计算每一个因子，调用 calculator.formula 并传入参数进行计算
+                            result = calculator.formula(param)
+
+                            # 利用 os.makedirs 设置一个路径，并利用to_csv保存结果
+                            os.makedirs(os.path.dirname(save_path), exist_ok=True)
+                            result.to_csv(save_path, index=False)
+
+                            # 保存成功信息回报
+                            print(f"instrument:{instrument} factor:{save_path} success.")
+                        except Exception as e:
+                            # 当因子计算出错时报错
+                            print(f"error at{save_path}, {e}")
 
 
 """
