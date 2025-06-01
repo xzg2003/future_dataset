@@ -5,13 +5,15 @@ instruments= ['A','AG','AL','AP','AU','BU','C','CF','CJ','CS',
             'SM','SN','SP','SR','SC','SS','TA','T','TF','UR','V','Y','ZN'] #期货类型
 
 # k线类型
-k_line_type = '5m'
+k_line_types = ['5m', '1d']
 
 # 滑动长度
 lengths = [10, 20, 40, 80, 120, 180]
 
 # 因子名称列表，存放所有因子名称
 factor_names = [
+    "Tr",
+    "FCT_Ac_Tr_1",
     "TSMOM",
     "IDMOM",
     "XSMOM",
@@ -22,8 +24,6 @@ factor_names = [
     "OvernightMOM",
     "RobustMOM",
     "TrendStrength",
-    "Tr",
-    "FCT_Ac_Tr_1",
     "FCT_Ar_1",
     "FCT_Bias_1",
     "FCT_Br_1",
