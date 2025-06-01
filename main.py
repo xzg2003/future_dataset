@@ -4,7 +4,7 @@ import csv
 
 # 从 config 中导入默认参数
 from config import instruments
-from config import k_line_type
+from config import k_line_types
 from config import lengths
 
 # 设置工作区相对路径
@@ -33,7 +33,7 @@ def main():
     print(f"Loaded instruments_mindiff:{instruments_mindiff}")
 
     # 创建因子计算器实例，以调用内部的函数
-    calculator = factor_calculator(instruments, k_line_type, lengths, instruments_mindiff)
+    calculator = factor_calculator(instruments, k_line_types, lengths, instruments_mindiff)
 
     # 调用计算函数
     calculator.factors_cal()
