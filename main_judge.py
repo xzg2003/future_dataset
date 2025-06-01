@@ -11,6 +11,7 @@ from config import lengths
 from config import factor_names
 from config import factor_categories
 from config import default_data
+from config import k_line_types   # 新增导入
 
 class run_factor_judge():
     def __init__(self, factor, method, k_line):
@@ -135,36 +136,37 @@ if __name__ == '__main__':
     factors = pd.read_csv('factor_name.csv', encoding='utf-8')
     """
 
-    for factor_name in factor_names:
-        for length in lengths:
+    for k_line_type in k_line_types:   # 新增外层循环
+        for factor_name in factor_names:
+            for length in lengths:
 
-            """
-            这里依然对每个不同命名规则的因子进行分类
-            """
-            if factor_name in factor_categories["no_length"]:
-                factor = f'{factor_name}'
-            elif factor_name in factor_categories["short_long"]:
-                factor = f'{factor_name}@{default_data["short"]}_{default_data["long"]}'
-            elif factor_name in factor_categories["length_thr"]:
-                factor = f'{factor_name}@{length}_{default_data["thr"]}'
-            elif factor_name in factor_categories["length_atr"]:
-                factor = f'{factor_name}@{length}_{default_data["atr_length"]}'
-            elif factor_name in factor_categories["length_n_std"]:
-                factor = f'{factor_name}@{length}_{default_data["n_std"]}'
-            elif factor_name in factor_categories["short_long_atr"]:
-                factor = f'{factor_name}@{default_data["short"]}_{default_data["long"]}_{default_data["atr_length"]}'
-            elif factor_name in factor_categories["short_long_vol"]:
-                factor = f'{factor_name}@{default_data["short"]}_{default_data["long"]}_{default_data["vol_length"]}'
-            else:
-                factor = f'{factor_name}@{length}'
+                """
+                这里依然对每个不同命名规则的因子进行分类
+                """
+                if factor_name in factor_categories["no_length"]:
+                    factor = f'{factor_name}'
+                elif factor_name in factor_categories["short_long"]:
+                    factor = f'{factor_name}@{default_data["short"]}_{default_data["long"]}'
+                elif factor_name in factor_categories["length_thr"]:
+                    factor = f'{factor_name}@{length}_{default_data["thr"]}'
+                elif factor_name in factor_categories["length_atr"]:
+                    factor = f'{factor_name}@{length}_{default_data["atr_length"]}'
+                elif factor_name in factor_categories["length_n_std"]:
+                    factor = f'{factor_name}@{length}_{default_data["n_std"]}'
+                elif factor_name in factor_categories["short_long_atr"]:
+                    factor = f'{factor_name}@{default_data["short"]}_{default_data["long"]}_{default_data["atr_length"]}'
+                elif factor_name in factor_categories["short_long_vol"]:
+                    factor = f'{factor_name}@{default_data["short"]}_{default_data["long"]}_{default_data["vol_length"]}'
+                else:
+                    factor = f'{factor_name}@{length}'
 
-            report_path = f'./result/5m/{factor}/{factor}_report.html'
-            if os.path.exists(report_path):
-                print(f"{factor} 已经评估过，跳过。")
-                continue
-            a = run_factor_judge(factor, 'M', '5m')
-            a.get_report()
-            a.to_html()
-            print(f'{factor} finished！')
+                report_path = f'./result/{k_line_type}/{factor}/{factor}_report.html'   # 替换5m为变量
+                if os.path.exists(report_path):
+                    print(f"{factor} 已经评估过，跳过。")
+                    continue
+                a = run_factor_judge(factor, 'M', k_line_type)   # 替换5m为变量
+                a.get_report()
+                a.to_html()
+                print(f'{factor} finished！')
 
-    mutal_IC('5m').cal_mutal_IC()
+        mutal_IC(k_line_type).cal_mutal_IC()   # 替换5m为变量
