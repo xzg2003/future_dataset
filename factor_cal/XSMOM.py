@@ -5,8 +5,6 @@ import pandas
 import numpy
 import os
 
-from graphic.merge import length
-
 # 设置工作目录为当前脚本所在的目录
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
