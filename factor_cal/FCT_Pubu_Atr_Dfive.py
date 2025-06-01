@@ -4,10 +4,6 @@ import pandas
 import numpy
 import os
 
-from torchgen.api.types import longT
-
-from graphic.merge import instrument
-
 # 设置工作目录为当前脚本所在的目录
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
