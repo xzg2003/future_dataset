@@ -339,6 +339,10 @@ df[f'FCT_Bias_1@{length}'] = numpy.where(
 - 修复 statistic.py 中的问题：
   - 原有的 statistic 中的时间参数被写为 date，这个问题导致无法找到因子计算结果中的 datetime，进而导致 mutal_IC 计算出错。
   - 原有的 statistic 中的因子名称是对 factor_name.csv 中的名称进行读取，但是在结构优化后，因子名称需要调用 config.py 中的内容进行计算。
+- 修复 mutal_IC 中的问题：
+  - 原有的 statistic 中的因子名称是对 factor_name.csv 中的名称进行读取，但是在结构优化后，因子名称需要调用 config.py 中的内容进行计算。
+  - 计算因子时出现 IDE 崩溃的问题，原因拼接后的数据过大，导致内存溢出。经过修改，对内存溢出的问题进行了修改。但是计算后得到的只是一个空文件。后续仍然需要对 mutal_IC 进行修改
+
 
 
 ## 待办
