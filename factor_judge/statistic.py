@@ -122,8 +122,17 @@ class statistic(factor_judge):
                 df = self.df[i].copy()
             else:
                 continue
-            if 'datetime' in df.columns:
+
+            # 检查日期列
+            if 'date' in df.columns:
+                pass
+            elif 'datetime' in df.columns:
                 df.rename(columns={'datetime': 'date'}, inplace=True)
+            else:
+                # 如果没有日期列，跳过并打印警告
+                print(f"Warning: {i} 没有 'date' 或 'datetime' 列，已跳过。")
+                continue
+
             df['date'] = pd.to_datetime(df['date'])
             df.set_index('date', inplace=True)
             monthly_groups = df.resample(f'{self.method}E')
