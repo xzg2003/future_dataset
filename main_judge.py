@@ -2,6 +2,8 @@ import pandas as pd
 import csv
 import os
 import shutil
+import multiprocessing
+
 from bs4 import BeautifulSoup
 from factor_judge.mutal_IC import mutal_IC
 from factor_judge.layer_yield import layer_yield
@@ -129,12 +131,19 @@ class run_factor_judge():
 
         print(f"\nHTML文件已生成：{html_output}")
 
+def judge_one_factor(args):
+    factor, k_line_type = args
+    a = run_factor_judge(factor, 'M', k_line_type)
+    a.get_report()
+    a.to_html()
+    print(f"[{factor}] 在{k_line_type}评估完成，报告已生成。")  # 增加详细汇报信息
 
 if __name__ == '__main__':
     """
     直接利用 config.py 的情况下，就不需要读取csv文件了
     factors = pd.read_csv('factor_name.csv', encoding='utf-8')
     """
+    tasks = []
 
     for k_line_type in k_line_types:   # 新增外层循环
         for factor_name in factor_names:
@@ -160,13 +169,17 @@ if __name__ == '__main__':
                 else:
                     factor = f'{factor_name}@{length}'
 
-                report_path = f'./result/{k_line_type}/{factor}/{factor}_report.html'   # 替换5m为变量
+                report_path = f'./result/{k_line_type}/{factor}/{factor}_report.html'
                 if os.path.exists(report_path):
                     print(f"{factor} 已经评估过，跳过。")
                     continue
-                a = run_factor_judge(factor, 'M', k_line_type)   # 替换5m为变量
-                a.get_report()
-                a.to_html()
-                print(f'{factor} finished！')
 
-        mutal_IC(k_line_type).cal_mutal_IC()   # 替换5m为变量
+                tasks.append((factor, k_line_type))  # 关键：添加到任务列表
+
+        # 并行处理同一个k线类型下的所有因子
+        process_num = max(1, multiprocessing.cpu_count() // 8)  # 降低并发数
+        with multiprocessing.Pool(processes=process_num) as pool:
+            pool.map(judge_one_factor, tasks)
+
+        mutal_IC(k_line_type).cal_mutal_IC()
+        tasks.clear()  # 清空任务列表，避免下一个k_line_type重复
