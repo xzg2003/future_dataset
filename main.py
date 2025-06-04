@@ -76,7 +76,7 @@ class run_factor_judge():
         html_content += f'        <img src="{self.factor}.png" alt="因子分布图">\n'
         html_content += f' </div>\n'
 
-        df = pd.read_csv(f'{folder_path}/{self.factor}.csv',encoding='gbk')
+        df = pd.read_csv(f'{folder_path}/{self.factor}.csv',encoding='utf-8')
         # 将 DataFrame 转换为 HTML 表格
         html_table = df.to_html(index=False,justify='center')  # index=False 用来避免在表格中显示行索引
         html_content += """
@@ -114,7 +114,8 @@ class run_factor_judge():
 if __name__=='__main__':
     factors = pd.read_csv('factor_name.csv',encoding='utf-8')
     
-    for i in factors:
+    for i in factors['name']:
+        print(i)
         a = run_factor_judge(i,'M','1d')
         a.get_report()
         a.to_html()

@@ -1,0 +1,184 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PNG Image Gallery</title>
+<style>
+                body {
+                    font-family: Arial, sans-serif;
+                    text-align: center;
+                }
+                .image-gallery {
+                    display: flex;
+                    flex-wrap: wrap;
+                    justify-content: center;
+                }
+                .image-gallery img {
+                    margin: 1%;
+                    width: 80%;  /* 增大图片宽度 */
+                    height: 80%; /* 增大图片高度 */
+                    object-fit: contain;  /* 保持图片比例 */
+                }
+                .column2 {
+                width:300px;
+                }
+            </style>
+</head>
+<body> <h1>Tr因子报告</h1>
+<h2>分层收益</h2>
+<div class="image-gallery">
+<img alt="分层收益" src="Tr_layer_yield.png"/>
+</div>
+<h2>分层收益表</h2>
+<table border="1" class="dataframe" style="table-layout: fixed;" width="120%">
+<thead>
+<tr style="text-align: center;">
+<th>quantile_layer</th>
+<th>min</th>
+<th>max</th>
+<th>count</th>
+<th>avg_profit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="0">0</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="0.000000">0.000000</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="0.113578">0.113578</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="1377">1377</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="-9.169654">-9.169654</td>
+</tr>
+<tr>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="1">1</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="0.113578">0.113578</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="0.285182">0.285182</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="2862">2862</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="0.347286">0.347286</td>
+</tr>
+<tr>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="2">2</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="0.285254">0.285254</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="7.168628">7.168628</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="7155">7155</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="0.109922">0.109922</td>
+</tr>
+<tr>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="3">3</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="7.169307">7.169307</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="20.277138">20.277138</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="10016">10016</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="-2.638299">-2.638299</td>
+</tr>
+<tr>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="4">4</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="20.278243">20.278243</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="42.596263">42.596263</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="21464">21464</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="1.624208">1.624208</td>
+</tr>
+<tr>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="5">5</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="42.600418">42.600418</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="79.208183">79.208183</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="28620">28620</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="0.337817">0.337817</td>
+</tr>
+<tr>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="6">6</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="79.209789">79.209789</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="146.202043">146.202043</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="28618">28618</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="0.718839">0.718839</td>
+</tr>
+<tr>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="7">7</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="146.217502">146.217502</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="270.913893">270.913893</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="21464">21464</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="-0.078035">-0.078035</td>
+</tr>
+<tr>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="8">8</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="270.918659">270.918659</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="494.594590">494.594590</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="10016">10016</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="0.871140">0.871140</td>
+</tr>
+<tr>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="9">9</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="494.676414">494.676414</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="1853.933228">1853.933228</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="7155">7155</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="-4.836195">-4.836195</td>
+</tr>
+<tr>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="10">10</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="1854.541674">1854.541674</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="4298.626716">4298.626716</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="2862">2862</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="-1.253999">-1.253999</td>
+</tr>
+<tr>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="11">11</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="4299.779951">4299.779951</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="45341.557104">45341.557104</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="1431">1431</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="2.666277">2.666277</td>
+</tr>
+</tbody>
+</table> <h2>因子分布图</h2>
+<div align="center" class="image-gallery">
+<img alt="因子分布图" src="Tr.png"/>
+</div>
+<h2>因子统计数据报告</h2><table border="1" class="dataframe">
+<thead>
+<tr style="text-align: center;">
+<th>因子名称</th>
+<th>分割方法</th>
+<th>因子方向</th>
+<th>25分位数</th>
+<th>50分位数</th>
+<th>75分位数</th>
+<th>因子值平均数</th>
+<th>偏度</th>
+<th>峰度</th>
+<th>标准差</th>
+<th>平均IC</th>
+<th>平均IC前10%的均值</th>
+<th>平均IC后10%的均值</th>
+<th>平均ICIR</th>
+<th>平均命中率</th>
+<th>平均盈亏比</th>
+<th>平均盈亏比前10%的均值</th>
+<th>平均盈亏比后10%的均值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="Tr">Tr</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="M">M</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="1">1</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="35.4057">35.4057</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="79.2523">79.2523</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="174.5305">174.5305</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="273.9472">273.9472</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="12.2858">12.2858</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="284.5907">284.5907</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="945.7386">945.7386</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="-0.030798">-0.030798</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="0.1913">0.1913</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="-0.237789">-0.237789</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="-0.419489">-0.419489</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="0.455945">0.455945</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="1.600807">1.600807</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="3.091526">3.091526</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="0.740641">0.740641</td>
+</tr>
+</tbody>
+</table>
+"
+        </body>
+</html>

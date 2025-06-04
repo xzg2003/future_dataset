@@ -1,0 +1,128 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PNG Image Gallery</title>
+<style>
+                body {
+                    font-family: Arial, sans-serif;
+                    text-align: center;
+                }
+                .image-gallery {
+                    display: flex;
+                    flex-wrap: wrap;
+                    justify-content: center;
+                }
+                .image-gallery img {
+                    margin: 1%;
+                    width: 80%;  /* 增大图片宽度 */
+                    height: 80%; /* 增大图片高度 */
+                    object-fit: contain;  /* 保持图片比例 */
+                }
+                .column2 {
+                width:300px;
+                }
+            </style>
+</head>
+<body> <h1>FCT_Donchian_Vol_Dfive因子报告</h1>
+<h2>分层收益</h2>
+<div class="image-gallery">
+<img alt="分层收益" src="FCT_Donchian_Vol_Dfive_layer_yield.png"/>
+</div>
+<h2>分层收益表</h2>
+<table border="1" class="dataframe" style="table-layout: fixed;" width="120%">
+<thead>
+<tr style="text-align: center;">
+<th>quantile_layer</th>
+<th>min</th>
+<th>max</th>
+<th>count</th>
+<th>avg_profit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="0">0</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="0.000000">0.000000</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="0.091993">0.091993</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="42057">42057</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="-0.976880">-0.976880</td>
+</tr>
+<tr>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="1">1</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="0.091996">0.091996</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="0.381146">0.381146</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="28619">28619</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="-1.321242">-1.321242</td>
+</tr>
+<tr>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="2">2</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="0.381148">0.381148</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="0.743007">0.743007</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="28619">28619</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="-2.903741">-2.903741</td>
+</tr>
+<tr>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="3">3</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="0.743010">0.743010</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="1.000000">1.000000</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="42928">42928</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="3.794597">3.794597</td>
+</tr>
+</tbody>
+</table> <h2>因子分布图</h2>
+<div align="center" class="image-gallery">
+<img alt="因子分布图" src="FCT_Donchian_Vol_Dfive.png"/>
+</div>
+<h2>因子统计数据报告</h2><table border="1" class="dataframe">
+<thead>
+<tr style="text-align: center;">
+<th>因子名称</th>
+<th>分割方法</th>
+<th>因子方向</th>
+<th>25分位数</th>
+<th>50分位数</th>
+<th>75分位数</th>
+<th>因子值平均数</th>
+<th>偏度</th>
+<th>峰度</th>
+<th>标准差</th>
+<th>平均IC</th>
+<th>平均IC前10%的均值</th>
+<th>平均IC后10%的均值</th>
+<th>平均ICIR</th>
+<th>平均命中率</th>
+<th>平均盈亏比</th>
+<th>平均盈亏比前10%的均值</th>
+<th>平均盈亏比后10%的均值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="FCT_Donchian_Vol_Dfive">FCT_Donchian_Vol_Dfive</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="M">M</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="1">1</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="0.0246">0.0246</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="0.3859">0.3859</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="0.869">0.869</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="0.4496">0.4496</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="0.245">0.245</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="-1.4961">-1.4961</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="0.3893">0.3893</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="0.015396">0.015396</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="0.164934">0.164934</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="-0.133796">-0.133796</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="0.263286">0.263286</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="0.524104">0.524104</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="1.51875">1.51875</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="2.594533">2.594533</td>
+<td style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" title="0.898687">0.898687</td>
+</tr>
+</tbody>
+</table>
+"
+        </body>
+</html>

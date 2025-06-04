@@ -22,4 +22,6 @@ delete_factor('1d',['1','2','3','4','5','6',\
                           'FCT_Br_1@5','FCT_Br_1@10','FCT_Br_1@20','FCT_Br_1@40','FCT_Br_1@80',\
                             'FCT_Br_1@120','FCT_Br_1@180','FCT_Cmf_1@5',\
                               'FCT_Cmf_1@10','FCT_Cmf_1@20','FCT_Cmf_1@40','FCT_Cmf_1@80',\
-                                'FCT_Cmf_1@120','FCT_Cmf_1@180'])
+                                'FCT_Cmf_1@120','FCT_Cmf_1@180', 'FCT_Donchian_Vol_Dfive@5', 'FCT_Donchian_Vol_Dfive@10',\
+                                  'FCT_Donchian_Vol_Dfive@20', 'FCT_Donchian_Vol_Dfive@40', 'FCT_Donchian_Vol_Dfive@80',\
+                                    'FCT_Donchian_Vol_Dfive@120', 'FCT_Donchian_Vol_Dfive@180', 'FCT_Donchian_Vol_Dfive'])

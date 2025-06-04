@@ -1,12 +1,25 @@
 import os       # 与路径操作相关的包，用于管理文件
 import pandas as pd
-import sys      
+import sys     
+
 from FCT_Ac_Tr_1   import      FCT_Ac_Tr_1
 from FCT_Ar_1      import      FCT_Ar_1
 from FCT_Bias_1    import      FCT_Bias_1
 from FCT_Br_1      import      FCT_Br_1
 from FCT_Cmf_1     import      FCT_Cmf_1
 from Tr            import      Tr
+
+from Bid_Ask_Spread import Bid_Ask_Spread
+from Amihud import Amihud
+from Turnover import Turnover
+from Order_Book_Length import Order_Book_Length
+
+from FCT_Donchian_Vol_Dfive import FCT_Donchian_Vol_Dfive
+from FCT_Dmi_Adxr import FCT_Dmi_Adxr
+from FCT_Dmi_Adx import FCT_Dmi_Adx
+from FCT_Demark_Vol_Dfive import FCT_Demark_Vol_Dfive
+from FCT_Demark_Ref_1 import FCT_Demark_Ref_1
+
 #sys.path.append('../')
 from config import *
 # 设置工作目录为当前脚本所在的目录
@@ -30,14 +43,27 @@ class factor_calculator:
         以字典的形式，将每个计算器与其名称进行对应，便于在程序中调用
         '''
         self.factors_dict = {
-            "Tr":           Tr(),
-            "FCT_Ac_Tr_1":  FCT_Ac_Tr_1(),
-            "FCT_Ar_1":     FCT_Ar_1(),
-            "FCT_Bias_1":   FCT_Bias_1(),
-            "FCT_Br_1":     FCT_Br_1(),
-            "FCT_Cmf_1":    FCT_Cmf_1(),  
+            # "Tr":           Tr(),
+            # "FCT_Ac_Tr_1":  FCT_Ac_Tr_1(),
+            # "FCT_Ar_1":     FCT_Ar_1(),
+            # "FCT_Bias_1":   FCT_Bias_1(),
+            # "FCT_Br_1":     FCT_Br_1(),
+            # "FCT_Cmf_1":    FCT_Cmf_1(),  
+            # "Bid_Ask_Spread": Bid_Ask_Spread(), 缺少 bid1, ask1 暂时无法计算
+            # "Amihud": Amihud(),
+            # "Turnover": Turnover(), 不可使用的 total_turnover 列导致问题
+            # "Order_Book_Length": Order_Book_Length(), 缺少 bid_size 和 ask_size 暂时无法计算
+            # "FCT_Donchian_Vol_Dfive": FCT_Donchian_Vol_Dfive(),
+            # "FCT_Dmi_Adxr": FCT_Dmi_Adxr(),
+            # "FCT_Dmi_Adx": FCT_Dmi_Adx(),
+            # "FCT_Demark_Vol_Dfive": FCT_Demark_Vol_Dfive(),
+            "FCT_Demark_Ref_1" : FCT_Demark_Ref_1(),
         }
 
+        self.require_length_factors = [
+            "FCT_Ac_Tr_1", "FCT_Ar_1", "FCT_Bias_1", "FCT_Br_1", "FCT_Cmf_1", 
+            "Amihud", "Turnover", "FCT_Dmi_Adxr", "FCT_Dmi_Adx", "FCT_Demark_Ref_1"
+        ]
 
     def factors_cal(self):
         # 调用所有计算器，计算相应因子并保存到文件夹中
@@ -57,7 +83,7 @@ class factor_calculator:
             for factor_name, calculator in self.factors_dict.items():
                 try:
                     # 如果因子需要滑动长度，还需要遍历相应的长度列表
-                    if factor_name != "Tr":
+                    if factor_name in self.require_length_factors:
                         if os.path.exists(f'./data/{self.k_line_type}/{instrument}/Tr.csv'):
                             tr = pd.read_csv(f'./data/{self.k_line_type}/{instrument}/Tr.csv')
                             tr = tr['Tr']
