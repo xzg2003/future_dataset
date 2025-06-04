@@ -56,7 +56,8 @@ class statistic(factor_judge):
         df_combined=[]
         for i in instruments:
             if i in self.df.keys():
-                df=self.df[i].copy()
+                df = self.df[i].copy()
+                df[self.name] = df[self.name].shift(1)
             else:
                 continue
             df_combined.append(df)
@@ -89,23 +90,16 @@ class statistic(factor_judge):
         self.results['峰度'].append(kurtosis)
         self.results['标准差'].append(std)
         
-        if not os.path.exists(f'./result/{self.k_line}{self.name}/{self.name}.png'):
-            plt.rcParams['font.sans-serif'] = ['SimHei']
-            plt.rcParams['axes.unicode_minus'] = False
-            plt.figure(figsize=(10, 6))
-            plt.xlabel('因子值')
-            plt.ylabel('频数')
-            plt.title(f'{self.name}')
-            lower = factor.quantile(0.001) 
-            upper = factor.quantile(0.999)
-            #mask = ~((factor < lower) | (df > upper))
-            #factor = factor[mask]   
-            factor = factor.apply(lambda x: np.nan if x <= lower or x >= upper else x)
-            #factor = factor.dropna()
-            plt.hist(factor, bins=100, color='skyblue', edgecolor='black')
-            plt.savefig(f'./result/{self.k_line}/{self.name}/{self.name}.png')
-            plt.close() 
-    
+        plt.rcParams['font.sans-serif'] = ['SimHei']
+        plt.rcParams['axes.unicode_minus'] = False
+        plt.figure(figsize=(10, 6))
+        plt.xlabel('因子值')
+        plt.ylabel('频数')
+        plt.title(f'{self.name}')
+        plt.hist(factor, bins=100, color='skyblue', edgecolor='black')
+        plt.savefig(f'./result/{self.k_line}/{self.name}/{self.name}.png')
+        plt.close() 
+
     def month(self):
         self.IC={} # 存放每个月所有品种的IC
         self.ratio={} # 存放每个月所有品种的盈亏比
@@ -114,6 +108,7 @@ class statistic(factor_judge):
             # 按月份分割
             if i in self.df.keys():
                 df = self.df[i].copy()
+                df[self.name] = df[self.name].shift(1)
             else:
                 continue
             if 'datetime' in df.columns:
@@ -180,9 +175,12 @@ class statistic(factor_judge):
         result={} # 存放结果
 
         for key,value in self.IC.items():
-            self.month_IC[key]=np.mean(value)
+            self.month_IC[key]=np.mean(value)*self.div
             self.ICIR[key]=self.month_IC[key]/np.var(value,ddof=0) if np.var(value,ddof=0)>0 else 0
-            self.hit_ratio[key]=np.mean(np.array(value)>0)
+            if self.div==1:
+                self.hit_ratio[key]=np.mean(np.array(value)>0)
+            else:
+                self.hit_ratio[key]=np.mean(np.array(value)<0)
         #print(self.ICIR)
         for key,value in self.ratio.items():
             self.month_ratio[key]=np.mean(value)
