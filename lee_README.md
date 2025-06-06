@@ -348,6 +348,8 @@ df[f'FCT_Bias_1@{length}'] = numpy.where(
 #### 2025-06-06
 
 - 将学长写好的内容合并至本分支中，给 statistic.py 和 factor_judge.py 中添加了对因子极值的裁剪。
+- 尝试将根目录下的 mian.py 合并到 factor_cal.py 里面，但是出现包的导入问题，无法直接在子目录下运行。在根目录下通过终端运行。这里暂且不删除 main.py
+- 
 
 ## 待办
 

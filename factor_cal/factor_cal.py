@@ -1,19 +1,32 @@
 import os       # 与路径操作相关的包，用于管理文件
 import pandas
 import importlib
+import csv
+import multiprocessing
+import sys
+
+# 包所在的根目录
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from config import factor_names
 from config import factor_categories
 from config import default_data
+from config import k_line_types
+from config import instruments
+from config import lengths
 
-# 设置工作目录为当前脚本所在的目录
-os.chdir(os.path.dirname(os.path.abspath(__file__)))
+# 最小变化单位文件路径
+mindiff_file_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'data', 'mindiff', 'mindiff.csv')
+
+def run_one_instrument(instrument, k_line_type, length, instruments_mindiff):
+    calculator = factor_calculator([instrument], [k_line_type], [length], instruments_mindiff)
+    calculator.factors_cal()
 
 # 动态调用各个因子计算器
 def get_factor_name(factor_name):
     # 这里假设每个因子模块名和类名都与 factor_name 一致
     try:
-        module = importlib.import_module(f'.{factor_name}', __package__)
+        module = importlib.import_module(f'factor_cal.{factor_name}')
         factor_class = getattr(module, factor_name)
         return factor_class
     except Exception as e:
@@ -135,22 +148,35 @@ class factor_calculator:
                             print(f"error at{save_path}, {e}")
 
 
-"""
+
 # 主程序入口
 if __name__ == "__main__":
-    '''
-    数据的初始化，在main.py里面也有相同的部分，便于使用者调整数据处理的范围
-    instruments:    期货品种
-    k_line_type:    k线类型
-    lengths:        滑动平均长度
-    '''
-    instruments = ['A']
-    k_line_type = '5m'
-    lengths = [10, 20, 40, 80, 120, 180]
+    # 初始化 mindiff 字典
+    instruments_mindiff = {}
 
-    # 创建因子计算器实例，以调用内部的函数
-    calculator = factor_calculator(instruments, k_line_type, lengths, mindiff)
+    # 读取 CSV 文件
+    with open(mindiff_file_path, mode='r', encoding='utf-8') as mindiff_file:
+        reader = csv.DictReader(mindiff_file)
+        for row in reader:
+            instrument = row['instrument'].strip()
+            mindiff = row['mindiff']
+            try:
+                # 确保 instrument 和 mindiff 不为空
+                if instrument and mindiff:
+                    instruments_mindiff[instrument] = float(mindiff)
+            except ValueError:
+                print(f"Skip invalid data:{row}")
 
-    # 计算所有因子
-    calculator.factors_cal()
-"""
+    print(f"Loaded instruments_mindiff:{instruments_mindiff}")
+
+    # 利用进程池计算每个因子
+    for k_line_type in k_line_types:
+        print(f"Processing: {k_line_type}")
+        pool = multiprocessing.Pool(processes=multiprocessing.cpu_count())
+
+        for instrument in instruments:
+            for length in lengths:
+                pool.apply_async(run_one_instrument, args=(instrument, k_line_type, length, instruments_mindiff))
+        pool.close()
+        pool.join()
+        print(f"Finished: {k_line_type}")
