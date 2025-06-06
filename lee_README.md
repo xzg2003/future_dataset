@@ -349,7 +349,8 @@ df[f'FCT_Bias_1@{length}'] = numpy.where(
 
 - 将学长写好的内容合并至本分支中，给 statistic.py 和 factor_judge.py 中添加了对因子极值的裁剪。
 - 尝试将根目录下的 mian.py 合并到 factor_cal.py 里面，但是出现包的导入问题，无法直接在子目录下运行。在根目录下通过终端运行。这里暂且不删除 main.py
-- 
+- **修改因子名称导入逻辑：LEEyf_factornames-in-csv**
+  - 在先前的因子导入逻辑中，是利用了一个较为复杂的循环对每个因子名称进行拼接。虽然高度自动化，但是维护起来仍然不方便，现在改为半自动的导入，通过 factor_name.csv 来导入每个因子的名称。
 
 ## 待办
 

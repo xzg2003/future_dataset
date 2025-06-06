@@ -14,6 +14,8 @@ from config import k_line_types
 def get_factor_file_names(factor_name):
     file_names = []
 
+    file_names.append(f"{factor_name}")
+
     for length in lengths:
         if factor_name in factor_categories.get("no_length", []):
             file_names.append(f"{factor_name}")

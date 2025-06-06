@@ -10,10 +10,14 @@ from factor_judge.layer_yield import layer_yield
 from factor_judge.statistic import statistic
 
 from config import lengths
-from config import factor_names
+# from config import factor_names  # 删除此行
 from config import factor_categories
 from config import default_data
 from config import k_line_types   # 新增导入
+
+# 设置工作区绝对路径
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+factor_name_file_path = os.path.join(BASE_DIR, 'factor_name.csv')
 
 class run_factor_judge():
     def __init__(self, factor, method, k_line):
@@ -140,9 +144,11 @@ def judge_one_factor(args):
 
 if __name__ == '__main__':
     """
-    直接利用 config.py 的情况下，就不需要读取csv文件了
-    factors = pd.read_csv('factor_name.csv', encoding='utf-8')
+    直接利用 factor_name.csv 读取因子名
     """
+    # 读取因子名（假设第一列为因子名，且跳过首行）
+    factor_names = pd.read_csv(factor_name_file_path, skiprows=[0], comment='#').iloc[:, 0].tolist()
+
     tasks = []
 
     for k_line_type in k_line_types:   # 新增外层循环
