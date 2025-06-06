@@ -345,6 +345,10 @@ df[f'FCT_Bias_1@{length}'] = numpy.where(
 
 
 
+#### 2025-06-06
+
+- 将学长写好的内容合并至本分支中，给 statistic.py 和 factor_judge.py 中添加了对因子极值的裁剪。
+
 ## 待办
 
 - 2025-05-16
