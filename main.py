@@ -45,6 +45,10 @@ def main():
     # 利用进程池计算每个因子
     for k_line_type in k_line_types:
         print(f"Processing: {k_line_type}")
+        for instrument in instruments:
+            for length in lengths:
+                calculator = factor_calculator(k_line_type, length, instruments_mindiff, factor_names)
+        """
         pool = multiprocessing.Pool(processes=multiprocessing.cpu_count())
         results = []
         for instrument in instruments:
@@ -62,6 +66,7 @@ def main():
                 r.get(timeout=1)
             except Exception as e:
                 print(f"Error in task: {e}")
+        """
         print(f"Finished: {k_line_type}")
 
 if __name__ == '__main__':
