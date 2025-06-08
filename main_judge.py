@@ -2,18 +2,11 @@ import pandas as pd
 import csv
 import os
 import shutil
-import multiprocessing
-
 from bs4 import BeautifulSoup
 from factor_judge.mutal_IC import mutal_IC
 from factor_judge.layer_yield import layer_yield
 from factor_judge.statistic import statistic
 
-from config import lengths
-from config import factor_names
-from config import factor_categories
-from config import default_data
-from config import k_line_types   # 新增导入
 
 class run_factor_judge():
     def __init__(self, factor, method, k_line):
@@ -35,18 +28,6 @@ class run_factor_judge():
         # 设置图片文件夹路径
         folder_path = f'./result/{self.k_line}/{self.factor}'
         html_output = f'./result/{self.k_line}/{self.factor}/{self.factor}_report.html'  # 生成的HTML文件名
-
-        # 检查分层收益csv是否存在
-        layer_yield_csv = f'{folder_path}/{self.factor}_layer_yield.csv'
-        if not os.path.exists(layer_yield_csv):
-            print(f"[{self.factor}] 缺少分层收益csv文件，跳过HTML生成。")
-            return
-
-        # 检查因子分布csv是否存在
-        factor_csv = f'{folder_path}/{self.factor}.csv'
-        if not os.path.exists(factor_csv):
-            print(f"[{self.factor}] 缺少因子分布csv文件，跳过HTML生成。")
-            return
 
         # 生成HTML内容
         html_content = """
@@ -85,7 +66,7 @@ class run_factor_judge():
         html_content += f'        <img src="{self.factor}_layer_yield.png" alt="分层收益">\n'
         html_content += f' </div>\n'
 
-        df = pd.read_csv(layer_yield_csv, encoding='utf-8')
+        df = pd.read_csv(f'{folder_path}/{self.factor}_layer_yield.csv', encoding='utf-8')
         # 将 DataFrame 转换为 HTML 表格
         html_table = df.to_html(index=False, justify='center')  # index=False 用来避免在表格中显示行索引
         html_content += f' <h2>分层收益表</h2>\n'
@@ -96,7 +77,7 @@ class run_factor_judge():
         html_content += f'        <img src="{self.factor}.png" alt="因子分布图">\n'
         html_content += f' </div>\n'
 
-        df = pd.read_csv(factor_csv, encoding='gbk')
+        df = pd.read_csv(f'{folder_path}/{self.factor}.csv', encoding='gbk')
         # 将 DataFrame 转换为 HTML 表格
         html_table = df.to_html(index=False, justify='center')  # index=False 用来避免在表格中显示行索引
         html_content += """
@@ -131,55 +112,14 @@ class run_factor_judge():
 
         print(f"\nHTML文件已生成：{html_output}")
 
-def judge_one_factor(args):
-    factor, k_line_type = args
-    a = run_factor_judge(factor, 'M', k_line_type)
-    a.get_report()
-    a.to_html()
-    print(f"[{factor}] 在{k_line_type}评估完成，报告已生成。")  # 增加详细汇报信息
 
 if __name__ == '__main__':
-    """
-    直接利用 config.py 的情况下，就不需要读取csv文件了
-    factors = pd.read_csv('factor_name.csv', encoding='utf-8')
-    """
-    tasks = []
+    factors = pd.read_csv('factor_name.csv', encoding='utf-8', skiprows=1)
 
-    for k_line_type in k_line_types:   # 新增外层循环
-        for factor_name in factor_names:
-            for length in lengths:
+    for i in factors:
+        a = run_factor_judge(i, 'M', '1d')
+        a.get_report()
+        a.to_html()
+        print(f'{i} finished！')
 
-                """
-                这里依然对每个不同命名规则的因子进行分类
-                """
-                if factor_name in factor_categories["no_length"]:
-                    factor = f'{factor_name}'
-                elif factor_name in factor_categories["short_long"]:
-                    factor = f'{factor_name}@{default_data["short"]}_{default_data["long"]}'
-                elif factor_name in factor_categories["length_thr"]:
-                    factor = f'{factor_name}@{length}_{default_data["thr"]}'
-                elif factor_name in factor_categories["length_atr"]:
-                    factor = f'{factor_name}@{length}_{default_data["atr_length"]}'
-                elif factor_name in factor_categories["length_n_std"]:
-                    factor = f'{factor_name}@{length}_{default_data["n_std"]}'
-                elif factor_name in factor_categories["short_long_atr"]:
-                    factor = f'{factor_name}@{default_data["short"]}_{default_data["long"]}_{default_data["atr_length"]}'
-                elif factor_name in factor_categories["short_long_vol"]:
-                    factor = f'{factor_name}@{default_data["short"]}_{default_data["long"]}_{default_data["vol_length"]}'
-                else:
-                    factor = f'{factor_name}@{length}'
-
-                report_path = f'./result/{k_line_type}/{factor}/{factor}_report.html'
-                if os.path.exists(report_path):
-                    print(f"{factor} 已经评估过，跳过。")
-                    continue
-
-                tasks.append((factor, k_line_type))  # 关键：添加到任务列表
-
-        # 并行处理同一个k线类型下的所有因子
-        process_num = max(1, multiprocessing.cpu_count() // 8)  # 降低并发数
-        with multiprocessing.Pool(processes=process_num) as pool:
-            pool.map(judge_one_factor, tasks)
-
-        mutal_IC(k_line_type).cal_mutal_IC()
-        tasks.clear()  # 清空任务列表，避免下一个k_line_type重复
+    mutal_IC('1d').cal_mutal_IC()

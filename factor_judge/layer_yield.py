@@ -31,7 +31,7 @@ class layer_yield(factor_judge):
 
         group_df = df.groupby(['quantile_layer'])
         for id, group in group_df:
-            _df = group.sort_values('datetime').reset_index(drop=True)
+            _df = group.sort_values('date').reset_index(drop=True)
             _df['cumulative_return'] = _df['rate'].cumsum()
             df_list.append(_df)
 
@@ -64,7 +64,7 @@ class layer_yield(factor_judge):
             layer_data = factor_data[factor_data['quantile_layer'] == layer]
 
             if not layer_data.empty:
-                layer_data['datetime'] = pd.to_datetime(layer_data['datetime'])
+                layer_data['date'] = pd.to_datetime(layer_data['date'])
                 layer_label = (
                     f"Layer {layer} | "
                     f"Range: [{row['min']:.6f}, {row['max']:.6f}] | "
@@ -72,7 +72,7 @@ class layer_yield(factor_judge):
                     f"Avg Profit(‱): {row['avg_profit']:.6f}"
                 )
                 ax.plot(
-                    layer_data['datetime'],
+                    layer_data['date'],
                     layer_data['cumulative_return'],
                     label=layer_label,
                     color=colors[int(layer)]
@@ -100,9 +100,6 @@ class layer_yield(factor_judge):
             else:
                 continue
             df_combined.append(df)
-        if not df_combined:
-            print(f"[{self.name}] 没有可拼接的分层收益数据，跳过。")
-            return None
         df_combined = pd.concat(df_combined, axis=0, ignore_index=True)
 
         group_by_layer, summary_df = self.quantile(df_combined)

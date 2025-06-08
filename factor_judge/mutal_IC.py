@@ -19,10 +19,7 @@ class mutal_IC():
                     df = pd.read_csv(f'./data/{k_line}/{i}/{factor}.csv',encoding='utf-8')
                     df_combined.append(df)
 
-            if not df_combined:
-                print("[mutal_IC] 没有可拼接的数据，跳过互信息计算。")
-                return
-            df_combined = pd.concat(df_combined, axis=0, ignore_index=True)
+            df_combined = pd.concat(df_combined,axis=0,ignore_index=True)
             self.df[factor] = df_combined
 
     def cal_mutal_IC(self):
