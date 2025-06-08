@@ -60,12 +60,10 @@ class statistic(factor_judge):
         for i in instruments:
             if i in self.df.keys():
                 df = self.df[i].copy()
+                df[self.name] = df[self.name].shift(1)
             else:
                 continue
             df_combined.append(df)
-        if not df_combined:
-            # 没有数据可以拼接，返回空的 DataFrame 或raise异常或直接return
-            return pd.DataFrame()
         df_combined = pd.concat(df_combined, axis=0, ignore_index=True)
 
         # 计算皮尔逊系数
@@ -95,22 +93,15 @@ class statistic(factor_judge):
         self.results['峰度'].append(kurtosis)
         self.results['标准差'].append(std)
 
-        if not os.path.exists(f'./result/{self.k_line}{self.name}/{self.name}.png'):
-            plt.rcParams['font.sans-serif'] = ['SimHei']
-            plt.rcParams['axes.unicode_minus'] = False
-            plt.figure(figsize=(10, 6))
-            plt.xlabel('因子值')
-            plt.ylabel('频数')
-            plt.title(f'{self.name}')
-            lower = factor.quantile(0.001)
-            upper = factor.quantile(0.999)
-            # mask = ~((factor < lower) | (df > upper))
-            # factor = factor[mask]
-            factor = factor.apply(lambda x: np.nan if x <= lower or x >= upper else x)
-            # factor = factor.dropna()
-            plt.hist(factor, bins=100, color='skyblue', edgecolor='black')
-            plt.savefig(f'./result/{self.k_line}/{self.name}/{self.name}.png')
-            plt.close()
+        plt.rcParams['font.sans-serif'] = ['SimHei']
+        plt.rcParams['axes.unicode_minus'] = False
+        plt.figure(figsize=(10, 6))
+        plt.xlabel('因子值')
+        plt.ylabel('频数')
+        plt.title(f'{self.name}')
+        plt.hist(factor, bins=100, color='skyblue', edgecolor='black')
+        plt.savefig(f'./result/{self.k_line}/{self.name}/{self.name}.png')
+        plt.close()
 
     def month(self):
         self.IC = {}  # 存放每个月所有品种的IC
@@ -120,19 +111,11 @@ class statistic(factor_judge):
             # 按月份分割
             if i in self.df.keys():
                 df = self.df[i].copy()
+                df[self.name] = df[self.name].shift(1)
             else:
                 continue
-
-            # 检查日期列
-            if 'date' in df.columns:
-                pass
-            elif 'datetime' in df.columns:
+            if 'datetime' in df.columns:
                 df.rename(columns={'datetime': 'date'}, inplace=True)
-            else:
-                # 如果没有日期列，跳过并打印警告
-                print(f"Warning: {i} 没有 'date' 或 'datetime' 列，已跳过。")
-                continue
-
             df['date'] = pd.to_datetime(df['date'])
             df.set_index('date', inplace=True)
             monthly_groups = df.resample(f'{self.method}E')
@@ -182,9 +165,8 @@ class statistic(factor_judge):
             writer.writeheader()
 
             # 将数据按行写入
-            max_len = max(len(v) for v in self.results.values())
-            for i in range(max_len):  # 假设所有列表长度相同
-                row = {key: self.results[key][i] if i < len(self.results[key]) else None for key in self.results}
+            for i in range(len(list(self.results.values())[0])):  # 假设所有列表长度相同
+                row = {key: self.results[key][i] for key in self.results}
                 writer.writerow(row)
 
     def get_result(self):
@@ -197,9 +179,12 @@ class statistic(factor_judge):
         result = {}  # 存放结果
 
         for key, value in self.IC.items():
-            self.month_IC[key] = np.mean(value)
+            self.month_IC[key] = np.mean(value) * self.div
             self.ICIR[key] = self.month_IC[key] / np.var(value, ddof=0) if np.var(value, ddof=0) > 0 else 0
-            self.hit_ratio[key] = np.mean(np.array(value) > 0)
+            if self.div == 1:
+                self.hit_ratio[key] = np.mean(np.array(value) > 0)
+            else:
+                self.hit_ratio[key] = np.mean(np.array(value) < 0)
         # print(self.ICIR)
         for key, value in self.ratio.items():
             self.month_ratio[key] = np.mean(value)
