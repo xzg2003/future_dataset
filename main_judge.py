@@ -114,12 +114,14 @@ class run_factor_judge():
 
 
 if __name__ == '__main__':
-    factors = pd.read_csv('factor_name.csv', encoding='utf-8', skiprows=1)
+    factors = pd.read_csv('factor_name.csv', encoding='utf-8')
 
-    for i in factors:
-        a = run_factor_judge(i, 'M', '1d')
+    for index, row in factors.iterrows():
+        factor_name = row[0]  # 假设因子名称在第一列
+        print(f"\nJudging {factor_name}")
+        a = run_factor_judge(factor_name, 'M', '1d')
         a.get_report()
         a.to_html()
-        print(f'{i} finished！')
+        print(f'{factor_name} finished！')
 
     mutal_IC('1d').cal_mutal_IC()
