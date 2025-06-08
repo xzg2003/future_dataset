@@ -55,7 +55,7 @@ class factor_calculator:
         """
         for instrument in self.instruments:
             # 构建数据路径
-            data_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/5m/{instrument}/{instrument}.csv')
+            data_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/1d/{instrument}/{instrument}.csv')
             print(f"Trying to read the file:{data_path}")
             if not os.path.exists(data_path):
                 print(f"Not exist:{data_path}")
