@@ -31,5 +31,7 @@ class FCT_Srmi:
         df[f'FCT_Srmi@{length}'] = (df['close'] - rolling_min) / (rolling_max - rolling_min + 1e-10)
 
         # 返回结果
-        result = df[['datetime', f'FCT_Srmi@{length}']].copy()
+        if 'datetime' in df.columns:
+            df = df.rename(columns={'datetime': 'date'})
+        result = df[['date', f'FCT_Srmi@{length}']].copy()
         return result

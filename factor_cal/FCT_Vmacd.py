@@ -36,6 +36,7 @@ class FCT_Vmacd:
         # MACD 柱
         df['vmacd_macd'] = df['vmacd_dif'] - df['vmacd_dea']
 
-        # 返回结果
-        result = df[['datetime', 'vmacd_dif', 'vmacd_dea', 'vmacd_macd']].copy()
+        if 'datetime' in df.columns:
+            df = df.rename(columns={'datetime': 'date'})
+        result = df[['date', 'vmacd_dif', 'vmacd_dea', 'vmacd_macd']].copy()
         return result

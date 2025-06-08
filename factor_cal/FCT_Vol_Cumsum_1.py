@@ -23,5 +23,7 @@ class FCT_Vol_Cumsum_1:
         df['FCT_Vol_Cumsum_1'] = df['volume'].cumsum().fillna(0)
 
         # 返回结果
-        result = df[['datetime', 'FCT_Vol_Cumsum_1']].copy()
+        if 'datetime' in df.columns:
+            df = df.rename(columns={'datetime': 'date'})
+        result = df[['date', f'FCT_Vol_Cumsum_1']].copy()
         return result

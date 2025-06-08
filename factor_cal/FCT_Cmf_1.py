@@ -37,5 +37,7 @@ class FCT_Cmf_1:
         df[f'FCT_Cmf_1@{length}'] = rolling_sum_mfv / rolling_sum_volume
 
         # 返回结果
-        result = df[['datetime', f'FCT_Cmf_1@{length}']].copy()
+        if 'datetime' in df.columns:
+            df = df.rename(columns={'datetime': 'date'})
+        result = df[['date', f'FCT_Cmf_1@{length}']].copy()
         return result

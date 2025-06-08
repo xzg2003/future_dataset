@@ -56,5 +56,7 @@ class FCT_Pubu_Vol_Dfive:
         df[f'FCT_Pubu_Vol_Dfive@{short}_{long}_{vol_length}'] = df[f'FCT_Pubu_1@{short}_{long}'] / (df['vol_mean'] + 1e-10)
 
         # 返回结果
-        result = df[['datetime', f'FCT_Pubu_Vol_Dfive@{short}_{long}_{vol_length}']].copy()
+        if 'datetime' in df.columns:
+            df = df.rename(columns={'datetime': 'date'})
+        result = df[['date', f'FCT_Pubu_Vol_Dfive@{short}_{long}_{vol_length}']].copy()
         return result

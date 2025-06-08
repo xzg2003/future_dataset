@@ -45,5 +45,7 @@ class TrendStrength:
         df[f'TrendStrength@{length}'] = trend_coef
 
         # 返回结果
-        result = df[['datetime', f'TrendStrength@{length}']].copy()
+        if 'datetime' in df.columns:
+            df = df.rename(columns={'datetime': 'date'})
+        result = df[['date', f'TrendStrength@{length}']].copy()
         return result

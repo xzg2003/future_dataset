@@ -32,5 +32,7 @@ class FCT_Si:
         df[f'FCT_Si@{length}'] = df['abs_diff'].rolling(window=length).mean()
 
         # 返回结果
-        result = df[['datetime', f'FCT_Si@{length}']].copy()
-        return  result
+        if 'datetime' in df.columns:
+            df = df.rename(columns={'datetime': 'date'})
+        result = df[['date', f'FCT_Si@{length}']].copy()
+        return result

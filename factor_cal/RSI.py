@@ -42,5 +42,7 @@ class RSI:
         df[f'RSI@{length}'] = 100 - (100 / (1 + rs))
 
         # 返回结果
-        result = df[['datetime', f'RSI@{length}']].copy()
+        if 'datetime' in df.columns:
+            df = df.rename(columns={'datetime': 'date'})
+        result = df[['date', f'RSI@{length}']].copy()
         return result

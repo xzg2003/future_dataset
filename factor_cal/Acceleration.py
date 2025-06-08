@@ -50,6 +50,7 @@ class Acceleration:
 
         df[f'Acceleration@{length}'] = df[f'TSMOM@{length}'].pct_change(periods=length)
 
-        # 返回结果
-        result = df[['datetime', f'Acceleration@{length}']].copy()
+        if 'datetime' in df.columns:
+            df = df.rename(columns={'datetime': 'date'})
+        result = df[['date', f'Accelerating@{length}']].copy()
         return result

@@ -81,6 +81,8 @@ class FCT_Ac_Tr_1:
             df['AC'] / rolling_mean_tr
         )
 
-        # 返回结果
-        result = df[['datetime', f'FCT_Ac_Tr_1@{length}']].copy()
+        # 返回包含日期和Tr的结果
+        if 'datetime' in df.columns:
+            df = df.rename(columns={'datetime': 'date'})
+        result = df[['date', f'FCT_Ac_Tr_1@{length}']].copy()
         return result

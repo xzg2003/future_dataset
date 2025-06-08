@@ -28,5 +28,7 @@ class IntradayMOM:
         df['IntradayMOM'] = df['IntradayMOM'].replace([numpy.inf, -numpy.inf], numpy.nan).fillna(0)
 
         # 返回结果
-        result = df[['datetime', 'IntradayMOM']].copy()
+        if 'datetime' in df.columns:
+            df = df.rename(columns={'datetime': 'date'})
+        result = df[['date', f'IntradayMOM']].copy()
         return result

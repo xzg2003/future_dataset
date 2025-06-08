@@ -42,5 +42,7 @@ class FCT_Tsi_1:
         df[f'FCT_Tsi_1@{short}_{long}'] = 100 * (ema_2 / (abs_ema_2 + 1e-10))
 
         # 返回结果
-        result = df[['datetime', f'FCT_Tsi_1@{short}_{long}']].copy()
+        if 'datetime' in df.columns:
+            df = df.rename(columns={'datetime': 'date'})
+        result = df[['date', f'FCT_Tsi_1@{short}_{long}']].copy()
         return result

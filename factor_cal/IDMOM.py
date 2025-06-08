@@ -25,5 +25,7 @@ class IDMOM:
         df['IDMOM'] = (df['close'] - df['open']) / df['open']
 
         # 返回结果
-        result = df[['datetime', 'IDMOM']].copy()
+        if 'datetime' in df.columns:
+            df = df.rename(columns={'datetime': 'date'})
+        result = df[['date', f'IDMOM']].copy()
         return result

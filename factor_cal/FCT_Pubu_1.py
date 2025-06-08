@@ -40,5 +40,7 @@ class FCT_Pubu_1:
         df[f'FCT_Pubu_1@{short}_{long}'] = df['ma_short'].rolling(window=long, min_periods=long).apply(pubu_percentile, raw=True)
 
         # 返回结果
-        result = df[['datetime', f'FCT_Pubu_1@{short}_{long}']].copy()
+        if 'datetime' in df.columns:
+            df = df.rename(columns={'datetime': 'date'})
+        result = df[['date', f'FCT_Pubu_1@{short}_{long}']].copy()
         return result

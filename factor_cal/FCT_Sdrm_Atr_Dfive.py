@@ -38,5 +38,7 @@ class FCT_Sdrm_Atr_Dfive:
         df[f'FCT_Sdrm_Atr_Dfive@{length}_{atr_length}'] = df['std_close'] / (df['ATR'] + 1e-10)
 
         # 返回结果
-        result = df[['datetime', f'FCT_Sdrm_Atr_Dfive@{length}_{atr_length}']].copy()
+        if 'datetime' in df.columns:
+            df = df.rename(columns={'datetime': 'date'})
+        result = df[['date', f'FCT_Sdrm_Atr_Dfive@{length}']].copy()
         return result

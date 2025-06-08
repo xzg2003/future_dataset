@@ -43,5 +43,7 @@ class FCT_Vol_Close_Corr_1:
         df[f'FCT_Vol_Close_Corr_1@{length}'] = corr_series.iloc[:, 0]
 
         # 返回结果
-        result = df[['datetime', f'FCT_Vol_Close_Corr_1@{length}']].copy()
+        if 'datetime' in df.columns:
+            df = df.rename(columns={'datetime': 'date'})
+        result = df[['date', f'FCT_Vol_Close_Corr_1@{length}']].copy()
         return result

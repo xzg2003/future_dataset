@@ -38,5 +38,7 @@ class TSMOM:
         df[f'TSMOM@{length}'] = df[f'TSMOM@{length}'].replace([numpy.inf, -numpy.inf], numpy.nan).fillna(0)
 
         # 返回结果
-        result = df[['datetime', f'TSMOM@{length}']].copy()
+        if 'datetime' in df.columns:
+            df = df.rename(columns={'datetime': 'date'})
+        result = df[['date', f'TSMOM@{length}']].copy()
         return result

@@ -45,5 +45,7 @@ class FCT_Br_1:
         df[f'FCT_Br_1@{length}'] = (df['br1'] - df['br2']) / df['br_sum']
 
         # 返回特征值
-        result = df[['datetime', f'FCT_Br_1@{length}']].copy()
+        if 'datetime' in df.columns:
+            df = df.rename(columns={'datetime': 'date'})
+        result = df[['date', f'FCT_Br_1@{length}']].copy()
         return result

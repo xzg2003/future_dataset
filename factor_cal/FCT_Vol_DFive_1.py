@@ -28,5 +28,7 @@ class FCT_Vol_DFive_1:
         df[f'FCT_Vol_DFive_1@{length}'] = df['volume'].rolling(window=length).std()
 
         # 返回结果
-        result = df[['datetime', f'FCT_Vol_DFive_1@{length}']].copy()
+        if 'datetime' in df.columns:
+            df = df.rename(columns={'datetime': 'date'})
+        result = df[['date', f'FCT_Vol_Dfive_1@{length}']].copy()
         return result

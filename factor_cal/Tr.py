@@ -27,6 +27,8 @@ class Tr:
         )
 
         # 返回包含日期和Tr的结果
-        result = df[['datetime', 'Tr']].copy()
+        if 'datetime' in df.columns:
+            df = df.rename(columns={'datetime': 'date'})
+        result = df[['date', 'Tr']].copy()
         return result
 

@@ -75,6 +75,8 @@ class XSMOM:
         df[f'XSMOM@{length}'] = xs_result
 
         # 返回结果
-        result = df[['datetime', f'XSMOM@{length}']].copy()
+        if 'datetime' in df.columns:
+            df = df.rename(columns={'datetime': 'date'})
+        result = df[['date', f'XSMOM@{length}']].copy()
         return result
 

@@ -32,5 +32,7 @@ class FCT_Vr:
         df[f'FCT_Vr@{length}'] = df['volume'] / (avg_vol + 1e-10)
 
         # 返回结果
-        result = df[['datetime', f'FCT_Vr@{length}']].copy()
+        if 'datetime' in df.columns:
+            df = df.rename(columns={'datetime': 'date'})
+        result = df[['date', f'FCT_Vr@{length}']].copy()
         return result
