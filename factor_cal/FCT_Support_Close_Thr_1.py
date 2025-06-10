@@ -38,5 +38,5 @@ class FCT_Support_Close_Thr_1:
         # 返回结果
         if 'datetime' in df.columns:
             df = df.rename(columns={'datetime': 'date'})
-        result = df[['date', f'FCT_Support_Close_Thr_1@{length}']].copy()
+        result = df[['date', f'FCT_Support_Close_Thr_1@{length}_{thr}']].copy()
         return result

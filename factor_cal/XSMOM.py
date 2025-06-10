@@ -37,7 +37,7 @@ class XSMOM:
             raise ValueError("param missing instrument")
 
         # 获取 TSMOM@{length}，并优先判断文件是否存在
-        TSMOM_data_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/5m/{instrument}/TSMOM@{length}.csv')
+        TSMOM_data_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/1d/{instrument}/TSMOM@{length}.csv')
         if not os.path.exists(TSMOM_data_path):
             raise FileNotFoundError(f"TSMOM file not found: {TSMOM_data_path}")
 

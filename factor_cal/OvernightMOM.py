@@ -29,5 +29,5 @@ class OvernightMOM:
         # 返回结果
         if 'datetime' in df.columns:
             df = df.rename(columns={'datetime': 'date'})
-        result = df[['date', f'OvernightMoM']].copy()
+        result = df[['date', f'OvernightMOM']].copy()
         return result

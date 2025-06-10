@@ -13,6 +13,7 @@ class FCT_Pubu_Atr_Dfive:
 
     def formula(self, param):
         # 从字典中提取 DataFrame
+        k_line_type = param.get('k_line_type', '1d')
         df = param.get('df', None)
         if df is None:
             raise ValueError("no 'df' in param")
@@ -31,7 +32,7 @@ class FCT_Pubu_Atr_Dfive:
             raise ValueError("param miss instrument")
 
         # 判断 Tr.csv 文件是否存在，便于调用
-        tr_data_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/5m/{instrument}/Tr.csv')
+        tr_data_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/1d/{instrument}/Tr.csv')
         if not os.path.exists(tr_data_path):
             raise FileNotFoundError(F"Tr file noot fount: {tr_data_path}")
 
@@ -54,7 +55,7 @@ class FCT_Pubu_Atr_Dfive:
             return numpy.sum(window <= window[-1]) / long
 
         # 判断 FCT_Pubu@{short}_{long}.csv 文件是否存在，便于调用
-        pubu_data_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/5m/{instrument}/FCT_Pubu_1@{short}_{long}.csv')
+        pubu_data_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/1d/{instrument}/FCT_Pubu_1@{short}_{long}.csv')
         if not os.path.exists(pubu_data_path):
             raise FileNotFoundError(F"Pubu file noot fount: {pubu_data_path}")
 

@@ -30,5 +30,5 @@ class FCT_Vol_DFive_1:
         # 返回结果
         if 'datetime' in df.columns:
             df = df.rename(columns={'datetime': 'date'})
-        result = df[['date', f'FCT_Vol_Dfive_1@{length}']].copy()
+        result = df[['date', f'FCT_Vol_DFive_1@{length}']].copy()
         return result

@@ -40,5 +40,5 @@ class FCT_Sdrm_Atr_Dfive:
         # 返回结果
         if 'datetime' in df.columns:
             df = df.rename(columns={'datetime': 'date'})
-        result = df[['date', f'FCT_Sdrm_Atr_Dfive@{length}']].copy()
+        result = df[['date', f'FCT_Sdrm_Atr_Dfive@{length}_{atr_length}']].copy()
         return result

@@ -35,7 +35,7 @@ class Acceleration:
         if instrument is None:
             raise ValueError("param miss instrument")
 
-        TSMOM_data_path = os.path.join(os.path.dirname(__file__), f'../data/5m/{instrument}/TSMOM@{length}.csv')
+        TSMOM_data_path = os.path.join(os.path.dirname(__file__), f'../data/1d/{instrument}/TSMOM@{length}.csv')
         TSMOM_data_path = os.path.normpath(TSMOM_data_path)
         if not os.path.exists(TSMOM_data_path):
             raise FileNotFoundError(f"TSMOM_data_path not found:{TSMOM_data_path}")
@@ -46,11 +46,11 @@ class Acceleration:
             df = df.merge(TSMOM_df[['datetime', f'TSMOM@{length}']], on='datetime', how='left')
         else:
             # 如果没有 datetime 列，直接用index对齐
-            df[f'TSMOM@{length}'] = TSMOM_df
+            df[f'TSMOM@{length}'] = TSMOM_df[f'TSMOM@{length}']
 
         df[f'Acceleration@{length}'] = df[f'TSMOM@{length}'].pct_change(periods=length)
 
         if 'datetime' in df.columns:
             df = df.rename(columns={'datetime': 'date'})
-        result = df[['date', f'Accelerating@{length}']].copy()
+        result = df[['date', f'Acceleration@{length}']].copy()
         return result
