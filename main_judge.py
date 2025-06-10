@@ -118,6 +118,13 @@ if __name__ == '__main__':
 
     for index, row in factors.iterrows():
         factor_name = row[0]  # 假设因子名称在第一列
+
+        # 判断因子是否已经评估，这里以是否有文件名为准
+        judge_data_path = f'result/1d/{factor_name}'
+        if os.path.exists(judge_data_path):
+            print(f"{factor_name} has been judged, skip")
+            continue
+
         print(f"\nJudging {factor_name}")
         a = run_factor_judge(factor_name, 'M', '1d')
         a.get_report()
