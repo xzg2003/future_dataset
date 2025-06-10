@@ -38,12 +38,17 @@ class FCT_Bias_1:
             raise ValueError(f"param miss mindiff for instrument: {param.get('instrument', 'unknown')}")
         print(f"Using mindiff: {mindiff}")
 
+        # 获取k_line_type
+        k_line_type = param.get('k_line_type', None)
+        if k_line_type is None:
+            raise ValueError("param missing instrument")
+
         # 计算震荡指标（这里直接照搬了前面Tr的计算代码）
         # 前一k线的收盘价
         df['close_pre'] = df['close'].shift(1)
 
         # 判断 Tr.csv 文件是否存在，用于调用
-        tr_data_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/5m/{instrument}/Tr.csv')
+        tr_data_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/{k_line_type}/{instrument}/Tr.csv')
         if not os.path.exists(tr_data_path):
             raise FileNotFoundError(F"Tr file not found:{tr_data_path}")
 

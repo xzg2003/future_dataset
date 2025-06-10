@@ -36,8 +36,13 @@ class XSMOM:
         if instrument is None:
             raise ValueError("param missing instrument")
 
+        # 获取k_line_type
+        k_line_type = param.get('k_line_type', None)
+        if k_line_type is None:
+            raise ValueError("param missing instrument")
+
         # 获取 TSMOM@{length}，并优先判断文件是否存在
-        TSMOM_data_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/1d/{instrument}/TSMOM@{length}.csv')
+        TSMOM_data_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/{k_line_type}/{instrument}/TSMOM@{length}.csv')
         if not os.path.exists(TSMOM_data_path):
             raise FileNotFoundError(f"TSMOM file not found: {TSMOM_data_path}")
 

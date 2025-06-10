@@ -35,7 +35,12 @@ class Acceleration:
         if instrument is None:
             raise ValueError("param miss instrument")
 
-        TSMOM_data_path = os.path.join(os.path.dirname(__file__), f'../data/1d/{instrument}/TSMOM@{length}.csv')
+        # 获取k_line_type
+        k_line_type = param.get('k_line_type', None)
+        if k_line_type is None:
+            raise ValueError("param missing instrument")
+
+        TSMOM_data_path = os.path.join(os.path.dirname(__file__), f'../data/{k_line_type}/{instrument}/TSMOM@{length}.csv')
         TSMOM_data_path = os.path.normpath(TSMOM_data_path)
         if not os.path.exists(TSMOM_data_path):
             raise FileNotFoundError(f"TSMOM_data_path not found:{TSMOM_data_path}")

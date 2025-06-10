@@ -12,8 +12,6 @@ class FCT_Pubu_Vol_Dfive:
         self.factor_name = 'FCT_Pubu_Vol_Dfive'
 
     def formula(self, param):
-        # 从字典中提取 DataFrame
-        k_line_type = param.get('k_line_type', '1d')
         df = param.get('df', None)
         if df is None:
             raise ValueError("no 'df' in param")
@@ -32,6 +30,11 @@ class FCT_Pubu_Vol_Dfive:
             raise ValueError("param miss instrument")
         # 计算成交量均值
         df['vol_mean'] = df['volume'].rolling(window=vol_length).mean()
+
+        # 获取k_line_type
+        k_line_type = param.get('k_line_type', None)
+        if k_line_type is None:
+            raise ValueError("param missing instrument")
 
         # 计算短期均线在长期窗口内的分位数位置
         def pubu_percentile(x):

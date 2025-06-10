@@ -77,6 +77,7 @@ class factor_calculator:
                             'df':           df,
                             'instrument':   instrument,
                             'length':       length,
+                            'k_line_type':  k_line_type,
                             'mindiff':      self.instruments_mindiff.get(instrument, None),
                             'short':        default_data["short"],
                             'long':         default_data["long"],
@@ -115,7 +116,7 @@ class factor_calculator:
 
                             # 检查文件是否存在，以跳出当前因子计算的循环
                             if os.path.exists(save_path):
-                                print(f"{save_path}已存在，跳过该因子该长度的计算")
+                                # print(f"{save_path}已存在，跳过该因子该长度的计算")
                                 continue
 
                             # 因子计算信息回报
