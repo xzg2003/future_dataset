@@ -1,16 +1,23 @@
 import os       # 与路径操作相关的包，用于管理文件
 import pandas
 import importlib
+import csv
 
-from config import factor_names
-from config import factor_categories
+from lxml.doctestcompare import strip
+
 from config import default_data
 
-# 设置工作目录为当前脚本所在的目录
-os.chdir(os.path.dirname(os.path.abspath(__file__)))
+factor_names_data = os.path.join(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+    'factor_name.csv'
+)
 
-# 动态调用各个因子计算器
-def get_factor_name(factor_name):
+def get_factor_calculator(factor_name):
+    """
+    动态调用各个因子计算器
+    :param factor_name:需要导入的因子名称
+    :return:返回因子的类名称，供后续导入
+    """
     # 这里假设每个因子模块名和类名都与 factor_name 一致
     try:
         module = importlib.import_module(f'.{factor_name}', __package__)
@@ -68,7 +75,8 @@ class factor_calculator:
 
     def factors_cal(self):
         """
-        调用所有计算器，计算相应因子并保存到文件夹中
+        调用各个因子计算器，并返回计算结果
+        :return: 以 dataframe 的格式返回因子计算的结果，
         """
         for instrument in self.instruments:
             # 构建数据路径
@@ -114,6 +122,11 @@ class factor_calculator:
                         'slow':         default_data["slow"],
                         'signal':       default_data["signal"],
                     }
+
+                    # 检查 mindiff 是否存在
+                    if param['mindiff'] is None:
+                        print(f"No mindiff for {instrument}, skip")
+                        continue
 
                     # 设置因子保存路径
                     save_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/{k_line_type}/{instrument}/{factor_name}.csv')
