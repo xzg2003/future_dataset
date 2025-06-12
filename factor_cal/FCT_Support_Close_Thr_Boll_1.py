@@ -45,10 +45,10 @@ class FCT_Support_Close_Thr_Boll_1:
                 window_close = closes[i - length + 1 : i + 1]
                 window_lower = lowers[i - length + 1 : i + 1]
                 counts.append(numpy.sum(window_close <= window_lower))
-        df[f'FCT_Support_Close_Thr_Boll_1@{length}_{n_std}'] = counts
+        df[f'FCT_Support_Close_Thr_Boll_1@{length}'] = counts
 
         # 返回结果
         if 'datetime' in df.columns:
             df = df.rename(columns={'datetime': 'date'})
-        result = df[['date', f'FCT_Support_Close_Thr_Boll_1@{length}_{n_std}']].copy()
+        result = df[['date', f'FCT_Support_Close_Thr_Boll_1@{length}']].copy()
         return result

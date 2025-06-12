@@ -33,10 +33,10 @@ class FCT_Support_Close_Thr_1:
             threshold = numpy.quantile(x, thr)
             return numpy.sum(x <= threshold)
 
-        df[f'FCT_Support_Close_Thr_1@{length}_{thr}'] = df['close'].rolling(window=length, min_periods=length).apply(support_count, raw=True)
+        df[f'FCT_Support_Close_Thr_1'] = df['close'].rolling(window=length, min_periods=length).apply(support_count, raw=True)
 
         # 返回结果
         if 'datetime' in df.columns:
             df = df.rename(columns={'datetime': 'date'})
-        result = df[['date', f'FCT_Support_Close_Thr_1@{length}_{thr}']].copy()
+        result = df[['date', f'FCT_Support_Close_Thr_1']].copy()
         return result

@@ -39,10 +39,10 @@ class FCT_TSI_Ref_1:
         abs_ema_2 = abs_ema_1.ewm(span=long, adjust=False).mean()
 
         # 计算 TSI
-        df[f'FCT_TSI_Ref_1@{short}_{long}'] = 100 * (ema_2 / (abs_ema_2 + 1e-10))
+        df[f'FCT_TSI_Ref_1'] = 100 * (ema_2 / (abs_ema_2 + 1e-10))
 
         # 返回结果
         if 'datetime' in df.columns:
             df = df.rename(columns={'datetime': 'date'})
-        result = df[['date', f'FCT_TSI_Ref_1@{short}_{long}']].copy()
+        result = df[['date', f'FCT_TSI_Ref_1']].copy()
         return result

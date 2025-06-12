@@ -40,10 +40,10 @@ class FCT_Tsi_Vol_Dfive:
         df['vol_mean'] = df['volume'].rolling(window=vol_length).mean()
 
         # 归一化
-        df[f'FCT_Tsi_Vol_Dfive@{short}_{long}_{vol_length}'] = df['TSI'] / (df['vol_mean'] + 1e-10)
+        df[f'FCT_Tsi_Vol_Dfive'] = df['TSI'] / (df['vol_mean'] + 1e-10)
 
         # 返回结果
         if 'datetime' in df.columns:
             df = df.rename(columns={'datetime': 'date'})
-        result = df[['date', f'FCT_Tsi_Vol_Dfive@{short}_{long}_{vol_length}']].copy()
+        result = df[['date', f'FCT_Tsi_Vol_Dfive']].copy()
         return result

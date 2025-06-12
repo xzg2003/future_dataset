@@ -37,10 +37,10 @@ class FCT_Pubu_1:
                 return numpy.nan
             return numpy.sum(window <= window[-1]) / long
 
-        df[f'FCT_Pubu_1@{short}_{long}'] = df['ma_short'].rolling(window=long, min_periods=long).apply(pubu_percentile, raw=True)
+        df[f'FCT_Pubu_1'] = df['ma_short'].rolling(window=long, min_periods=long).apply(pubu_percentile, raw=True)
 
         # 返回结果
         if 'datetime' in df.columns:
             df = df.rename(columns={'datetime': 'date'})
-        result = df[['date', f'FCT_Pubu_1@{short}_{long}']].copy()
+        result = df[['date', f'FCT_Pubu_1']].copy()
         return result

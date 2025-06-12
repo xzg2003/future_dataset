@@ -44,10 +44,10 @@ class FCT_Tsi_Atr_Dfive:
         df['ATR'] = tr.rolling(window=atr_length).mean()
 
         # 归一化
-        df[f'FCT_Tsi_Atr_Dfive@{short}_{long}_{atr_length}'] = df['TSI'] / (df['ATR'] + 1e-10)
+        df[f'FCT_Tsi_Atr_Dfive'] = df['TSI'] / (df['ATR'] + 1e-10)
 
         # 返回结果
         if 'datetime' in df.columns:
             df = df.rename(columns={'datetime': 'date'})
-        result = df[['date', f'FCT_Tsi_Atr_Dfive@{short}_{long}_{atr_length}']].copy()
+        result = df[['date', f'FCT_Tsi_Atr_Dfive']].copy()
         return result
