@@ -66,22 +66,6 @@ class factor_calculator:
         self.lengths = lengths
         self.instruments_mindiff = instruments_mindiff
 
-        """
-        初始化所有因子计算器
-        以字典的形式，将每个计算器与其名称进行对应，便于在程序中调用
-        
-        这里优先计算 Tr 因子，因为后续很多因子计算都需要调用 Tr 的数据
-        先计算 Tr，在计算其他因子时可以调用 Tr.csv 文件中的数据，简化计算
-        
-        经过程序结构的优化，这里改为自动化导入
-        在对字典导入的同时，导入每个因子计算器的类
-        """
-        self.factors_dict = {}
-        for name in factor_names:
-            factor_class = get_factor_name(name)
-            if factor_class is not None:
-                self.factors_dict[name] = factor_class()
-
     def factors_cal(self):
         """
         调用所有计算器，计算相应因子并保存到文件夹中
@@ -126,6 +110,15 @@ class factor_calculator:
                         # 检查 mindiff 是否存在
                         if param['mindiff'] is None:
                             print(f"No mindiff for {instrument}, skip")
+                    # 动态导入需要的因子计算器的包
+                    calculator_class = get_factor_calculator(factor)
+                    if calculator_class is None:
+                        print(f"Fail to load {factor}")
+                        continue
+
+                    # 创建因子计算器实例
+                    calculator_instance = calculator_class()
+
                             continue
 
                         try:
