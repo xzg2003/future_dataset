@@ -20,6 +20,22 @@ def get_factor_name(factor_name):
         print(f"导入{factor_name}失败：{e}")
         return None
 
+def split_factor_name(factor_name):
+    """
+    对一个因子名称进行分割，考虑两种情况，并返回因子部分和长度部分
+    :param factor_name:需要处理的因子名称
+    :return:返回两个值，一个是因子基础名称的部分，一个是长度部分
+    """
+    if '@' in factor_name:
+        # 对存在长度的因子名称进行分割
+        parts = factor_name.split('@')
+        if len(parts) == 2:
+            factor = parts[0]
+            factor_length = int(parts[1])   # 这里对长度进行强制转换
+            return factor, factor_length
+    # 对没有长度的因子，直接返回结果即可
+    return factor_name, None
+
 class factor_calculator:
     def __init__(self, instruments, k_line_types, lengths, instruments_mindiff):
         """
