@@ -36,6 +36,23 @@ def split_factor_name(factor_name):
     # 对没有长度的因子，直接返回结果即可
     return factor_name, None
 
+def read_single_column(file_path, skip_header=True):
+    """
+    读取单列 CSV 文件，返回一个包含所有行数据的列表
+    :param file_path: CSV 文件路径
+    :param skip_header: 是否跳过第一行（标题行），默认为 True
+    :return: 返回一个列表，包含 CSV 文件中所有数据行的第一列内容
+    """
+    data = []
+    with open(file_path, mode='r', encoding='utf-8') as csvfile:
+        reader = csv.reader(csvfile)
+        if skip_header:
+            next(reader)    # 跳过标题行
+        for row in reader:
+            if row:
+                data.append(row[0].strip()) # 取出首尾空白字符
+    return data
+
 class factor_calculator:
     def __init__(self, instruments, k_line_types, lengths, instruments_mindiff):
         """
