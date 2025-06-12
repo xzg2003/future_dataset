@@ -85,31 +85,36 @@ class factor_calculator:
                 print(f'Read failed:{data_path}, error info:{e}')
                 continue
 
-            # 遍历因子字典，逐个计算因子
-            for k_line_type in self.k_line_types:
-                for factor_name, calculator in self.factors_dict.items():
-                    for length in self.lengths:
-                        # 构建param字典，包含df和length
-                        param = {
-                            'df':           df,
-                            'instrument':   instrument,
-                            'length':       length,
-                            'k_line_type':  k_line_type,
-                            'mindiff':      self.instruments_mindiff.get(instrument, None),
-                            'short':        default_data["short"],
-                            'long':         default_data["long"],
-                            'atr_length':   default_data["atr_length"],
-                            'vol_length':   default_data["vol_length"],
-                            'thr':          default_data["thr"],
-                            'n_std':        default_data["n_std"],
-                            'fast':         default_data["fast"],
-                            'slow':         default_data["slow"],
-                            'signal':       default_data["signal"],
-                        }
+            # 获取因子名称列表
+            factor_names = read_single_column(factor_names_data, skip_header=True)
 
-                        # 检查 mindiff 是否存在
-                        if param['mindiff'] is None:
-                            print(f"No mindiff for {instrument}, skip")
+            # 遍历因子字典，逐个计算因子
+            # 第一层循环是关于k线类型的循环
+            for k_line_type in self.k_line_types:
+
+                # 第二层循环是关于因子名称的循环
+                for factor_name in factor_names:
+                    # 这里将分割后的结果进行解包
+                    factor, length = split_factor_name(factor_name)
+
+                    # 构建param字典，包含df和length
+                    param = {
+                        'df':           df,
+                        'instrument':   instrument,
+                        'length':       length,
+                        'k_line_type':  k_line_type,
+                        'mindiff':      self.instruments_mindiff.get(instrument, None),
+                        'short':        default_data["short"],
+                        'long':         default_data["long"],
+                        'atr_length':   default_data["atr_length"],
+                        'vol_length':   default_data["vol_length"],
+                        'thr':          default_data["thr"],
+                        'n_std':        default_data["n_std"],
+                        'fast':         default_data["fast"],
+                        'slow':         default_data["slow"],
+                        'signal':       default_data["signal"],
+                    }
+
                     # 动态导入需要的因子计算器的包
                     calculator_class = get_factor_calculator(factor)
                     if calculator_class is None:
@@ -119,6 +124,10 @@ class factor_calculator:
                     # 创建因子计算器实例
                     calculator_instance = calculator_class()
 
+                    try:
+                        # 检查文件是否存在，以跳出当前因子计算的循环
+                        if os.path.exists(save_path):
+                            # print(f"{save_path}已存在，跳过该因子该长度的计算")
                             continue
 
                         try:
