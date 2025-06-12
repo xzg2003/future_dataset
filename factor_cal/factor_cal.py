@@ -115,6 +115,9 @@ class factor_calculator:
                         'signal':       default_data["signal"],
                     }
 
+                    # 设置因子保存路径
+                    save_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/{k_line_type}/{instrument}/{factor_name}.csv')
+
                     # 动态导入需要的因子计算器的包
                     calculator_class = get_factor_calculator(factor)
                     if calculator_class is None:
@@ -130,46 +133,22 @@ class factor_calculator:
                             # print(f"{save_path}已存在，跳过该因子该长度的计算")
                             continue
 
-                        try:
-                            # 设置保存路径，根据命名规则分开讨论
-                            if factor_name in factor_categories["no_length"]:
-                                save_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/{k_line_type}/{instrument}/{factor_name}.csv')
-                            elif factor_name in factor_categories["short_long"]:
-                                save_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/{k_line_type}/{instrument}/{factor_name}@{param["short"]}_{param["long"]}.csv')
-                            elif factor_name in factor_categories["length_thr"]:
-                                save_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/{k_line_type}/{instrument}/{factor_name}@{length}_{param["thr"]}.csv')
-                            elif factor_name in factor_categories["length_atr"]:
-                                save_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/{k_line_type}/{instrument}/{factor_name}@{length}_{param["atr_length"]}.csv')
-                            elif factor_name in factor_categories["length_n_std"]:
-                                save_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/{k_line_type}/{instrument}/{factor_name}@{length}_{param["n_std"]}.csv')
-                            elif factor_name in factor_categories["short_long_atr"]:
-                                save_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/{k_line_type}/{instrument}/{factor_name}@{param["short"]}_{param["long"]}_{param["atr_length"]}.csv')
-                            elif factor_name in factor_categories["short_long_vol"]:
-                                save_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/{k_line_type}/{instrument}/{factor_name}@{param["short"]}_{param["long"]}_{param["vol_length"]}.csv')
-                            else:
-                                save_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/{k_line_type}/{instrument}/{factor_name}@{length}.csv')
+                        # 因子计算信息回报
+                        print(f"instrument:{instrument} factor:{save_path} calculating.")
 
-                            # 检查文件是否存在，以跳出当前因子计算的循环
-                            if os.path.exists(save_path):
-                                # print(f"{save_path}已存在，跳过该因子该长度的计算")
-                                continue
+                        # 计算每一个因子，调用 calculator.formula 并传入参数进行计算
+                        result = calculator_instance.formula(param)
 
-                            # 因子计算信息回报
-                            print(f"instrument:{instrument} factor:{save_path} calculating.")
+                        # 利用 os.makedirs 设置一个路径，并利用to_csv保存结果
+                        os.makedirs(os.path.dirname(save_path), exist_ok=True)
+                        result.to_csv(save_path, index=False)
 
-                            # 计算每一个因子，调用 calculator.formula 并传入参数进行计算
-                            result = calculator.formula(param)
+                        # 保存成功信息回报
+                        print(f"instrument:{instrument} factor:{save_path} success.")
 
-                            # 利用 os.makedirs 设置一个路径，并利用to_csv保存结果
-                            os.makedirs(os.path.dirname(save_path), exist_ok=True)
-                            result.to_csv(save_path, index=False)
-
-                            # 保存成功信息回报
-                            print(f"instrument:{instrument} factor:{save_path} success.")
-                        except Exception as e:
-                            # 当因子计算出错时报错
-                            print(f"error at{save_path}, {e}")
-
+                    except Exception as e:
+                        # 当因子计算出错时报错
+                        print(f"error at{save_path}, {e}")
 
 """
 # 主程序入口
