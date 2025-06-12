@@ -37,6 +37,19 @@ def main():
 
     print(f"Loaded instruments_mindiff:{instruments_mindiff}")
 
+
+    # 单进程处理每个因子
+    for k_line_type in k_line_types:
+        print(f"Processing: {k_line_type}")
+
+        for instrument in instruments:
+            for length in lengths:
+                run_one_instrument(instrument, k_line_type, length, instruments_mindiff)
+
+        print(f"Finished: {k_line_type}")
+
+
+    '''
     # 利用进程池计算每个因子
     for k_line_type in k_line_types:
         print(f"Processing: {k_line_type}")
@@ -48,6 +61,7 @@ def main():
         pool.close()
         pool.join()
         print(f"Finished: {k_line_type}")
+    '''
 
 if __name__ == '__main__':
     main()
