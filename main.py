@@ -15,7 +15,7 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 mindiff_file_path = './data/mindiff/mindiff.csv'
 
 def run_one_instrument(instrument, k_line_type, length, instruments_mindiff):
-    calculator = factor_calculator([instrument], [k_line_type], [length], instruments_mindiff)
+    calculator = factor_calculator([instrument], [k_line_type], instruments_mindiff)
     calculator.factors_cal()
 
 def main():

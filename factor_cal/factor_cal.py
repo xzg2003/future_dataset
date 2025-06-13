@@ -61,7 +61,7 @@ def read_single_column(file_path, skip_header=True):
     return data
 
 class factor_calculator:
-    def __init__(self, instruments, k_line_types, lengths, instruments_mindiff):
+    def __init__(self, instruments, k_line_types, instruments_mindiff):
         """
         初始化因子计算器
         :param instruments: 期货品种列表
@@ -70,7 +70,6 @@ class factor_calculator:
         """
         self.instruments = instruments
         self.k_line_types = k_line_types
-        self.lengths = lengths
         self.instruments_mindiff = instruments_mindiff
 
     def factors_cal(self):
