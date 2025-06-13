@@ -146,7 +146,7 @@ class factor_calculator:
                             continue
 
                         # 因子计算信息回报
-                        print(f"instrument:{instrument} factor:{save_path} calculating.")
+                        print(f"\ninstrument:{instrument} factor:{save_path} calculating.")
 
                         # 计算每一个因子，调用 calculator.formula 并传入参数进行计算
                         result = calculator_instance.formula(param)
