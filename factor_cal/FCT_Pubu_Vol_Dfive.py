@@ -57,7 +57,7 @@ class FCT_Pubu_Vol_Dfive:
             df[f'FCT_Pubu_1'] = pubu_df[f'FCT_Pubu_1']
 
         # 用成交量均值归一化
-        df[f'FCT_Pubu_Vol_Dfive@{short}_{long}_{vol_length}'] = df[f'FCT_Pubu_1'] / (df['vol_mean'] + 1e-10)
+        df[f'FCT_Pubu_Vol_Dfive'] = df[f'FCT_Pubu_1'] / (df['vol_mean'] + 1e-10)
 
         # 返回结果
         if 'datetime' in df.columns:
