@@ -25,10 +25,24 @@ class FCT_Srmi:
             raise ValueError("param missing 'length'")
         print(f"Using length: {length}")
 
+        """
         # 计算STMI：收盘价在窗口内的相对位置
         rolling_min = df['close'].rolling(window=length).min()
         rolling_max = df['close'].rolling(window=length).max()
         df[f'FCT_Srmi@{length}'] = (df['close'] - rolling_min) / (rolling_max - rolling_min + 1e-10)
+        """
+
+        new_columns = pandas.DataFrame(index=df.index)
+
+        # 计算滚动最小值和最大值
+        rolling_min = df['close'].rolling(window=length).min()
+        rolling_max = df['close'].rolling(window=length).max()
+
+        # 计算 SRMI：(close - min) / (max - min)
+        new_columns[f'FCT_Srmi@{length}'] = (df['close'] - rolling_min) / (rolling_max - rolling_min + 1e-10)
+
+        # 合并进原始 df
+        df = pandas.concat([df, new_columns], axis=1)
 
         # 返回结果
         if 'datetime' in df.columns:

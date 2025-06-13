@@ -24,8 +24,19 @@ class FCT_Vol_DFive_1:
             raise ValueError("param missing 'length'")
         print(f"Using length: {length}")
 
+        """
         # 计算成交量的标准差作为动量指标
         df[f'FCT_Vol_DFive_1@{length}'] = df['volume'].rolling(window=length).std()
+        """
+
+        # 初始化 new_columns 用于集中管理所有新列
+        new_columns = pandas.DataFrame(index=df.index)
+
+        # 计算成交量标准差作为动量指标
+        new_columns[f'FCT_Vol_DFive_1@{length}'] = df['volume'].rolling(window=length).std()
+
+        # 合并到原始 df（一次性操作）
+        df = pandas.concat([df, new_columns], axis=1)
 
         # 返回结果
         if 'datetime' in df.columns:

@@ -36,6 +36,7 @@ class FCT_Pubu_Vol_Dfive:
         if k_line_type is None:
             raise ValueError("param missing instrument")
 
+        """
         # 计算短期均线在长期窗口内的分位数位置
         def pubu_percentile(x):
             window = x[-long:]
@@ -58,6 +59,34 @@ class FCT_Pubu_Vol_Dfive:
 
         # 用成交量均值归一化
         df[f'FCT_Pubu_Vol_Dfive'] = df[f'FCT_Pubu_1'] / (df['vol_mean'] + 1e-10)
+        """
+
+        # 修改为 pd.concat 批量合并方式
+        new_columns = pandas.DataFrame(index=df.index)
+
+        # 计算成交量均值
+        new_columns['vol_mean'] = df['volume'].rolling(window=vol_length).mean()
+
+        # 加载 FCT_Pubu_1 数据
+        pubu_data_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                      f'../data/{k_line_type}/{instrument}/FCT_Pubu_1.csv')
+        if not os.path.exists(pubu_data_path):
+            raise FileNotFoundError(f"FCT_Pubu_1 file not found: {pubu_data_path}")
+
+        pubu_df = pandas.read_csv(pubu_data_path)
+        if 'datetime' in df.columns and 'datetime' in pubu_df.columns:
+            pubu_series = df[['datetime']].merge(pubu_df[['datetime', 'FCT_Pubu_1']], on='datetime', how='left')[
+                'FCT_Pubu_1']
+        else:
+            pubu_series = pubu_df['FCT_Pubu_1'].reindex(df.index, fill_value=numpy.nan)
+
+        new_columns['FCT_Pubu_1'] = pubu_series
+
+        # 用成交量均值归一化
+        new_columns[f'FCT_Pubu_Vol_Dfive'] = new_columns['FCT_Pubu_1'] / (new_columns['vol_mean'] + 1e-10)
+
+        # 合并进原始 df
+        df = pandas.concat([df, new_columns], axis=1)
 
         # 返回结果
         if 'datetime' in df.columns:

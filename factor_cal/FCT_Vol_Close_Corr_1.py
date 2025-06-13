@@ -25,6 +25,7 @@ class FCT_Vol_Close_Corr_1:
             raise ValueError("param missing 'length'")
         print(f"Using length: {length}")
 
+        """
         # 计算滑动窗口相关系数
         def corr_func(x):
             x = numpy.asarray(x)
@@ -41,6 +42,30 @@ class FCT_Vol_Close_Corr_1:
 
         # apply后返回的是DataFrame，取一列即可
         df[f'FCT_Vol_Close_Corr_1@{length}'] = corr_series.iloc[:, 0]
+        """
+
+        # 初始化 new_columns 用于统一管理中间变量
+        new_columns = pandas.DataFrame(index=df.index)
+
+        # 定义滑动窗口相关系数计算函数
+        def corr_func(x):
+            x = numpy.asarray(x)
+            if x.ndim == 1:
+                x = x.reshape(-1, 2)
+            return numpy.corrcoef(x[:, 0], x[:, 1])[0, 1] if numpy.std(x[:, 0]) > 0 and numpy.std(x[:, 1]) > 0 else numpy.nan
+
+        # 计算滑动窗口相关系数
+        combined = df[['volume', 'close']].values
+        corr_array = numpy.full(len(df), numpy.nan, dtype=numpy.float32)
+
+        for i in range(length - 1, len(df)):
+            window = combined[i - length + 1:i + 1]
+            corr_array[i] = corr_func(window)
+
+        new_columns[f'FCT_Vol_Close_Corr_1@{length}'] = corr_array
+
+        # 合并到主表
+        df = pandas.concat([df, new_columns], axis=1)
 
         # 返回结果
         if 'datetime' in df.columns:

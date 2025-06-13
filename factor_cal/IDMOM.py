@@ -21,8 +21,29 @@ class IDMOM:
         if not isinstance(df, pandas.DataFrame):
             raise TypeError("df must be DataFrame")
 
+        """
         # 计算日内动量
         df['IDMOM'] = (df['close'] - df['open']) / df['open']
+        """
+
+        # 提取 open 和 close 列为 NumPy 数组
+        open_price = df['open'].values
+        close_price = df['close'].values
+
+        # 预分配结果数组
+        idmom_array = numpy.full(len(df), numpy.nan, dtype=numpy.float32)
+
+        # 向量化计算 IDMOM：(close - open) / open
+        valid_mask = open_price != 0
+        idmom_array[valid_mask] = (close_price[valid_mask] - open_price[valid_mask]) / open_price[valid_mask]
+
+        # 构造新列
+        new_column = pandas.Series(idmom_array, index=df.index, name='IDMOM')
+
+        # 使用 assign 替代 concat，避免内存碎片
+        df = df.assign(**{
+            new_column.name: new_column
+        })
 
         # 返回结果
         if 'datetime' in df.columns:

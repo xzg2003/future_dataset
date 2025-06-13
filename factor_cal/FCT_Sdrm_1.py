@@ -24,8 +24,17 @@ class FCT_Sdrm_1:
             raise ValueError("param missing 'length'")
         print(f"Using length: {length}")
 
+        """
         # 计算收盘价的标准差
         df[f'FCT_Sdrm_1@{length}'] = df['close'].rolling(window=length).std()
+        """
+
+        # 修改为 pd.concat 批量合并方式
+        new_columns = pandas.DataFrame({
+            f'FCT_Sdrm_1@{length}': df['close'].rolling(window=length).std()
+        }, index=df.index)
+
+        df = pandas.concat([df, new_columns], axis=1)
 
         # 返回结果
         if 'datetime' in df.columns:

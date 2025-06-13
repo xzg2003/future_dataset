@@ -26,6 +26,7 @@ class FCT_TSI_Ref_1:
             raise ValueError("param missing 'short' or 'long'")
         print(f"Using short: {short}, long: {long}")
 
+        """
         # 计算价格变化
         df['diff'] = df['close'].diff()
 
@@ -40,6 +41,28 @@ class FCT_TSI_Ref_1:
 
         # 计算 TSI
         df[f'FCT_TSI_Ref_1'] = 100 * (ema_2 / (abs_ema_2 + 1e-10))
+        """
+
+        # 初始化 new_columns 用于统一管理中间变量
+        new_columns = pandas.DataFrame(index=df.index)
+
+        # 计算价格变化
+        new_columns['diff'] = df['close'].diff()
+
+        # 计算两次 EMA
+        ema_1 = new_columns['diff'].ewm(span=short, adjust=False).mean()
+        ema_2 = ema_1.ewm(span=long, adjust=False).mean()
+
+        # 计算绝对值部分的两次 EMA
+        abs_diff = numpy.abs(new_columns['diff'])
+        abs_ema_1 = abs_diff.ewm(span=short, adjust=False).mean()
+        abs_ema_2 = abs_ema_1.ewm(span=long, adjust=False).mean()
+
+        # 计算 TSI
+        new_columns[f'FCT_TSI_Ref_1'] = 100 * (ema_2 / (abs_ema_2 + 1e-10))
+
+        # 合并到主表
+        df = pandas.concat([df, new_columns], axis=1)
 
         # 返回结果
         if 'datetime' in df.columns:

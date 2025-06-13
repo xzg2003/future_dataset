@@ -27,14 +27,30 @@ class FCT_Cmf_1:
         print(f"Using length: {length}")
 
         # 计算MFV
-        df['MFV'] = ((2 * df['close'] - df['low'] - df['high']) / (df['high'] - df['low'])) * df['volume']
+        # df['MFV'] = ((2 * df['close'] - df['low'] - df['high']) / (df['high'] - df['low'])) * df['volume']
 
         # 计算CMF
-        rolling_sum_mfv     = df['MFV'].rolling(window=length).sum().fillna(0)
-        rolling_sum_volume  = df['volume'].rolling(window=length).sum().fillna(0)
+        # rolling_sum_mfv     = df['MFV'].rolling(window=length).sum().fillna(0)
+        # rolling_sum_volume  = df['volume'].rolling(window=length).sum().fillna(0)
 
         # 计算最终的值
-        df[f'FCT_Cmf_1@{length}'] = rolling_sum_mfv / rolling_sum_volume
+        # df[f'FCT_Cmf_1@{length}'] = rolling_sum_mfv / rolling_sum_volume
+
+        # 修改为 pd.concat 批量合并方式
+        new_columns = pandas.DataFrame(index=df.index)
+
+        # 计算 MFV
+        new_columns['MFV'] = ((2 * df['close'] - df['low'] - df['high']) / (df['high'] - df['low'])) * df['volume']
+
+        # 计算 CMF 所需滚动和
+        rolling_sum_mfv = new_columns['MFV'].rolling(window=length).sum().fillna(0)
+        rolling_sum_volume = df['volume'].rolling(window=length).sum().fillna(0)
+
+        # 最终因子计算
+        new_columns[f'FCT_Cmf_1@{length}'] = rolling_sum_mfv / rolling_sum_volume
+
+        # 合并进原始 df
+        df = pandas.concat([df, new_columns], axis=1)
 
         # 返回结果
         if 'datetime' in df.columns:

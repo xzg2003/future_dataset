@@ -25,11 +25,30 @@ class FCT_Vr:
             raise ValueError("param missing 'length'")
         print(f"Using length: {length}")
 
+        """
         # 计算过去 length 期的平均成交量
         avg_vol = df['volume'].rolling(window=length).mean()
 
         # 计算量比
         df[f'FCT_Vr@{length}'] = df['volume'] / (avg_vol + 1e-10)
+        """
+
+         # 确保索引有序
+        if not df.index.is_monotonic_increasing:
+            df = df.sort_index()
+
+        # 提取 volume 数据
+        volume = df['volume']
+
+        # 计算平均成交量
+        avg_vol = volume.rolling(window=length).mean()
+
+        # 计算量比
+        new_column = volume / (avg_vol + 1e-10)
+        new_column.name = f'{self.factor_name}@{length}'
+
+        # 合并进原始 df
+        df = pandas.concat([df, new_column], axis=1)
 
         # 返回结果
         if 'datetime' in df.columns:

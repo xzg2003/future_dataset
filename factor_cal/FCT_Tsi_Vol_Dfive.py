@@ -27,6 +27,7 @@ class FCT_Tsi_Vol_Dfive:
             raise ValueError("param missing 'short', 'long' or 'vol_length'")
         print(f"Using short: {short}, long: {long}, vol_length: {vol_length}")
 
+        """
         # 计算TSI
         df['diff'] = df['close'].diff()
         ema1 = df['diff'].ewm(span=short, adjust=False).mean()
@@ -41,6 +42,30 @@ class FCT_Tsi_Vol_Dfive:
 
         # 归一化
         df[f'FCT_Tsi_Vol_Dfive'] = df['TSI'] / (df['vol_mean'] + 1e-10)
+        """
+
+        # 建议做法：初始化 new_columns 用于统一管理中间变量
+        new_columns = pandas.DataFrame(index=df.index)
+
+        # 计算 diff
+        new_columns['diff'] = df['close'].diff()
+
+        # EMA 层级计算
+        ema1 = new_columns['diff'].ewm(span=short, adjust=False).mean()
+        ema2 = ema1.ewm(span=long, adjust=False).mean()
+
+        abs_diff = numpy.abs(new_columns['diff'])
+        abs_ema1 = abs_diff.ewm(span=short, adjust=False).mean()
+        abs_ema2 = abs_ema1.ewm(span=long, adjust=False).mean()
+
+        new_columns['TSI'] = 100 * (ema2 / (abs_ema2 + 1e-10))
+
+        # 成交量归一化
+        new_columns['vol_mean'] = df['volume'].rolling(window=vol_length).mean()
+        new_columns[f'FCT_Tsi_Vol_Dfive'] = new_columns['TSI'] / (new_columns['vol_mean'] + 1e-10)
+
+        # 最终合并
+        df = pandas.concat([df, new_columns[[f'FCT_Tsi_Vol_Dfive']]], axis=1)
 
         # 返回结果
         if 'datetime' in df.columns:

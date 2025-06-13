@@ -28,12 +28,28 @@ class FCT_Support_Close_Thr_1:
             raise ValueError("param missing 'length'")
         print(f"Using length: {length}, thr: {thr}")
 
+        """
         # 计算每个窗口内的分位数阈值
         def support_count(x):
             threshold = numpy.quantile(x, thr)
             return numpy.sum(x <= threshold)
 
         df[f'FCT_Support_Close_Thr_1'] = df['close'].rolling(window=length, min_periods=length).apply(support_count, raw=True)
+        """
+
+        # 初始化 new_columns 用于统一管理新增列
+        new_columns = pandas.DataFrame(index=df.index)
+
+        # 计算支撑位计数（使用 rolling + apply）
+        def support_count(x):
+            threshold = numpy.quantile(x, thr)
+            return numpy.sum(x <= threshold)
+
+        # 使用 rolling.apply 获取结果，并赋值给 new_columns
+        new_columns[f'FCT_Support_Close_Thr_1'] = df['close'].rolling(window=length, min_periods=length).apply(support_count, raw=True)
+
+        # 合并到主表（一次性合并）
+        df = pandas.concat([df, new_columns], axis=1)
 
         # 返回结果
         if 'datetime' in df.columns:

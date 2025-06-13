@@ -30,19 +30,45 @@ class FCT_Br_1:
         df['close_pre'] = df['close'].shift(1)
 
         # 计算up和down两个值
-        df['up'] = numpy.where((df['high'] - df['close_pre']) > 0, df['high'] - df['close_pre'], 0)
-        df['down'] = numpy.where((df['close_pre'] - df['low']) > 0, df['close_pre'] - df['low'], 0)
+        # df['up'] = numpy.where((df['high'] - df['close_pre']) > 0, df['high'] - df['close_pre'], 0)
+        # df['down'] = numpy.where((df['close_pre'] - df['low']) > 0, df['close_pre'] - df['low'], 0)
 
         # 计算两个指标
-        df['br1'] = df['up'].rolling(window=length).sum()
-        df['br2'] = df['down'].rolling(window=length).sum()
+        # df['br1'] = df['up'].rolling(window=length).sum()
+        # df['br2'] = df['down'].rolling(window=length).sum()
 
         # 避免分母为零的情况
-        df['br_sum'] = df['br1'] + df['br2']
-        df['br_sum'] = numpy.where(df['br_sum'] == 0, numpy.nan, df['br_sum'])  # 避免分母为零
+        # df['br_sum'] = df['br1'] + df['br2']
+        # df['br_sum'] = numpy.where(df['br_sum'] == 0, numpy.nan, df['br_sum'])  # 避免分母为零
 
         # 计算特征值
-        df[f'FCT_Br_1@{length}'] = (df['br1'] - df['br2']) / df['br_sum']
+        # df[f'FCT_Br_1@{length}'] = (df['br1'] - df['br2']) / df['br_sum']
+
+        # 修改为 pd.concat 批量合并方式
+        new_columns = pandas.DataFrame(index=df.index)
+
+        # close_pre
+        new_columns['close_pre'] = df['close'].shift(1)
+
+        # up 和 down
+        new_columns['up'] = numpy.where((df['high'] - new_columns['close_pre']) > 0,
+                                        df['high'] - new_columns['close_pre'], 0)
+        new_columns['down'] = numpy.where((new_columns['close_pre'] - df['low']) > 0,
+                                          new_columns['close_pre'] - df['low'], 0)
+
+        # br1 和 br2
+        new_columns['br1'] = new_columns['up'].rolling(window=length).sum()
+        new_columns['br2'] = new_columns['down'].rolling(window=length).sum()
+
+        # 避免分母为零
+        new_columns['br_sum'] = new_columns['br1'] + new_columns['br2']
+        new_columns['br_sum'] = numpy.where(new_columns['br_sum'] == 0, numpy.nan, new_columns['br_sum'])
+
+        # 最终因子计算
+        new_columns[f'FCT_Br_1@{length}'] = (new_columns['br1'] - new_columns['br2']) / new_columns['br_sum']
+
+        # 合并进原始 df
+        df = pandas.concat([df, new_columns], axis=1)
 
         # 返回特征值
         if 'datetime' in df.columns:

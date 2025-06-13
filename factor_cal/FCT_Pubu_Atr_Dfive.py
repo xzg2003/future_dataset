@@ -36,22 +36,27 @@ class FCT_Pubu_Atr_Dfive:
         if k_line_type is None:
             raise ValueError("param missing instrument")
 
-        # 判断 Tr.csv 文件是否存在，便于调用
-        tr_data_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/{k_line_type}/{instrument}/Tr.csv')
+        # 修改为 pd.concat 批量合并方式
+        new_columns = pandas.DataFrame(index=df.index)
+
+        # Tr 数据来自外部文件
+        tr_data_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                    f'../data/{k_line_type}/{instrument}/Tr.csv')
         if not os.path.exists(tr_data_path):
-            raise FileNotFoundError(F"Tr file noot fount: {tr_data_path}")
+            raise FileNotFoundError(f"Tr file not found: {tr_data_path}")
 
         tr_df = pandas.read_csv(tr_data_path)
-        # Tr.csv 有datetime 和 Tr 两列，且与主 df 按 datetime 对齐
         if 'datetime' in df.columns and 'datetime' in tr_df.columns:
-            df = df.merge(tr_df[['datetime', 'Tr']], on='datetime', how='left')
+            tr_series = df[['datetime']].merge(tr_df[['datetime', 'Tr']], on='datetime', how='left')['Tr']
         else:
-            # 如果没有 datetime 列，直接用 index 对齐
-            df['Tr'] = tr_df['Tr']
+            tr_series = tr_df['Tr'].reindex(df.index, fill_value=numpy.nan)
+
+        new_columns['Tr'] = tr_series
 
         # 计算 ATR
-        df['ATR'] = df['Tr'].rolling(window=atr_length).mean()
+        # df['ATR'] = df['Tr'].rolling(window=atr_length).mean()
 
+        """
         # 计算短期均线在长期窗口内的分位数位置
         def pubu_percentile(x):
             window = x[-long:]
@@ -74,6 +79,30 @@ class FCT_Pubu_Atr_Dfive:
 
         # 用 ATR 归一化
         df[f'FCT_Pubu_Atr_Dfive'] = df[f'FCT_Pubu_1'] / (df['ATR'] + 1e-10)
+        """
+
+        # 计算 ATR
+        new_columns['ATR'] = new_columns['Tr'].rolling(window=atr_length).mean()
+
+        # 加载 FCT_Pubu_1 数据
+        pubu_data_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                      f'../data/{k_line_type}/{instrument}/FCT_Pubu_1.csv')
+        if not os.path.exists(pubu_data_path):
+            raise FileNotFoundError(f"FCT_Pubu_1 file not found: {pubu_data_path}")
+
+        pubu_df = pandas.read_csv(pubu_data_path)
+        if 'datetime' in df.columns and 'datetime' in pubu_df.columns:
+            pubu_series = df[['datetime']].merge(pubu_df[['datetime', 'FCT_Pubu_1']], on='datetime', how='left')['FCT_Pubu_1']
+        else:
+            pubu_series = pubu_df['FCT_Pubu_1'].reindex(df.index, fill_value=numpy.nan)
+
+        new_columns['FCT_Pubu_1'] = pubu_series
+
+        # 用 ATR 归一化
+        new_columns[f'FCT_Pubu_Atr_Dfive'] = new_columns['FCT_Pubu_1'] / (new_columns['ATR'] + 1e-10)
+
+        # 合并进原始 df
+        df = pandas.concat([df, new_columns], axis=1)
 
         # 返回结果
         if 'datetime' in df.columns:

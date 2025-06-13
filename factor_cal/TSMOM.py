@@ -34,8 +34,32 @@ class TSMOM:
         计算 TSMOM 动量因子
         这里取收盘价进行计算
         """
+        """
         df[f'TSMOM@{length}'] = df['close'].pct_change(periods=length)
         df[f'TSMOM@{length}'] = df[f'TSMOM@{length}'].replace([numpy.inf, -numpy.inf], numpy.nan).fillna(0)
+        """
+
+        # 提取 close 数据为 NumPy 数组
+        close_array = df['close'].values
+
+        # 预分配结果数组
+        tsmom_array = numpy.full(len(close_array), numpy.nan, dtype=numpy.float32)
+
+        # 计算动量：pct_change(periods=length)
+        valid_indices = numpy.arange(length, len(close_array))
+        tsmom_array[valid_indices] = (close_array[valid_indices] - close_array[valid_indices - length]) / (
+                close_array[valid_indices - length] + 1e-10
+        )
+
+        # 替换 inf 和 nan 为 0
+        tsmom_array = numpy.nan_to_num(tsmom_array, nan=0.0, posinf=0.0, neginf=0.0)
+
+        # 构造新列 Series
+        col_name = f'{self.factor_name}@{length}'
+        new_column = pandas.Series(data=tsmom_array, index=df.index, name=col_name)
+
+        # 使用 assign 添加新列，避免 concat，减少内存碎片
+        df = df.assign(**{col_name: new_column})
 
         # 返回结果
         if 'datetime' in df.columns:

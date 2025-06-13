@@ -45,20 +45,27 @@ class FCT_Bias_1:
 
         # 计算震荡指标（这里直接照搬了前面Tr的计算代码）
         # 前一k线的收盘价
-        df['close_pre'] = df['close'].shift(1)
+        # df['close_pre'] = df['close'].shift(1)
 
-        # 判断 Tr.csv 文件是否存在，用于调用
-        tr_data_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/{k_line_type}/{instrument}/Tr.csv')
+        # 修改为 pd.concat 批量合并方式
+        new_columns = pandas.DataFrame(index=df.index)
+
+        # close_pre
+        new_columns['close_pre'] = df['close'].shift(1)
+
+        # Tr 数据来自外部文件
+        tr_data_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                    f'../data/{k_line_type}/{instrument}/Tr.csv')
         if not os.path.exists(tr_data_path):
-            raise FileNotFoundError(F"Tr file not found:{tr_data_path}")
+            raise FileNotFoundError(f"Tr file not found: {tr_data_path}")
 
         tr_df = pandas.read_csv(tr_data_path)
-        # Tr.csv 有 datetime 和 Tr 两列，且与主 df 按 datetime 对齐
         if 'datetime' in df.columns and 'datetime' in tr_df.columns:
-            df = df.merge(tr_df[['datetime', 'Tr']], on='datetime', how='left')
+            tr_series = df[['datetime']].merge(tr_df[['datetime', 'Tr']], on='datetime', how='left')['Tr']
         else:
-            # 如果没有 datetime 列，直接用index对齐
-            df['Tr'] = tr_df['Tr']
+            tr_series = tr_df['Tr'].reindex(new_columns.index, fill_value=numpy.nan)
+
+        new_columns['Tr'] = tr_series
 
         """
         # 计算因子，缺失mindiff，故这个函数是没有比较的
@@ -66,17 +73,27 @@ class FCT_Bias_1:
         """
 
         # 计算 Tr 的滚动均值并处理NaN
-        rolling_mean_tr = df['Tr'].rolling(window=length).mean().fillna(0)
+        # rolling_mean_tr = df['Tr'].rolling(window=length).mean().fillna(0)
 
         # 计算收盘价的滚动均值
-        rolling_mean_close = df['close'].rolling(window=length).mean().fillna(0)
+        # rolling_mean_close = df['close'].rolling(window=length).mean().fillna(0)
 
         # 正确的计算函数
-        df[f'FCT_Bias_1@{length}'] = numpy.where(
+        # df[f'FCT_Bias_1@{length}'] = numpy.where(rolling_mean_tr < mindiff,0,(df['close'] - rolling_mean_close) / rolling_mean_tr)
+
+        # 计算因子所需中间变量
+        rolling_mean_tr = new_columns['Tr'].rolling(window=length).mean().fillna(0)
+        rolling_mean_close = df['close'].rolling(window=length).mean().fillna(0)
+
+        # 最终因子计算
+        new_columns[f'FCT_Bias_1@{length}'] = numpy.where(
             rolling_mean_tr < mindiff,
             0,
             (df['close'] - rolling_mean_close) / rolling_mean_tr
         )
+
+        # 合并进原始 df
+        df = pandas.concat([df, new_columns], axis=1)
 
         # 返回结果
         if 'datetime' in df.columns:

@@ -25,6 +25,7 @@ class FCT_R_Div_RStd:
             raise ValueError("param missing 'length'")
         print(f"Using length: {length}")
 
+        """
         # 计算对数收益率
         df['ret'] = numpy.log(df['close'] / df['close'].shift(1))
 
@@ -36,6 +37,25 @@ class FCT_R_Div_RStd:
 
         # 计算收益率与波动率的比值
         df[f'FCT_R_Div_RStd@{length}'] = df['cum_ret'] / (df['ret_std'] + 1e-10)
+        """
+
+        # 修改为 pd.concat 批量合并方式
+        new_columns = pandas.DataFrame(index=df.index)
+
+        # 计算对数收益率
+        new_columns['ret'] = numpy.log(df['close'] / df['close'].shift(1))
+
+        # 计算 length 期累积收益率
+        new_columns['cum_ret'] = new_columns['ret'].rolling(window=length).sum()
+
+        # 计算 length 期收益率标准差
+        new_columns['ret_std'] = new_columns['ret'].rolling(window=length).std()
+
+        # 计算最终因子值
+        new_columns[f'FCT_R_Div_RStd@{length}'] = new_columns['cum_ret'] / (new_columns['ret_std'] + 1e-10)
+
+        # 合并进原始 df
+        df = pandas.concat([df, new_columns], axis=1)
 
         # 返回结果
         if 'datetime' in df.columns:

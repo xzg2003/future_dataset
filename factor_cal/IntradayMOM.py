@@ -23,9 +23,35 @@ class IntradayMOM:
         if 'open' not in df.columns or 'close' not in df.columns:
             raise ValueError("DataFrame must contain 'open' and 'close' columns")
 
+        """
         # 计算机每根 K 线的日内动量（对数收益率）
         df['IntradayMOM'] = numpy.log(df['close'] / df['open'])
         df['IntradayMOM'] = df['IntradayMOM'].replace([numpy.inf, -numpy.inf], numpy.nan).fillna(0)
+        """
+
+        # 提取基础数据为 NumPy 数组
+        open_array = df['open'].values
+        close_array = df['close'].values
+
+        # 预分配结果数组
+        intraday_mom_array = numpy.full(len(df), numpy.nan, dtype=numpy.float32)
+
+        # 向量化计算：log(close / open)
+        valid_mask = (open_array > 1e-10) & ~numpy.isclose(open_array, 0)
+        intraday_mom_array[valid_mask] = numpy.log(close_array[valid_mask] / open_array[valid_mask])
+
+        # 替换 inf 和 -inf 为 NaN，并填充 0（可选）
+        intraday_mom_array = numpy.nan_to_num(intraday_mom_array, nan=0.0, posinf=0.0, neginf=0.0)
+
+        # 构造新列 Series
+        new_column = pandas.Series(
+            data=intraday_mom_array,
+            index=df.index,
+            name='IntradayMOM'
+        )
+
+        # 使用 assign 添加新列，避免 concat，减少内存碎片
+        df = df.assign(**{new_column.name: new_column})
 
         # 返回结果
         if 'datetime' in df.columns:
