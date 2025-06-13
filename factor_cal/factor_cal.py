@@ -162,7 +162,6 @@ class factor_calculator:
                         # 当因子计算出错时报错
                         print(f"error at{save_path}, {e}")
 
-"""
 # 主程序入口
 if __name__ == "__main__":
     '''
@@ -197,8 +196,7 @@ if __name__ == "__main__":
     print(f"Loaded instruments_mindiff:{instruments_mindiff}")
 
     # 创建因子计算器实例，以调用内部的函数
-    calculator = factor_calculator(instruments, k_line_type, lengths, instruments_mindiff)
+    calculator = factor_calculator(instruments, k_line_type, instruments_mindiff)
 
     # 计算所有因子
     calculator.factors_cal()
-"""

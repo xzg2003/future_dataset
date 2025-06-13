@@ -5,8 +5,7 @@ instruments= ['A','AG','AL','AP','AU','BU','C','CF','CJ','CS',
             'SM','SN','SP','SR','SC','SS','TA','T','TF','UR','V','Y','ZN'] #期货类型
 
 # k线类型
-# k_line_types = ['5m', '1d']
-k_line_types = ['1d']
+k_line_types = ['5m', '1d']
 
 # 滑动长度
 lengths = [10, 20, 40, 80, 120, 180]
