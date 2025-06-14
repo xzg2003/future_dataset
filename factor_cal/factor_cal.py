@@ -31,7 +31,7 @@ def get_factor_calculator(factor_name):
         factor_class = getattr(module, factor_name)
         return factor_class
     except Exception as e:
-        logger.error(f"导入 {factor_name} 失败: {e}")
+        logger.error(f"Importing {factor_name} failed: {e}")
         return None
 
 def split_factor_name(factor_name):
@@ -108,16 +108,16 @@ class factor_calculator:
                 os.path.dirname(os.path.abspath(__file__)),
                 f'../data/1d/{instrument}/{instrument}.csv'
             )
-            logger.info(f"尝试读取数据文件: {data_path}")
+            logger.info(f"Trying to read: {data_path}")
             if not os.path.exists(data_path):
-                logger.warning(f"文件不存在：{data_path}")
+                logger.warning(f"File not exists: {data_path}")
                 continue
 
             try:
                 # 读取数据
                 df = pandas.read_csv(data_path)
             except Exception as e:
-                logger.error(f"读取失败：{data_path}， 错误信息：{e}")
+                logger.error(f"Failed to read file: {data_path}, error at: {e}")
                 continue
 
             # 获取因子名称列表
@@ -152,7 +152,7 @@ class factor_calculator:
 
                     # 检查 mindiff 是否存在
                     if param['mindiff'] is None:
-                        logger.warning(f"{instrument} 没有设置 mindiff")
+                        logger.warning(f"{instrument} no set mindiff")
                         continue
 
                     # 设置因子保存路径
@@ -164,7 +164,7 @@ class factor_calculator:
                     # 动态导入需要的因子计算器的包
                     calculator_class = get_factor_calculator(factor)
                     if calculator_class is None:
-                        logger.warning(f"载入因子计算器失败：{factor}")
+                        logger.warning(f"Import failed: {factor}")
                         continue
 
                     # 创建因子计算器实例
@@ -177,7 +177,7 @@ class factor_calculator:
                             continue
 
                         # 因子计算信息回报
-                        logger.info(f"计算中: {instrument} {factor_name} {k_line_type} {length}")
+                        logger.info(f"Calculating: {instrument} {factor_name} {k_line_type} {length}")
 
                         # 计算每一个因子，调用 calculator.formula 并传入参数进行计算
                         result = calculator_instance.formula(param)
@@ -187,11 +187,11 @@ class factor_calculator:
                         result.to_csv(save_path, index=False)
 
                         # 保存成功信息回报
-                        logger.info(f"计算成功：{save_path}")
+                        logger.info(f"Calculate success: {save_path}")
 
                     except Exception as e:
                         # 当因子计算出错时报错
-                        logger.exception(f"计算失败：{save_path}， 错误信息：{e}")
+                        logger.exception(f"Calculate failed: {save_path}, error at: {e}")
 
 # 主程序入口
 if __name__ == "__main__":
@@ -200,8 +200,8 @@ if __name__ == "__main__":
         level=logging.INFO,
         format='%(asctime)s - %(levelname)s - [%(module)s] %(message)s',
         handlers=[
-            logging.StreamHandler(),
-            logging.FileHandler('app.log')
+            logging.FileHandler('app.log', encoding='utf-8'),  # 设置编码为 utf-8
+            logging.StreamHandler()
         ]
     )
 
