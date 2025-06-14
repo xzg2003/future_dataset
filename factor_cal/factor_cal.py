@@ -1,3 +1,4 @@
+import logging
 import os       # 与路径操作相关的包，用于管理文件
 import pandas
 import importlib
@@ -6,6 +7,9 @@ import csv
 from lxml.doctestcompare import strip
 
 from config import default_data
+
+# 设置模块级 logger
+logger = logging.getLogger(__name__)
 
 factor_names_data = os.path.join(
     os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
@@ -24,7 +28,7 @@ def get_factor_calculator(factor_name):
         factor_class = getattr(module, factor_name)
         return factor_class
     except Exception as e:
-        print(f"导入{factor_name}失败：{e}")
+        logger.error(f"导入 {factor_name} 失败: {e}")
         return None
 
 def split_factor_name(factor_name):
@@ -66,7 +70,6 @@ class factor_calculator:
         初始化因子计算器
         :param instruments: 期货品种列表
         :param k_line_type: K线类型
-        :param lengths:     滑动平均长度列表
         """
         self.instruments = instruments
         self.k_line_types = k_line_types
@@ -80,16 +83,16 @@ class factor_calculator:
         for instrument in self.instruments:
             # 构建数据路径
             data_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/1d/{instrument}/{instrument}.csv')
-            print(f"Trying to read the file:{data_path}")
+            logger.info(f"尝试读取数据文件: {data_path}")
             if not os.path.exists(data_path):
-                print(f"Not exist:{data_path}")
+                logger.warning(f"文件不存在：{data_path}")
                 continue
 
             try:
                 # 读取数据
                 df = pandas.read_csv(data_path)
             except Exception as e:
-                print(f'Read failed:{data_path}, error info:{e}')
+                logger.error(f"读取失败：{data_path}， 错误信息：{e}")
                 continue
 
             # 获取因子名称列表
@@ -124,7 +127,7 @@ class factor_calculator:
 
                     # 检查 mindiff 是否存在
                     if param['mindiff'] is None:
-                        print(f"No mindiff for {instrument}, skip")
+                        logger.warning(f"{instrument} 没有设置 mindiff")
                         continue
 
                     # 设置因子保存路径
@@ -133,7 +136,7 @@ class factor_calculator:
                     # 动态导入需要的因子计算器的包
                     calculator_class = get_factor_calculator(factor)
                     if calculator_class is None:
-                        print(f"Fail to load {factor}")
+                        logger.warning(f"载入因子计算器失败：{factor}")
                         continue
 
                     # 创建因子计算器实例
@@ -146,7 +149,7 @@ class factor_calculator:
                             continue
 
                         # 因子计算信息回报
-                        print(f"\ninstrument:{instrument} factor:{save_path} calculating.")
+                        logger.info(f"计算中: {instrument} {factor_name} {k_line_type} {length}")
 
                         # 计算每一个因子，调用 calculator.formula 并传入参数进行计算
                         result = calculator_instance.formula(param)
@@ -156,11 +159,11 @@ class factor_calculator:
                         result.to_csv(save_path, index=False)
 
                         # 保存成功信息回报
-                        print(f"instrument:{instrument} factor:{save_path} success.")
+                        logger.info(f"计算成功：{save_path}")
 
                     except Exception as e:
                         # 当因子计算出错时报错
-                        print(f"error at{save_path}, {e}")
+                        logger.exception(f"计算失败：{save_path}， 错误信息：{e}")
 
 # 主程序入口
 if __name__ == "__main__":
@@ -191,9 +194,9 @@ if __name__ == "__main__":
                 if instrument and mindiff:
                     instruments_mindiff[instrument] = float(mindiff)
             except ValueError:
-                print(f"Skip invalid data:{row}")
+                logger.warning(f"Skip invalid data: {row}")
 
-    print(f"Loaded instruments_mindiff:{instruments_mindiff}")
+    logger.info(f"Loaded instruments_mindiff: {instruments_mindiff}")
 
     # 创建因子计算器实例，以调用内部的函数
     calculator = factor_calculator(instruments, k_line_type, instruments_mindiff)
