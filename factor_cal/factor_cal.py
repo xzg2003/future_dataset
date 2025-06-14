@@ -2,14 +2,17 @@ import logging
 import os       # 与路径操作相关的包，用于管理文件
 import pandas
 import importlib
+import multiprocessing
 import csv
 
 from lxml.doctestcompare import strip
 
 from config import default_data
+from config import k_line_types
+from config import instruments
 
-# 设置模块级 logger
-logger = logging.getLogger(__name__)
+# 最小变化单位文件路径
+mindiff_file_path = '../data/mindiff/mindiff.csv'
 
 factor_names_data = os.path.join(
     os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
@@ -24,7 +27,7 @@ def get_factor_calculator(factor_name):
     """
     # 这里假设每个因子模块名和类名都与 factor_name 一致
     try:
-        module = importlib.import_module(f'.{factor_name}', __package__)
+        module = importlib.import_module(f'{factor_name}')
         factor_class = getattr(module, factor_name)
         return factor_class
     except Exception as e:
@@ -64,6 +67,25 @@ def read_single_column(file_path, skip_header=True):
                 data.append(row[0].strip()) # 取出首尾空白字符
     return data
 
+def run_one_instrument(instrument, k_line_type, instruments_mindiff):
+    # 子进程专用 logger 配置
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(asctime)s - %(levelname)s - [%(module)s] %(message)s',
+        handlers=[
+            logging.FileHandler('app.log'),
+            logging.StreamHandler()
+        ]
+    )
+    # 定义 logger
+    local_logger = logging.getLogger(__name__)
+
+    try:
+        calculator = factor_calculator([instrument], [k_line_type], instruments_mindiff)
+        calculator.factors_cal(local_logger)  # 传入 logger
+    except Exception as e:
+        logging.exception(f"Error processing {instrument}, {k_line_type} : {e}")
+
 class factor_calculator:
     def __init__(self, instruments, k_line_types, instruments_mindiff):
         """
@@ -75,14 +97,17 @@ class factor_calculator:
         self.k_line_types = k_line_types
         self.instruments_mindiff = instruments_mindiff
 
-    def factors_cal(self):
+    def factors_cal(self, logger):
         """
         调用各个因子计算器，并返回计算结果
         :return: 以 dataframe 的格式返回因子计算的结果，
         """
         for instrument in self.instruments:
             # 构建数据路径
-            data_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/1d/{instrument}/{instrument}.csv')
+            data_path = os.path.join(
+                os.path.dirname(os.path.abspath(__file__)),
+                f'../data/1d/{instrument}/{instrument}.csv'
+            )
             logger.info(f"尝试读取数据文件: {data_path}")
             if not os.path.exists(data_path):
                 logger.warning(f"文件不存在：{data_path}")
@@ -131,7 +156,10 @@ class factor_calculator:
                         continue
 
                     # 设置因子保存路径
-                    save_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/{k_line_type}/{instrument}/{factor_name}.csv')
+                    save_path = os.path.join(
+                        os.path.dirname(os.path.abspath(__file__)),
+                        f'../data/{k_line_type}/{instrument}/{factor_name}.csv'
+                    )
 
                     # 动态导入需要的因子计算器的包
                     calculator_class = get_factor_calculator(factor)
@@ -167,18 +195,18 @@ class factor_calculator:
 
 # 主程序入口
 if __name__ == "__main__":
-    '''
-    数据的初始化，在main.py里面也有相同的部分，便于使用者调整数据处理的范围
-    instruments:    期货品种
-    k_line_type:    k线类型
-    lengths:        滑动平均长度
-    '''
-    instruments = ['A']
-    k_line_type = '5m'
-    lengths = [10, 20, 40, 80, 120, 180]
+    # 配置 root logger
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(asctime)s - %(levelname)s - [%(module)s] %(message)s',
+        handlers=[
+            logging.StreamHandler(),
+            logging.FileHandler('app.log')
+        ]
+    )
 
-    # 最小变化单位文件路径
-    mindiff_file_path = './data/mindiff/mindiff.csv'
+    # 定义 logger
+    logger = logging.getLogger(__name__)
 
     # 初始化 mindiff 字典
     instruments_mindiff = {}
@@ -198,8 +226,25 @@ if __name__ == "__main__":
 
     logger.info(f"Loaded instruments_mindiff: {instruments_mindiff}")
 
-    # 创建因子计算器实例，以调用内部的函数
-    calculator = factor_calculator(instruments, k_line_type, instruments_mindiff)
+    '''
+    # 单进程处理每个因子
+    for k_line_type in k_line_types:
+        logging.info(f"Processing: {k_line_type}")
 
-    # 计算所有因子
-    calculator.factors_cal()
+        for instrument in instruments:
+            for length in lengths:
+                run_one_instrument(instrument, k_line_type, instruments_mindiff)
+
+        logging.info(f"Finished: {k_line_type}")
+    '''
+
+    # 利用进程池计算每个因子
+    for k_line_type in k_line_types:
+        logger.info(f"Processing: {k_line_type}")
+        pool = multiprocessing.Pool(processes=multiprocessing.cpu_count())
+
+        for instrument in instruments:
+            pool.apply_async(run_one_instrument, args=(instrument, k_line_type, instruments_mindiff))
+        pool.close()
+        pool.join()
+        logger.info(f"Finished: {k_line_type}")
