@@ -9,10 +9,10 @@ from FCT_Br_1      import      FCT_Br_1
 from FCT_Cmf_1     import      FCT_Cmf_1
 from Tr            import      Tr
 
-from Bid_Ask_Spread import Bid_Ask_Spread
 from Amihud import Amihud
 from Turnover import Turnover
-from Order_Book_Length import Order_Book_Length
+# Bid_Ask_Spread：买卖差价因子，缺少 bid1 和 ask1 列数据
+# Order_Book_Length : 由于缺少 bid_size 和 ask_size 而暂时无法计算
 
 from FCT_Donchian_Vol_Dfive import FCT_Donchian_Vol_Dfive
 from FCT_Dmi_Adxr import FCT_Dmi_Adxr
@@ -25,6 +25,12 @@ from FCT_Cr_Vol_Dfive import FCT_Cr_Vol_Dfive
 from FCT_Cr_Ref_1 import FCT_Cr_Ref_1
 from FCT_Cr_Atr_Dfive import FCT_Cr_Atr_Dfive
 from FCT_Cr_1 import FCT_Cr_1
+from FCT_Close_0_1 import FCT_Close_0_1
+from FCT_Close_1_1 import FCT_Close_1_1
+from FCT_Close_1_1_1 import FCT_Close_1_1_1
+from FCT_Cci import FCT_Cci
+# FCT_Camarilla_Vol_Dfive 没有查到如何计算这一因子
+# FCT_BuySell_T 的计算似乎需要 buy_volume 和 sell_volume 两个字段
 
 #sys.path.append('../')
 from config import *
@@ -49,32 +55,35 @@ class factor_calculator:
         以字典的形式，将每个计算器与其名称进行对应，便于在程序中调用
         '''
         self.factors_dict = {
-            # "Tr":           Tr(),
-            # "FCT_Ac_Tr_1":  FCT_Ac_Tr_1(),
-            # "FCT_Ar_1":     FCT_Ar_1(),
-            # "FCT_Bias_1":   FCT_Bias_1(),
-            # "FCT_Br_1":     FCT_Br_1(),
-            # "FCT_Cmf_1":    FCT_Cmf_1(),  
-            # "Bid_Ask_Spread": Bid_Ask_Spread(), 缺少 bid1, ask1 暂时无法计算
-            # "Amihud": Amihud(),
-            # "Turnover": Turnover(), 不可使用的 total_turnover 列导致问题 （可以解决）
-            # "Order_Book_Length": Order_Book_Length(), 缺少 bid_size 和 ask_size 暂时无法计算
-            # "FCT_Donchian_Vol_Dfive": FCT_Donchian_Vol_Dfive(),
-            # "FCT_Dmi_Adxr": FCT_Dmi_Adxr(),
-            # "FCT_Dmi_Adx": FCT_Dmi_Adx(),
-            # "FCT_Demark_Vol_Dfive": FCT_Demark_Vol_Dfive(),
-            # "FCT_Demark_Ref_1" : FCT_Demark_Ref_1(),
-            # "FCT_Demark_Atr_Dfive" : FCT_Demark_Atr_Dfive(),
-            # "FCT_Dbcd": FCT_Dbcd(),
-            # "FCT_Cr_Vol_Dfive": FCT_Cr_Vol_Dfive(),
-            # "FCT_Cr_Ref_1": FCT_Cr_Ref_1(),
-            # "FCT_Cr_Atr_Dfive": FCT_Cr_Atr_Dfive(),
+            "Tr":           Tr(),
+            "FCT_Ac_Tr_1":  FCT_Ac_Tr_1(),
+            "FCT_Ar_1":     FCT_Ar_1(),
+            "FCT_Bias_1":   FCT_Bias_1(),
+            "FCT_Br_1":     FCT_Br_1(),
+            "FCT_Cmf_1":    FCT_Cmf_1(),  
+            "Amihud": Amihud(),
+            "Turnover": Turnover(),
+            "FCT_Donchian_Vol_Dfive": FCT_Donchian_Vol_Dfive(),
+            "FCT_Dmi_Adxr": FCT_Dmi_Adxr(),
+            "FCT_Dmi_Adx": FCT_Dmi_Adx(),
+            "FCT_Demark_Vol_Dfive": FCT_Demark_Vol_Dfive(),
+            "FCT_Demark_Ref_1" : FCT_Demark_Ref_1(),
+            "FCT_Demark_Atr_Dfive" : FCT_Demark_Atr_Dfive(),
+            "FCT_Dbcd": FCT_Dbcd(),
+            "FCT_Cr_Vol_Dfive": FCT_Cr_Vol_Dfive(),
+            "FCT_Cr_Ref_1": FCT_Cr_Ref_1(),
+            "FCT_Cr_Atr_Dfive": FCT_Cr_Atr_Dfive(),
             "FCT_Cr_1": FCT_Cr_1(),
+            "FCT_Close_0_1": FCT_Close_0_1(),
+            "FCT_Close_1_1": FCT_Close_1_1(),
+            "FCT_Close_1_1_1": FCT_Close_1_1_1(),
+            "FCT_Cci": FCT_Cci(),
         }
 
         self.require_length_factors = [
             "FCT_Ac_Tr_1", "FCT_Ar_1", "FCT_Bias_1", "FCT_Br_1", "FCT_Cmf_1", 
-            "Amihud", "Turnover", "FCT_Dmi_Adxr", "FCT_Dmi_Adx", "FCT_Demark_Ref_1"
+            "Amihud", "FCT_Dmi_Adxr", "FCT_Dmi_Adx", "FCT_Demark_Ref_1", 
+            "FCT_Cci"
         ]
 
     def factors_cal(self):

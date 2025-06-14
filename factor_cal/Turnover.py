@@ -1,5 +1,5 @@
-# Turnover 换手率因子计算
-# 由于 total_turnover 似乎一直为 0 而不知如何计算
+# FCT_Turnover : 换手率：成交量与未平仓合约量的比值
+# FCT_Turnover = volume / open_interest
 
 import pandas as pd
 
@@ -19,7 +19,14 @@ class Turnover:
         if not isinstance(df, pd.DataFrame):
             raise TypeError("'df' 必须是 pandas.DataFrame 类型")
 
-        df[factor_name] = df['total_turnover']
+        # 检查必要的列
+        required_columns = ['volume', 'open_interest']
+        for col in required_columns:
+            if col not in df.columns:
+                raise ValueError(f"DataFrame 必须包含列 '{col}'")
+
+        # 计算 Turnover
+        df[factor_name] = df['volume'] / df['open_interest']
 
         # 返回结果
         if 'datetime' in df.columns:
