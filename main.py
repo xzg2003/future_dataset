@@ -6,7 +6,6 @@ import multiprocessing
 # 从 config 中导入默认参数
 from config import instruments
 from config import k_line_types
-from config import lengths
 
 # 设置工作区相对路径
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
@@ -14,7 +13,7 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 # 最小变化单位文件路径
 mindiff_file_path = './data/mindiff/mindiff.csv'
 
-def run_one_instrument(instrument, k_line_type, length, instruments_mindiff):
+def run_one_instrument(instrument, k_line_type, instruments_mindiff):
     calculator = factor_calculator([instrument], [k_line_type], instruments_mindiff)
     calculator.factors_cal()
 
@@ -44,7 +43,7 @@ def main():
 
         for instrument in instruments:
             for length in lengths:
-                run_one_instrument(instrument, k_line_type, length, instruments_mindiff)
+                run_one_instrument(instrument, k_line_type, instruments_mindiff)
 
         print(f"Finished: {k_line_type}")
     '''
@@ -55,8 +54,7 @@ def main():
         pool = multiprocessing.Pool(processes=multiprocessing.cpu_count())
 
         for instrument in instruments:
-            for length in lengths:
-                pool.apply_async(run_one_instrument, args=(instrument, k_line_type, length, instruments_mindiff))
+            pool.apply_async(run_one_instrument, args=(instrument, k_line_type, instruments_mindiff))
         pool.close()
         pool.join()
         print(f"Finished: {k_line_type}")
