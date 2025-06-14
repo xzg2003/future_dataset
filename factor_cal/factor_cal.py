@@ -81,20 +81,20 @@ def run_one_instrument(instrument, k_line_type, instruments_mindiff):
     local_logger = logging.getLogger(__name__)
 
     try:
-        calculator = factor_calculator([instrument], [k_line_type], instruments_mindiff)
+        calculator = factor_calculator([instrument], k_line_type, instruments_mindiff)
         calculator.factors_cal(local_logger)  # 传入 logger
     except Exception as e:
         logging.exception(f"Error processing {instrument}, {k_line_type} : {e}")
 
 class factor_calculator:
-    def __init__(self, instruments, k_line_types, instruments_mindiff):
+    def __init__(self, instruments, k_line_type, instruments_mindiff):
         """
         初始化因子计算器
         :param instruments: 期货品种列表
-        :param k_line_type: K线类型
+        :param k_line_typ: K线类型
         """
         self.instruments = instruments
-        self.k_line_types = k_line_types
+        self.k_line_type = k_line_type
         self.instruments_mindiff = instruments_mindiff
 
     def factors_cal(self, logger):
@@ -106,7 +106,7 @@ class factor_calculator:
             # 构建数据路径
             data_path = os.path.join(
                 os.path.dirname(os.path.abspath(__file__)),
-                f'../data/1d/{instrument}/{instrument}.csv'
+                f'../data/{self.k_line_type}/{instrument}/{instrument}.csv'
             )
             logger.info(f"Trying to read: {data_path}")
             if not os.path.exists(data_path):
@@ -125,73 +125,72 @@ class factor_calculator:
 
             # 遍历因子字典，逐个计算因子
             # 第一层循环是关于k线类型的循环
-            for k_line_type in self.k_line_types:
 
-                # 第二层循环是关于因子名称的循环
-                for factor_name in factor_names:
-                    # 这里将分割后的结果进行解包
-                    factor, length = split_factor_name(factor_name)
+            # 第二层循环是关于因子名称的循环
+            for factor_name in factor_names:
+                # 这里将分割后的结果进行解包
+                factor, length = split_factor_name(factor_name)
 
-                    # 构建param字典，包含df和length
-                    param = {
-                        'df':           df,
-                        'instrument':   instrument,
-                        'length':       length,
-                        'k_line_type':  k_line_type,
-                        'mindiff':      self.instruments_mindiff.get(instrument, None),
-                        'short':        default_data["short"],
-                        'long':         default_data["long"],
-                        'atr_length':   default_data["atr_length"],
-                        'vol_length':   default_data["vol_length"],
-                        'thr':          default_data["thr"],
-                        'n_std':        default_data["n_std"],
-                        'fast':         default_data["fast"],
-                        'slow':         default_data["slow"],
-                        'signal':       default_data["signal"],
-                    }
+                # 构建param字典，包含df和length
+                param = {
+                    'df':           df,
+                    'instrument':   instrument,
+                    'length':       length,
+                    'k_line_type':  self.k_line_type,
+                    'mindiff':      self.instruments_mindiff.get(instrument, None),
+                    'short':        default_data["short"],
+                    'long':         default_data["long"],
+                    'atr_length':   default_data["atr_length"],
+                    'vol_length':   default_data["vol_length"],
+                    'thr':          default_data["thr"],
+                    'n_std':        default_data["n_std"],
+                    'fast':         default_data["fast"],
+                    'slow':         default_data["slow"],
+                    'signal':       default_data["signal"],
+                }
 
-                    # 检查 mindiff 是否存在
-                    if param['mindiff'] is None:
-                        logger.warning(f"{instrument} no set mindiff")
+                # 检查 mindiff 是否存在
+                if param['mindiff'] is None:
+                    logger.warning(f"{instrument} no set mindiff")
+                    continue
+
+                # 设置因子保存路径
+                save_path = os.path.join(
+                    os.path.dirname(os.path.abspath(__file__)),
+                    f'../data/{self.k_line_type}/{instrument}/{factor_name}.csv'
+                )
+
+                # 动态导入需要的因子计算器的包
+                calculator_class = get_factor_calculator(factor)
+                if calculator_class is None:
+                    logger.warning(f"Import failed: {factor}")
+                    continue
+
+                # 创建因子计算器实例
+                calculator_instance = calculator_class()
+
+                try:
+                    # 检查文件是否存在，以跳出当前因子计算的循环
+                    if os.path.exists(save_path):
+                        # print(f"{save_path}已存在，跳过该因子该长度的计算")
                         continue
 
-                    # 设置因子保存路径
-                    save_path = os.path.join(
-                        os.path.dirname(os.path.abspath(__file__)),
-                        f'../data/{k_line_type}/{instrument}/{factor_name}.csv'
-                    )
+                    # 因子计算信息回报
+                    logger.info(f"Calculating: {instrument} {factor_name} {self.k_line_type} {length}")
 
-                    # 动态导入需要的因子计算器的包
-                    calculator_class = get_factor_calculator(factor)
-                    if calculator_class is None:
-                        logger.warning(f"Import failed: {factor}")
-                        continue
+                    # 计算每一个因子，调用 calculator.formula 并传入参数进行计算
+                    result = calculator_instance.formula(param)
 
-                    # 创建因子计算器实例
-                    calculator_instance = calculator_class()
+                    # 利用 os.makedirs 设置一个路径，并利用to_csv保存结果
+                    os.makedirs(os.path.dirname(save_path), exist_ok=True)
+                    result.to_csv(save_path, index=False)
 
-                    try:
-                        # 检查文件是否存在，以跳出当前因子计算的循环
-                        if os.path.exists(save_path):
-                            # print(f"{save_path}已存在，跳过该因子该长度的计算")
-                            continue
+                    # 保存成功信息回报
+                    logger.info(f"Calculate success: {save_path}")
 
-                        # 因子计算信息回报
-                        logger.info(f"Calculating: {instrument} {factor_name} {k_line_type} {length}")
-
-                        # 计算每一个因子，调用 calculator.formula 并传入参数进行计算
-                        result = calculator_instance.formula(param)
-
-                        # 利用 os.makedirs 设置一个路径，并利用to_csv保存结果
-                        os.makedirs(os.path.dirname(save_path), exist_ok=True)
-                        result.to_csv(save_path, index=False)
-
-                        # 保存成功信息回报
-                        logger.info(f"Calculate success: {save_path}")
-
-                    except Exception as e:
-                        # 当因子计算出错时报错
-                        logger.exception(f"Calculate failed: {save_path}, error at: {e}")
+                except Exception as e:
+                    # 当因子计算出错时报错
+                    logger.exception(f"Calculate failed: {save_path}, error at: {e}")
 
 # 主程序入口
 if __name__ == "__main__":
