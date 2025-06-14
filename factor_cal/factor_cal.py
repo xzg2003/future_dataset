@@ -19,6 +19,12 @@ from FCT_Dmi_Adxr import FCT_Dmi_Adxr
 from FCT_Dmi_Adx import FCT_Dmi_Adx
 from FCT_Demark_Vol_Dfive import FCT_Demark_Vol_Dfive
 from FCT_Demark_Ref_1 import FCT_Demark_Ref_1
+from FCT_Demark_Atr_Dfive import FCT_Demark_Atr_Dfive
+from FCT_Dbcd import FCT_Dbcd
+from FCT_Cr_Vol_Dfive import FCT_Cr_Vol_Dfive
+from FCT_Cr_Ref_1 import FCT_Cr_Ref_1
+from FCT_Cr_Atr_Dfive import FCT_Cr_Atr_Dfive
+from FCT_Cr_1 import FCT_Cr_1
 
 #sys.path.append('../')
 from config import *
@@ -51,13 +57,19 @@ class factor_calculator:
             # "FCT_Cmf_1":    FCT_Cmf_1(),  
             # "Bid_Ask_Spread": Bid_Ask_Spread(), 缺少 bid1, ask1 暂时无法计算
             # "Amihud": Amihud(),
-            # "Turnover": Turnover(), 不可使用的 total_turnover 列导致问题
+            # "Turnover": Turnover(), 不可使用的 total_turnover 列导致问题 （可以解决）
             # "Order_Book_Length": Order_Book_Length(), 缺少 bid_size 和 ask_size 暂时无法计算
             # "FCT_Donchian_Vol_Dfive": FCT_Donchian_Vol_Dfive(),
             # "FCT_Dmi_Adxr": FCT_Dmi_Adxr(),
             # "FCT_Dmi_Adx": FCT_Dmi_Adx(),
             # "FCT_Demark_Vol_Dfive": FCT_Demark_Vol_Dfive(),
-            "FCT_Demark_Ref_1" : FCT_Demark_Ref_1(),
+            # "FCT_Demark_Ref_1" : FCT_Demark_Ref_1(),
+            # "FCT_Demark_Atr_Dfive" : FCT_Demark_Atr_Dfive(),
+            # "FCT_Dbcd": FCT_Dbcd(),
+            # "FCT_Cr_Vol_Dfive": FCT_Cr_Vol_Dfive(),
+            # "FCT_Cr_Ref_1": FCT_Cr_Ref_1(),
+            # "FCT_Cr_Atr_Dfive": FCT_Cr_Atr_Dfive(),
+            "FCT_Cr_1": FCT_Cr_1(),
         }
 
         self.require_length_factors = [

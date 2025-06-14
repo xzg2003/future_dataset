@@ -24,7 +24,7 @@ class Amihud:
         df['return'] = df['close'].pct_change()
 
         # 计算 Amihud 流动性因子
-        df[factor_name] = (np.abs(df['return']) / df['volume']).rolling(window=length).mean()
+        df[factor_name] = ((np.abs(df['return']) / df['volume']).rolling(window=length).mean()) * 1e6
 
         # 返回结果
         if 'datetime' in df.columns:
