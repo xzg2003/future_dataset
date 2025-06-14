@@ -1,12 +1,37 @@
 import os       # 与路径操作相关的包，用于管理文件
 import pandas as pd
-import sys      
+import sys     
+
 from FCT_Ac_Tr_1   import      FCT_Ac_Tr_1
 from FCT_Ar_1      import      FCT_Ar_1
 from FCT_Bias_1    import      FCT_Bias_1
 from FCT_Br_1      import      FCT_Br_1
 from FCT_Cmf_1     import      FCT_Cmf_1
 from Tr            import      Tr
+
+from Amihud import Amihud
+from Turnover import Turnover
+# Bid_Ask_Spread：买卖差价因子，缺少 bid1 和 ask1 列数据
+# Order_Book_Length : 由于缺少 bid_size 和 ask_size 而暂时无法计算
+
+from FCT_Donchian_Vol_Dfive import FCT_Donchian_Vol_Dfive
+from FCT_Dmi_Adxr import FCT_Dmi_Adxr
+from FCT_Dmi_Adx import FCT_Dmi_Adx
+from FCT_Demark_Vol_Dfive import FCT_Demark_Vol_Dfive
+from FCT_Demark_Ref_1 import FCT_Demark_Ref_1
+from FCT_Demark_Atr_Dfive import FCT_Demark_Atr_Dfive
+from FCT_Dbcd import FCT_Dbcd
+from FCT_Cr_Vol_Dfive import FCT_Cr_Vol_Dfive
+from FCT_Cr_Ref_1 import FCT_Cr_Ref_1
+from FCT_Cr_Atr_Dfive import FCT_Cr_Atr_Dfive
+from FCT_Cr_1 import FCT_Cr_1
+from FCT_Close_0_1 import FCT_Close_0_1
+from FCT_Close_1_1 import FCT_Close_1_1
+from FCT_Close_1_1_1 import FCT_Close_1_1_1
+from FCT_Cci import FCT_Cci
+# FCT_Camarilla_Vol_Dfive 没有查到如何计算这一因子
+# FCT_BuySell_T 的计算似乎需要 buy_volume 和 sell_volume 两个字段
+
 #sys.path.append('../')
 from config import *
 # 设置工作目录为当前脚本所在的目录
@@ -36,8 +61,30 @@ class factor_calculator:
             "FCT_Bias_1":   FCT_Bias_1(),
             "FCT_Br_1":     FCT_Br_1(),
             "FCT_Cmf_1":    FCT_Cmf_1(),  
+            "Amihud": Amihud(),
+            "Turnover": Turnover(),
+            "FCT_Donchian_Vol_Dfive": FCT_Donchian_Vol_Dfive(),
+            "FCT_Dmi_Adxr": FCT_Dmi_Adxr(),
+            "FCT_Dmi_Adx": FCT_Dmi_Adx(),
+            "FCT_Demark_Vol_Dfive": FCT_Demark_Vol_Dfive(),
+            "FCT_Demark_Ref_1" : FCT_Demark_Ref_1(),
+            "FCT_Demark_Atr_Dfive" : FCT_Demark_Atr_Dfive(),
+            "FCT_Dbcd": FCT_Dbcd(),
+            "FCT_Cr_Vol_Dfive": FCT_Cr_Vol_Dfive(),
+            "FCT_Cr_Ref_1": FCT_Cr_Ref_1(),
+            "FCT_Cr_Atr_Dfive": FCT_Cr_Atr_Dfive(),
+            "FCT_Cr_1": FCT_Cr_1(),
+            "FCT_Close_0_1": FCT_Close_0_1(),
+            "FCT_Close_1_1": FCT_Close_1_1(),
+            "FCT_Close_1_1_1": FCT_Close_1_1_1(),
+            "FCT_Cci": FCT_Cci(),
         }
 
+        self.require_length_factors = [
+            "FCT_Ac_Tr_1", "FCT_Ar_1", "FCT_Bias_1", "FCT_Br_1", "FCT_Cmf_1", 
+            "Amihud", "FCT_Dmi_Adxr", "FCT_Dmi_Adx", "FCT_Demark_Ref_1", 
+            "FCT_Cci"
+        ]
 
     def factors_cal(self):
         # 调用所有计算器，计算相应因子并保存到文件夹中
@@ -57,7 +104,7 @@ class factor_calculator:
             for factor_name, calculator in self.factors_dict.items():
                 try:
                     # 如果因子需要滑动长度，还需要遍历相应的长度列表
-                    if factor_name != "Tr":
+                    if factor_name in self.require_length_factors:
                         if os.path.exists(f'./data/{self.k_line_type}/{instrument}/Tr.csv'):
                             tr = pd.read_csv(f'./data/{self.k_line_type}/{instrument}/Tr.csv')
                             tr = tr['Tr']
