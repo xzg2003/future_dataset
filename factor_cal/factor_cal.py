@@ -153,7 +153,7 @@ if __name__ == "__main__":
     lengths:        滑动平均长度
     '''
     instruments = instruments
-    k_line_type = '1d'
+    k_line_type = '5m'
     lengths = [5, 10, 20, 40, 80, 120, 180]
 
     # 创建因子计算器实例，以调用内部的函数
