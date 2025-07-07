@@ -46,7 +46,5 @@ class FCT_Ac_Tr_1:
         '''
 
         # 返回结果
-        if 'datetime' in df.columns:
-            df = df.rename(columns={'datetime': 'date'})
-        result = df[['date', factor_name]].copy()
+        result = df[factor_name].copy()
         return result

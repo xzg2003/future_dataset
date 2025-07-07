@@ -32,7 +32,5 @@ class FCT_Ar_1:
         df[factor_name] = (df['ar1'] - df['ar2']) / (df['ar1'] + df['ar2'])
 
         # 返回结果
-        if 'datetime' in df.columns:
-            df = df.rename(columns={'datetime': 'date'})
-        result = df[['date', factor_name]].copy()
+        result = df[factor_name].copy()
         return result

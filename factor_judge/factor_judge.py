@@ -47,14 +47,14 @@ class factor_judge():
         # 提前读取每种期货的因子值并存储
         for i in instruments:
             if os.path.exists(f'./data/{k_line}/{i}/{self.name}.csv'):
-                df = pd.read_csv(f'./data/{k_line}/{i}/{self.name}.csv',encoding='utf-8')
-                df = df.replace([np.inf, -np.inf], np.nan)
-                df1 = pd.read_csv(f'./data/{k_line}/{i}/{i}.csv',encoding='utf-8')
+                df = pd.read_csv(f'./data/{k_line}/{i}/{i}.csv',encoding='utf-8')
+                df1 = pd.read_csv(f'./data/{k_line}/{i}/{self.name}.csv',encoding='utf-8')
+                df1 = df1.replace([np.inf, -np.inf], np.nan)
+                df[self.name] = df1[self.name]
                 if k_line == '5m':
-                    df['yield'] = (df1['open'].shift(-24)-df1['open'])/df1['open']
+                    df['yield'] = (df['open'].shift(-24)-df['open'])/df['open']
                 elif k_line == '1d':
-                    df['yield'] = (df1['open'].shift(-1)-df1['open'])/df1['open']
-                
+                    df['yield'] = (df['open'].shift(-1)-df['open'])/df['open']
                 lower, upper = adaptive_quantile_cutoff((df[self.name].dropna()).values)
                 df = df[(df[self.name] >= lower) & (df[self.name] <= upper)]
                 self.df[i] = df
