@@ -26,19 +26,6 @@ class FCT_Pubu_1:
         short = param.get('short', 5)   # 默认5
         long  = param.get('long', 20)   # 默认20
 
-        # 计算短期均线和长期均线
-        # df['ma_short'] = df['close'].rolling(window=short).mean()
-        # df['ma_long']  = df['close'].rolling(window=long).mean()
-
-        # 计算短期均线在长期窗口内的分位数位置
-        #def pubu_percentile(x):
-        #    window = x[-long:]
-        #    if len(window) < long or numpy.all(numpy.isnan(window)):
-        #        return numpy.nan
-        #    return numpy.sum(window <= window[-1]) / long
-
-        # df[f'FCT_Pubu_1'] = df['ma_short'].rolling(window=long, min_periods=long).apply(pubu_percentile, raw=True)
-
         # 修改为 pd.concat 批量合并方式
         new_columns = pandas.DataFrame(index=df.index)
 

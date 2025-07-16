@@ -24,21 +24,6 @@ class FCT_Sdrm_Atr_Dfive:
         atr_length  = param.get('atr_length', 14)
         print(f"Using length: {length}, atr_length: {atr_length}")
 
-        """
-        # 计算收盘价标准差（动量波动性）
-        df['std_close'] = df['close'].rolling(window=length).std()
-
-        # 计算ATR
-        high_low    = df['high'] - df['low']
-        high_close  = numpy.abs(df['high'] - df['close'].shift(1))
-        low_close   = numpy.abs(df['low'] - df['close'].shift(1))
-        tr          = pandas.concat([high_low, high_close, low_close], axis=1).max(axis=1)
-        df['ATR']   = tr.rolling(window=atr_length).mean()
-
-        # 归一化：标准差/ATR
-        df[f'FCT_Sdrm_Atr_Dfive@{length}'] = df['std_close'] / (df['ATR'] + 1e-10)
-        """
-
         new_columns = pandas.DataFrame(index=df.index)
 
         # 计算收盘价标准差（动量波动性）

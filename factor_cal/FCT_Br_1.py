@@ -26,24 +26,6 @@ class FCT_Br_1:
             raise ValueError("param missing 'length'")
         print(f"Using length:{length}")
 
-        # 得到前一个收盘价
-        df['close_pre'] = df['close'].shift(1)
-
-        # 计算up和down两个值
-        # df['up'] = numpy.where((df['high'] - df['close_pre']) > 0, df['high'] - df['close_pre'], 0)
-        # df['down'] = numpy.where((df['close_pre'] - df['low']) > 0, df['close_pre'] - df['low'], 0)
-
-        # 计算两个指标
-        # df['br1'] = df['up'].rolling(window=length).sum()
-        # df['br2'] = df['down'].rolling(window=length).sum()
-
-        # 避免分母为零的情况
-        # df['br_sum'] = df['br1'] + df['br2']
-        # df['br_sum'] = numpy.where(df['br_sum'] == 0, numpy.nan, df['br_sum'])  # 避免分母为零
-
-        # 计算特征值
-        # df[f'FCT_Br_1@{length}'] = (df['br1'] - df['br2']) / df['br_sum']
-
         # 修改为 pd.concat 批量合并方式
         new_columns = pandas.DataFrame(index=df.index)
 

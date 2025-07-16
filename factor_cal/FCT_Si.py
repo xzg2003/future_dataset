@@ -25,14 +25,6 @@ class FCT_Si:
             raise ValueError("param missing 'length'")
         print(f"Using length: {length}")
 
-        """
-        # 计算收盘价的绝对变化幅度
-        df['abs_diff'] = numpy.abs(df['close'].diff())
-
-        # 计算 SI 指标（绝对变化幅度的均值）
-        df[f'FCT_Si@{length}'] = df['abs_diff'].rolling(window=length).mean()
-        """
-
         new_columns = pandas.DataFrame(index=df.index)
 
         # 计算收盘价的绝对变化幅度

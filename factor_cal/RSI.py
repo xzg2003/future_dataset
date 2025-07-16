@@ -28,21 +28,6 @@ class RSI:
             raise ValueError("param missing 'length'")
         print(f"Using length: {length}")
 
-        """
-        # 计算收盘涨跌
-        df['diff'] = df['close'].diff()
-        df['up']   = numpy.where(df['diff'] > 0, df['diff'], 0)
-        df['down'] = numpy.where(df['diff'] < 0, -df['diff'], 0)
-
-        # 计算平均涨幅和平均跌幅
-        avg_up   = df['up'].rolling(window=length).mean()
-        avg_down = df['down'].rolling(window=length).mean()
-
-        # 计算 RSI
-        rs = avg_up / (avg_down + 1e-10)    # 防止除零的情况
-        df[f'RSI@{length}'] = 100 - (100 / (1 + rs))
-        """
-
         # 提取 close 数据为 NumPy 数组
         close = df['close'].values
 

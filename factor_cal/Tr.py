@@ -18,17 +18,6 @@ class Tr:
         if not isinstance(df, pandas.DataFrame):
             raise TypeError("'df' 必须是 pandas.DataFrame 类型")
 
-        """
-        # 前一k线的收盘价
-        df['close_pre'] = df['close'].shift(1)
-
-        # 逐行取三种差值的最大值作为 TR
-        df['Tr'] = df[['close_pre', 'high', 'low']].apply(
-            lambda row: max(row['high'] - row['close_pre'], row['high'] - row['low'], row['close_pre'] - row['low']),
-            axis=1
-        )
-        """
-
         # 提取必要字段
         if not {'high', 'low', 'close'}.issubset(df.columns):
             raise ValueError("DataFrame 缺少必要字段：'high', 'low', 'close'")

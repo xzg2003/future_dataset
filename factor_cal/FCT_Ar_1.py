@@ -25,17 +25,6 @@ class FCT_Ar_1:
             raise ValueError("param missing 'length'")
         print(f"Using length: {length}")
 
-        # 计算开盘价与最高、最低价的差值
-        # df['up']   = df['high'] - df['open']
-        # df['down'] = df['open'] - df['low']
-
-        # 计算滑动求和
-        # df['ar1'] = df['up'].rolling(window=length).sum()
-        # df['ar2'] = df['down'].rolling(window=length).sum()
-
-        # 计算特征值
-        # df[f'FCT_Ar_1@{length}'] = (df['ar1'] - df['ar2']) / (df['ar1'] + df['ar2'])
-
         # 修改为 pd.concat 批量合并方式
         new_columns = pandas.DataFrame(index=df.index)
 

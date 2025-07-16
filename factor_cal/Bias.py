@@ -28,10 +28,7 @@ class Bias:
         # 计算均线
         ma = df['close'].rolling(window=length).mean()
 
-        # 计算乖离率
-        # df[f'Bias@{length}'] = (df['close'] - ma) / ma
-
-        # 修改为 pd.concat 批量合并方式
+        # pd.concat 批量合并方式
         new_columns = pandas.DataFrame({
             f'Bias@{length}': (df['close'] - ma) / ma
         }, index=df.index)

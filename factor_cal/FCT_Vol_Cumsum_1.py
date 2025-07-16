@@ -19,11 +19,6 @@ class FCT_Vol_Cumsum_1:
         if not isinstance(df, pandas.DataFrame):
             raise TypeError("df must be DataFrame")
 
-        """
-        # 计算累积成交量
-        df['FCT_Vol_Cumsum_1'] = df['volume'].cumsum().fillna(0)
-        """
-
         # 初始化 new_columns 用于统一管理中间变量
         new_columns = pandas.DataFrame(index=df.index)
 

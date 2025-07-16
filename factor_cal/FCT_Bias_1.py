@@ -43,10 +43,6 @@ class FCT_Bias_1:
         if k_line_type is None:
             raise ValueError("param missing instrument")
 
-        # 计算震荡指标（这里直接照搬了前面Tr的计算代码）
-        # 前一k线的收盘价
-        # df['close_pre'] = df['close'].shift(1)
-
         # 修改为 pd.concat 批量合并方式
         new_columns = pandas.DataFrame(index=df.index)
 
@@ -66,20 +62,6 @@ class FCT_Bias_1:
             tr_series = tr_df['Tr'].reindex(new_columns.index, fill_value=numpy.nan)
 
         new_columns['Tr'] = tr_series
-
-        """
-        # 计算因子，缺失mindiff，故这个函数是没有比较的
-        df[f'FCT_Bias_1@{length}'] = (df['close'] - df['close'].rolling(window=length).mean()) / df['Tr'].rolling(window=length).mean()
-        """
-
-        # 计算 Tr 的滚动均值并处理NaN
-        # rolling_mean_tr = df['Tr'].rolling(window=length).mean().fillna(0)
-
-        # 计算收盘价的滚动均值
-        # rolling_mean_close = df['close'].rolling(window=length).mean().fillna(0)
-
-        # 正确的计算函数
-        # df[f'FCT_Bias_1@{length}'] = numpy.where(rolling_mean_tr < mindiff,0,(df['close'] - rolling_mean_close) / rolling_mean_tr)
 
         # 计算因子所需中间变量
         rolling_mean_tr = new_columns['Tr'].rolling(window=length).mean().fillna(0)

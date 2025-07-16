@@ -19,15 +19,6 @@ class OvernightMOM:
         if not isinstance(df, pandas.DataFrame):
             raise TypeError("df must be DataFrame")
 
-        """
-        # 计算做完收盘价
-        df['close_pre'] = df['close'].shift(1)
-
-        # 计算隔夜动量（今开盘/昨收盘的对数收益率）
-        df['OvernightMOM'] = numpy.log(df['open'] / df['close_pre'])
-        df['OvernightMOM'] = df['OvernightMOM'].replace([numpy.inf, -numpy.inf], numpy.nan).fillna(0)
-        """
-
         # 提取 open 和 close 列为 NumPy 数组
         open_array = df['open'].values
         close_array = df['close'].values

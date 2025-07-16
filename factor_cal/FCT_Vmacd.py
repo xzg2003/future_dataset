@@ -25,19 +25,6 @@ class FCT_Vmacd:
         signal = param.get('signal', 9)
         print(f"Using fast: {fast}, slow: {slow}, signal: {signal}")
 
-        """
-        # 计算成交量的 EMA
-        ema_fast = df['volume'].ewm(span=fast, adjust=False).mean()
-        ema_slow = df['volume'].ewm(span=slow, adjust=False).mean()
-
-        # DIF 线
-        df['vmacd_dif'] = ema_fast - ema_slow
-        # DEA 线
-        df['vmacd_dea'] = df['vmacd_dif'].ewm(span=signal, adjust=False).mean()
-        # MACD 柱
-        df['vmacd_macd'] = df['vmacd_dif'] - df['vmacd_dea']
-        """
-
         # 初始化 new_columns 用于统一管理中间变量
         new_columns = pandas.DataFrame(index=df.index)
 

@@ -30,15 +30,6 @@ class TSMOM:
             raise ValueError("param missing 'length'")
         print(f"Using length:{length}")
 
-        """
-        计算 TSMOM 动量因子
-        这里取收盘价进行计算
-        """
-        """
-        df[f'TSMOM@{length}'] = df['close'].pct_change(periods=length)
-        df[f'TSMOM@{length}'] = df[f'TSMOM@{length}'].replace([numpy.inf, -numpy.inf], numpy.nan).fillna(0)
-        """
-
         # 提取 close 数据为 NumPy 数组
         close_array = df['close'].values
 

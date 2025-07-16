@@ -27,27 +27,6 @@ class FCT_Tsi_Atr_Dfive:
             raise ValueError("param missing 'short', 'long' or 'atr_length'")
         print(f"Using short: {short}, long: {long}, atr_length: {atr_length}")
 
-        """
-        # 计算 TSI
-        df['diff'] = df['close'].diff()
-        ema_1 = df['diff'].ewm(span=short, adjust=False).mean()
-        ema_2 = ema_1.ewm(span=long, adjust=False).mean()
-        abs_diff = numpy.abs(df['diff'])
-        abs_ema_1 = abs_diff.ewm(span=short, adjust=False).mean()
-        abs_ema_2 = abs_ema_1.ewm(span=long, adjust=False).mean()
-        df['TSI'] = 100 * (ema_2 / (abs_ema_2 + 1e-10))
-
-        # 计算 ATR
-        high_low = df['high'] - df['low']
-        high_close = numpy.abs(df['high'] - df['close'].shift(1))
-        low_close = numpy.abs(df['low'] - df['close'].shift(1))
-        tr = pandas.concat([high_low, high_close, low_close], axis=1).max(axis=1)
-        df['ATR'] = tr.rolling(window=atr_length).mean()
-
-        # 归一化
-        df[f'FCT_Tsi_Atr_Dfive'] = df['TSI'] / (df['ATR'] + 1e-10)
-        """
-
         # 初始化 new_columns 用于统一管理中间变量
         new_columns = pandas.DataFrame(index=df.index)
 

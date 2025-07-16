@@ -19,14 +19,6 @@ class FCT_Return_Cumsum_1:
         if not isinstance(df, pandas.DataFrame):
             raise TypeError("df must be DataFrame")
 
-        """
-        # 计算对数收益率
-        df['ret'] = numpy.log(df['close'] / df['close'].shift(1))
-
-        # 计算累积收益率
-        df['FCT_Return_Cumsum_1'] = df['ret'].cumsum().fillna(0)
-        """
-
         # 修改为 pd.concat 批量合并方式
         new_columns = pandas.DataFrame(index=df.index)
 

@@ -26,29 +26,6 @@ class FCT_Support_Close_Thr_Boll_1:
             raise ValueError("param missing 'length'")
         print(f"Using length: {length}, n_std: {n_std}")
 
-        """
-        # 计算布林带下轨
-        ma = df['close'].rolling(window=length).mean()
-        std = df['close'].rolling(window=length).std()
-        lower_band = ma - n_std * std
-
-        # 统计每个窗口内收盘价低于下轨的次数
-        def count_below_lower(x, lower):
-            return numpy.sum(x <= lower)
-
-        counts = []
-        closes = df['close'].values
-        lowers = lower_band.values
-        for i in range(len(df)):
-            if i < length - 1:
-                counts.append(numpy.nan)
-            else:
-                window_close = closes[i - length + 1 : i + 1]
-                window_lower = lowers[i - length + 1 : i + 1]
-                counts.append(numpy.sum(window_close <= window_lower))
-        df[f'FCT_Support_Close_Thr_Boll_1@{length}'] = counts
-        """
-
         # 初始化 new_columns 用于集中管理新增列
         new_columns = pandas.DataFrame(index=df.index)
 

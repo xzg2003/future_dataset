@@ -54,34 +54,6 @@ class FCT_Pubu_Atr_Dfive:
         new_columns['Tr'] = tr_series
 
         # 计算 ATR
-        # df['ATR'] = df['Tr'].rolling(window=atr_length).mean()
-
-        """
-        # 计算短期均线在长期窗口内的分位数位置
-        def pubu_percentile(x):
-            window = x[-long:]
-            if len(window) < long or numpy.all(numpy.isnan(window)):
-                return numpy.nan
-            return numpy.sum(window <= window[-1]) / long
-
-        # 判断 FCT_Pubu@{short}_{long}.csv 文件是否存在，便于调用
-        pubu_data_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'../data/{k_line_type}/{instrument}/FCT_Pubu_1.csv')
-        if not os.path.exists(pubu_data_path):
-            raise FileNotFoundError(F"Pubu file noot fount: {pubu_data_path}")
-
-        pubu_df = pandas.read_csv(pubu_data_path)
-        # FCT_Pubu_q@{short}_{long}.csv 有datetime 和 FCT_Pubu@{short}_{long} 两列，且与主 df 按 datetime 对齐
-        if 'datetime' in df.columns and 'datetime' in pubu_df.columns:
-            df = df.merge(pubu_df[['datetime', f'FCT_Pubu_1']], on='datetime', how='left')
-        else:
-            # 如果没有 datetime 列，直接用 index 对齐
-            df[f'FCT_Pubu_1'] = pubu_df[f'FCT_Pubu_1']
-
-        # 用 ATR 归一化
-        df[f'FCT_Pubu_Atr_Dfive'] = df[f'FCT_Pubu_1'] / (df['ATR'] + 1e-10)
-        """
-
-        # 计算 ATR
         new_columns['ATR'] = new_columns['Tr'].rolling(window=atr_length).mean()
 
         # 加载 FCT_Pubu_1 数据

@@ -21,11 +21,6 @@ class IDMOM:
         if not isinstance(df, pandas.DataFrame):
             raise TypeError("df must be DataFrame")
 
-        """
-        # 计算日内动量
-        df['IDMOM'] = (df['close'] - df['open']) / df['open']
-        """
-
         # 提取 open 和 close 列为 NumPy 数组
         open_price = df['open'].values
         close_price = df['close'].values

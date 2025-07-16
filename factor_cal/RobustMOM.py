@@ -26,15 +26,6 @@ class RobustMOM:
             raise ValueError("param missing length")
         print(f"Using length: {length}")
 
-        """
-        # 计算过去 length 期收盘价的中位数
-        df['median_close'] = df['close'].rolling(window=length).median()
-
-        # 计算稳健动量（当前收盘价与过去 length 期中位数的对数收益率）
-        df[f'RobustMOM@{length}'] = numpy.log(df['close'] / df['median_close'])
-        df[f'RobustMOM@{length}'] = df[f'RobustMOM@{length}'].replace([numpy.inf, -numpy.inf], numpy.nan).fillna(0)
-        """
-
         # 提取 close 数据为 NumPy 数组
         close_array = df['close'].values
 

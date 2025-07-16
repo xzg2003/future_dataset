@@ -46,19 +46,6 @@ class FCT_Ac_Tr_1:
         if k_line_type is None:
             raise ValueError("param missing instrument")
 
-        # 计算价格均值，这里取价格的最高价与最低价的平均
-        # df['MP'] = (df['high'] + df['low']) / 2
-
-        # 计算震荡指标
-        # df['AO'] = df['MP'].rolling(window=length).mean() - df['MP'].rolling(window=(4*length)).mean()
-
-        # 计算 AC
-        # df['AC'] = df['AO'] - df['AO'].rolling(window=length).mean()
-
-        # 计算震荡指标（这里直接照搬了前面Tr的计算代码）
-        # 前一k线的收盘价
-        # df['close_pre'] = df['close'].shift(1)
-
         # 修改为 pd.concat 批量合并方式
         # 构建新的列 DataFrame
         new_columns = pandas.DataFrame(index=df.index)
@@ -86,11 +73,6 @@ class FCT_Ac_Tr_1:
 
         new_columns['Tr'] = tr_series.reset_index(drop=True)
 
-        """
-        # 计算输出结果，这里没有最小变动单位，没有办法进行分类处理
-        df[f'FCT_Ac_Tr_1@{length}'] = df['AC'] / df['Tr'].rolling(window=length).mean()
-        """
-
         # 最终因子计算
         rolling_mean_tr = new_columns['Tr'].rolling(window=length).mean().fillna(0)
         new_columns[f'FCT_Ac_Tr_1@{length}'] = numpy.where(
@@ -101,9 +83,6 @@ class FCT_Ac_Tr_1:
 
         # 合并进原始 df
         df = pandas.concat([df, new_columns], axis=1)
-
-        # 以下是正确的处理函数
-        # df[f'FCT_Ac_Tr_1@{length}'] = numpy.where(rolling_mean_tr < mindiff,0,df['AC'] / rolling_mean_tr)
 
         # 返回包含日期和Tr的结果
         if 'datetime' in df.columns:

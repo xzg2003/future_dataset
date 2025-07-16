@@ -27,23 +27,6 @@ class FCT_Tsi_Vol_Dfive:
             raise ValueError("param missing 'short', 'long' or 'vol_length'")
         print(f"Using short: {short}, long: {long}, vol_length: {vol_length}")
 
-        """
-        # 计算TSI
-        df['diff'] = df['close'].diff()
-        ema1 = df['diff'].ewm(span=short, adjust=False).mean()
-        ema2 = ema1.ewm(span=long, adjust=False).mean()
-        abs_diff = numpy.abs(df['diff'])
-        abs_ema1 = abs_diff.ewm(span=short, adjust=False).mean()
-        abs_ema2 = abs_ema1.ewm(span=long, adjust=False).mean()
-        df['TSI'] = 100 * (ema2 / (abs_ema2 + 1e-10))
-
-        # 计算成交量均值
-        df['vol_mean'] = df['volume'].rolling(window=vol_length).mean()
-
-        # 归一化
-        df[f'FCT_Tsi_Vol_Dfive'] = df['TSI'] / (df['vol_mean'] + 1e-10)
-        """
-
         # 建议做法：初始化 new_columns 用于统一管理中间变量
         new_columns = pandas.DataFrame(index=df.index)
 

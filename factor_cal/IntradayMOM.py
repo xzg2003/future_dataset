@@ -23,12 +23,6 @@ class IntradayMOM:
         if 'open' not in df.columns or 'close' not in df.columns:
             raise ValueError("DataFrame must contain 'open' and 'close' columns")
 
-        """
-        # 计算机每根 K 线的日内动量（对数收益率）
-        df['IntradayMOM'] = numpy.log(df['close'] / df['open'])
-        df['IntradayMOM'] = df['IntradayMOM'].replace([numpy.inf, -numpy.inf], numpy.nan).fillna(0)
-        """
-
         # 提取基础数据为 NumPy 数组
         open_array = df['open'].values
         close_array = df['close'].values
