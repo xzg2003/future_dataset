@@ -1,15 +1,16 @@
 # TrendStrength: 趋势系数因子，衡量价格序列的趋势强度（如线性回归斜率/标准差）
 
-import pandas
-import numpy
 import os
-from scipy.stats import linregress
+
+import numpy
+import pandas
 
 # 设置工作目录为当前脚本所在的目录
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 # 设置工作目录为当前脚本所在的目录
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
 
 class TrendStrength:
     def __init__(self):
@@ -59,8 +60,6 @@ class TrendStrength:
         # 使用 assign 添加新列，避免 concat，减少内存碎片
         df = df.assign(**{col_name: new_column})
 
-        # 返回结果
-        if 'datetime' in df.columns:
-            df = df.rename(columns={'datetime': 'date'})
-        result = df[['date', f'TrendStrength@{length}']].copy()
+        # 返回结果（无日期）
+        result = df[[f'TrendStrength@{length}']].copy()
         return result

@@ -1,11 +1,13 @@
 # IntradayMOM：日内动量因子，衡量每根K线的收盘价相对开盘价的对数收益率
 
-import pandas
-import numpy
 import os
+
+import numpy
+import pandas
 
 # 设置工作目录为当前脚本所在的目录
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
 
 class IntradayMOM:
     def __init__(self):
@@ -47,8 +49,6 @@ class IntradayMOM:
         # 使用 assign 添加新列，避免 concat，减少内存碎片
         df = df.assign(**{new_column.name: new_column})
 
-        # 返回结果
-        if 'datetime' in df.columns:
-            df = df.rename(columns={'datetime': 'date'})
-        result = df[['date', f'IntradayMOM']].copy()
+        # 返回结果（无日期）
+        result = df[[f'IntradayMOM']].copy()
         return result

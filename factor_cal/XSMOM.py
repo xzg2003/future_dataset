@@ -1,12 +1,14 @@
 # XSMOM: 横截面动量，计算商品在同类品种中的收益率排名，做多前20%，做空后20%.
 # 但是需要计算多种类型的期货，这里无法进行处理
 
-import pandas
-import numpy
 import os
+
+import numpy
+import pandas
 
 # 设置工作目录为当前脚本所在的目录
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
 
 class XSMOM:
     def __init__(self):
@@ -82,8 +84,5 @@ class XSMOM:
         df = df.assign(**{col_name: new_column})
 
         # 返回结果
-        if 'datetime' in df.columns:
-            df = df.rename(columns={'datetime': 'date'})
-        result = df[['date', f'XSMOM@{length}']].copy()
+        result = df[[f'XSMOM@{length}']].copy()
         return result
-

@@ -1,11 +1,13 @@
 # FCT_Tsi_Atr_Dfive：趋势强度与ATR归一化因子，衡量单位波动下的趋势强度
 
-import pandas
-import numpy
 import os
+
+import numpy
+import pandas
 
 # 设置工作目录为当前脚本所在的目录
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
 
 class FCT_Tsi_Atr_Dfive:
     def __init__(self):
@@ -21,7 +23,7 @@ class FCT_Tsi_Atr_Dfive:
 
         # 调取参数
         short = param.get('short', 25)
-        long  = param.get('long', 13)
+        long = param.get('long', 13)
         atr_length = param.get('atr_length', 14)
         if short is None or long is None or atr_length is None:
             raise ValueError("param missing 'short', 'long' or 'atr_length'")
@@ -53,8 +55,6 @@ class FCT_Tsi_Atr_Dfive:
         # 合并到主表
         df = pandas.concat([df, new_columns], axis=1)
 
-        # 返回结果
-        if 'datetime' in df.columns:
-            df = df.rename(columns={'datetime': 'date'})
-        result = df[['date', f'FCT_Tsi_Atr_Dfive']].copy()
+        # 返回结果（无日期）
+        result = df[[f'FCT_Tsi_Atr_Dfive']].copy()
         return result

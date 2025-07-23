@@ -1,11 +1,12 @@
 # FCT_Vol_Cumsum_1：成交量累计因子，衡量从起始到当前的累计成交量
 
-import pandas
-import numpy
 import os
+
+import pandas
 
 # 设置工作目录为当前脚本所在的目录
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
 
 class FCT_Vol_Cumsum_1:
     def __init__(self):
@@ -28,8 +29,6 @@ class FCT_Vol_Cumsum_1:
         # 合并到主表
         df = pandas.concat([df, new_columns], axis=1)
 
-        # 返回结果
-        if 'datetime' in df.columns:
-            df = df.rename(columns={'datetime': 'date'})
-        result = df[['date', f'FCT_Vol_Cumsum_1']].copy()
+        # 返回结果（无日期）
+        result = df[[f'FCT_Vol_Cumsum_1']].copy()
         return result

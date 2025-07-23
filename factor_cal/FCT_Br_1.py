@@ -1,7 +1,8 @@
 # 人气意愿指标high, ref(close,1), low差值累加对比
 
-import pandas
 import numpy
+import pandas
+
 
 class FCT_Br_1:
     def __init__(self):
@@ -52,8 +53,6 @@ class FCT_Br_1:
         # 合并进原始 df
         df = pandas.concat([df, new_columns], axis=1)
 
-        # 返回特征值
-        if 'datetime' in df.columns:
-            df = df.rename(columns={'datetime': 'date'})
+        # 返回结果（无日期）
         result = df[['date', f'FCT_Br_1@{length}']].copy()
         return result

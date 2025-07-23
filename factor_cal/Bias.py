@@ -1,11 +1,12 @@
 # Bias：乖离率因子，衡量收盘价相对均线的偏离程度
 
-import pandas
-import numpy
 import os
+
+import pandas
 
 # 设置工作目录为当前脚本所在的目录
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
 
 class Bias:
     def __init__(self):
@@ -35,8 +36,6 @@ class Bias:
 
         df = pandas.concat([df, new_columns], axis=1)
 
-        # 返回结果
-        if 'datetime' in df.columns:
-            df = df.rename(columns={'datetime': 'date'})
-        result = df[['date', f'Bias@{length}']].copy()
+        # 返回结果（无日期）
+        result = df[[f'Bias@{length}']].copy()
         return result

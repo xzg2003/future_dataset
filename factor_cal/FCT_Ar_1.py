@@ -2,6 +2,7 @@
 
 import pandas
 
+
 class FCT_Ar_1:
     def __init__(self):
         self.factor_name = 'FCT_Ar_1'
@@ -40,8 +41,6 @@ class FCT_Ar_1:
         # 合并进原始 df
         df = pandas.concat([df, new_columns], axis=1)
 
-        # 返回结果
-        if 'datetime' in df.columns:
-            df = df.rename(columns={'datetime': 'date'})
-        result = df[['date', f'FCT_Ar_1@{length}']].copy()
+        # 返回结果（无日期）
+        result = df[[f'FCT_Ar_1@{length}']].copy()
         return result

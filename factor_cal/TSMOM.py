@@ -1,12 +1,14 @@
 # TSMOM: 常见的动量因子，用于衡量资产在过去一段时间内的累积收益情况
 # 后续很多计算器需要调用 TSMOM 的计算结果
 
-import pandas
-import numpy
 import os
+
+import numpy
+import pandas
 
 # 设置工作目录为当前脚本所在的目录
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
 
 class TSMOM:
     def __init__(self):
@@ -53,7 +55,5 @@ class TSMOM:
         df = df.assign(**{col_name: new_column})
 
         # 返回结果
-        if 'datetime' in df.columns:
-            df = df.rename(columns={'datetime': 'date'})
-        result = df[['date', f'TSMOM@{length}']].copy()
+        result = df[[f'TSMOM@{length}']].copy()
         return result

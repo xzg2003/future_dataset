@@ -1,11 +1,13 @@
 # FCT_Pubu_Atr_Dfive：衡量短期均线在长期均线窗口内的分位数位置，并用 ATR 归一化，适合捕捉价格分布于波动率的关系
 
-import pandas
-import numpy
 import os
+
+import numpy
+import pandas
 
 # 设置工作目录为当前脚本所在的目录
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
 
 class FCT_Pubu_Atr_Dfive:
     def __init__(self):
@@ -21,9 +23,9 @@ class FCT_Pubu_Atr_Dfive:
             raise TypeError("df must be DataFrame")
 
         # 均线和 ATR 周期参数
-        short = param.get('short', 5)               # 默认为5
-        long  = param.get('long', 20)               # 默认为20
-        atr_length = param.get('atr_length', 14)    # 默认为14
+        short = param.get('short', 5)  # 默认为5
+        long = param.get('long', 20)  # 默认为20
+        atr_length = param.get('atr_length', 14)  # 默认为14
         print(f"Using short: {short}, long: {long}, atr_length: {atr_length}")
 
         # 获取 instrument
@@ -64,7 +66,8 @@ class FCT_Pubu_Atr_Dfive:
 
         pubu_df = pandas.read_csv(pubu_data_path)
         if 'datetime' in df.columns and 'datetime' in pubu_df.columns:
-            pubu_series = df[['datetime']].merge(pubu_df[['datetime', 'FCT_Pubu_1']], on='datetime', how='left')['FCT_Pubu_1']
+            pubu_series = df[['datetime']].merge(pubu_df[['datetime', 'FCT_Pubu_1']], on='datetime', how='left')[
+                'FCT_Pubu_1']
         else:
             pubu_series = pubu_df['FCT_Pubu_1'].reindex(df.index, fill_value=numpy.nan)
 
@@ -77,7 +80,5 @@ class FCT_Pubu_Atr_Dfive:
         df = pandas.concat([df, new_columns], axis=1)
 
         # 返回结果
-        if 'datetime' in df.columns:
-            df = df.rename(columns={'datetime': 'date'})
-        result = df[['date', f'FCT_Pubu_Atr_Dfive']].copy()
+        result = df[[f'FCT_Pubu_Atr_Dfive']].copy()
         return result

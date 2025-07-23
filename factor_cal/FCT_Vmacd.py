@@ -1,11 +1,12 @@
 # FCT_Vmacd：成交量 MACD 因子，衡量成交量的趋势变化和动能拐点
 
-import pandas
-import numpy
 import os
+
+import pandas
 
 # 设置工作目录为当前脚本所在的目录
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
 
 class FCT_Vmacd:
     def __init__(self):
@@ -42,7 +43,6 @@ class FCT_Vmacd:
         # 合并到主表
         df = pandas.concat([df, new_columns], axis=1)
 
-        if 'datetime' in df.columns:
-            df = df.rename(columns={'datetime': 'date'})
-        result = df[['date', 'vmacd_dif', 'vmacd_dea', 'vmacd_macd']].copy()
+        result = df[['vmacd_dif', 'vmacd_dea', 'vmacd_macd']].copy()
+        # TODO：一个因子计算器只可能返回一个结果，这里需要对这个结果进行调整
         return result

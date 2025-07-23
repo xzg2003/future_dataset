@@ -1,18 +1,17 @@
 # FCT_Pubu_1：普及率因子，由短期均线和长期均线两条均线组成，衡量短期均线在长期均线窗口内的分位数位置
 
-import pandas
-import numpy
 import os
 
-from nltk import windowdiff
-from torchgen.api.types import longT
+import numpy
+import pandas
 
 # 设置工作目录为当前脚本所在的目录
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
+
 class FCT_Pubu_1:
     def __init__(self):
-         self.factor_name = 'FCT_Pubu_1'
+        self.factor_name = 'FCT_Pubu_1'
 
     def formula(self, param):
         # 从字典中提取 DataFrame
@@ -23,8 +22,8 @@ class FCT_Pubu_1:
             raise TypeError("df must be DataFrame")
 
         # 均线周期调用
-        short = param.get('short', 5)   # 默认5
-        long  = param.get('long', 20)   # 默认20
+        short = param.get('short', 5)  # 默认5
+        long = param.get('long', 20)  # 默认20
 
         # 修改为 pd.concat 批量合并方式
         new_columns = pandas.DataFrame(index=df.index)
@@ -46,8 +45,6 @@ class FCT_Pubu_1:
         # 合并进原始 df
         df = pandas.concat([df, new_columns], axis=1)
 
-        # 返回结果
-        if 'datetime' in df.columns:
-            df = df.rename(columns={'datetime': 'date'})
-        result = df[['date', f'FCT_Pubu_1']].copy()
+        # 返回结果（无日期）
+        result = df[[f'FCT_Pubu_1']].copy()
         return result

@@ -1,11 +1,13 @@
 # Acceleration: 动量变化率。调用了 TSMOM 的计算结果
 
-import pandas
-import numpy
 import os
+
+import numpy
+import pandas
 
 # 设置工作目录为当前脚本所在的目录
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
 
 class Acceleration:
     def __init__(self):
@@ -40,7 +42,8 @@ class Acceleration:
         if k_line_type is None:
             raise ValueError("param missing instrument")
 
-        TSMOM_data_path = os.path.join(os.path.dirname(__file__), f'../data/{k_line_type}/{instrument}/TSMOM@{length}.csv')
+        TSMOM_data_path = os.path.join(os.path.dirname(__file__),
+                                       f'../data/{k_line_type}/{instrument}/TSMOM@{length}.csv')
         TSMOM_data_path = os.path.normpath(TSMOM_data_path)
         if not os.path.exists(TSMOM_data_path):
             raise FileNotFoundError(f"TSMOM_data_path not found:{TSMOM_data_path}")
@@ -62,9 +65,9 @@ class Acceleration:
             f'Acceleration@{length}': acceleration_values
         }, index=df.index)
 
+        # 将新的列合并进来
         df = pandas.concat([df, new_columns], axis=1)
 
-        if 'datetime' in df.columns:
-            df = df.rename(columns={'datetime': 'date'})
-        result = df[['date', f'Acceleration@{length}']].copy()
+        # 返回结果（无日期）
+        result = df[[f'Acceleration@{length}']].copy()
         return result

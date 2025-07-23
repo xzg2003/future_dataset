@@ -1,11 +1,12 @@
 # FCT_Vr：量比因子，衡量当前成交量与过去一段时间平均成交量的比值
 
-import pandas
-import numpy
 import os
+
+import pandas
 
 # 设置工作目录为当前脚本所在的目录
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
 
 class FCT_Vr:
     def __init__(self):
@@ -30,10 +31,10 @@ class FCT_Vr:
             df = df.sort_index()
 
         # 提取并计算成交指标
-        volume = df['volume'].clip(lower=0) # 确保成交量非负
+        volume = df['volume'].clip(lower=0)  # 确保成交量非负
 
         # 计算平均成交量
-        avg_vol = volume.rolling(window=length).mean().clip(lower=1e-5) # 设置最小值防止除以零
+        avg_vol = volume.rolling(window=length).mean().clip(lower=1e-5)  # 设置最小值防止除以零
 
         # 计算量比因子
         new_column = volume / avg_vol
@@ -42,8 +43,6 @@ class FCT_Vr:
         # 合并进原始 df
         df = pandas.concat([df, new_column], axis=1)
 
-        # 返回结果
-        if 'datetime' in df.columns:
-            df = df.rename(columns={'datetime': 'date'})
-        result = df[['date', f'FCT_Vr@{length}']].copy()
+        # 返回结果（无日期）
+        result = df[[f'FCT_Vr@{length}']].copy()
         return result

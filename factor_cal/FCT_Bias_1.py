@@ -1,8 +1,10 @@
 # 乖离率除以TR去量纲
 
-import pandas
-import numpy
 import os
+
+import numpy
+import pandas
+
 
 class FCT_Bias_1:
     def __init__(self):
@@ -77,9 +79,6 @@ class FCT_Bias_1:
         # 合并进原始 df
         df = pandas.concat([df, new_columns], axis=1)
 
-        # 返回结果
-        if 'datetime' in df.columns:
-            df = df.rename(columns={'datetime': 'date'})
+        # 返回结果（无日期）
         result = df[['date', f'FCT_Bias_1@{length}']].copy()
         return result
-

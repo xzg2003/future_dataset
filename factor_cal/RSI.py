@@ -1,11 +1,13 @@
 # RSI：强弱相对指标
 
-import pandas
-import numpy
 import os
+
+import numpy
+import pandas
 
 # 设置工作目录为当前脚本所在的目录
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
 
 class RSI:
     def __init__(self):
@@ -20,7 +22,6 @@ class RSI:
         # 确保 df 是 pandas.DataFrame 类型
         if not isinstance(df, pandas.DataFrame):
             raise TypeError("df must be DataFrame")
-
 
         # 从字典中读取 length
         length = param.get('length', None)
@@ -65,8 +66,6 @@ class RSI:
         # 使用 assign 添加新列，避免 concat，减少内存碎片
         df = df.assign(**{col_name: new_column})
 
-        # 返回结果
-        if 'datetime' in df.columns:
-            df = df.rename(columns={'datetime': 'date'})
-        result = df[['date', f'RSI@{length}']].copy()
+        # 返回结果（无日期）
+        result = df[[f'RSI@{length}']].copy()
         return result

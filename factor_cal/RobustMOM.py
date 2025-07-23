@@ -1,12 +1,14 @@
 # Robust Momentum （稳健动量）
 # 这里采用过去 length 期收盘价的中位数与当前收盘价的对数收益率作为稳健动量
 
-import pandas
-import  numpy
 import os
+
+import numpy
+import pandas
 
 # 设置工作目录为当前脚本所在的目录
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
 
 class RobustMOM:
     def __init__(self):
@@ -54,8 +56,6 @@ class RobustMOM:
         # 使用 assign 添加新列，避免 concat，减少内存碎片
         df = df.assign(**{col_name: new_column})
 
-        # 返回结果
-        if 'datetime' in df.columns:
-            df = df.rename(columns={'datetime': 'date'})
-        result = df[['date', f'RobustMOM@{length}']].copy()
+        # 返回结果（无日期）
+        result = df[[f'RobustMOM@{length}']].copy()
         return result

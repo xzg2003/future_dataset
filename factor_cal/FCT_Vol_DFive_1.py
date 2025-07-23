@@ -1,10 +1,12 @@
 # FCT_Vol_DFive_1：成交量动量因子，衡量成交量在指定窗口内的变化幅度（如标准差或均值）
 
-import pandas
 import os
+
+import pandas
 
 # 设置工作目录为当前脚本所在的目录
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
 
 class FCT_Vol_DFive_1:
     def __init__(self):
@@ -33,8 +35,6 @@ class FCT_Vol_DFive_1:
         # 合并到原始 df（一次性操作）
         df = pandas.concat([df, new_columns], axis=1)
 
-        # 返回结果
-        if 'datetime' in df.columns:
-            df = df.rename(columns={'datetime': 'date'})
-        result = df[['date', f'FCT_Vol_DFive_1@{length}']].copy()
+        # 返回结果（无日期）
+        result = df[[f'FCT_Vol_DFive_1@{length}']].copy()
         return result

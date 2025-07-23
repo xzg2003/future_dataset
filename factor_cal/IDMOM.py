@@ -40,8 +40,6 @@ class IDMOM:
             new_column.name: new_column
         })
 
-        # 返回结果
-        if 'datetime' in df.columns:
-            df = df.rename(columns={'datetime': 'date'})
-        result = df[['date', f'IDMOM']].copy()
+        # 返回结果（无日期）
+        result = df[[f'IDMOM']].copy()
         return result

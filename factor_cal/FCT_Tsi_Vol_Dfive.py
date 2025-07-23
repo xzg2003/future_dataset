@@ -50,8 +50,6 @@ class FCT_Tsi_Vol_Dfive:
         # 最终合并
         df = pandas.concat([df, new_columns[[f'FCT_Tsi_Vol_Dfive']]], axis=1)
 
-        # 返回结果
-        if 'datetime' in df.columns:
-            df = df.rename(columns={'datetime': 'date'})
-        result = df[['date', f'FCT_Tsi_Vol_Dfive']].copy()
+        # 返回结果（无日期）
+        result = df[[f'FCT_Tsi_Vol_Dfive']].copy()
         return result

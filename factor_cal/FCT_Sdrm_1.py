@@ -1,10 +1,12 @@
 # FCT_Sdrm_1：标准差动量因子，衡量收盘价在指定窗口内的波动性
 
-import pandas
 import os
+
+import pandas
 
 # 设置工作目录为当前脚本所在的目录
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
 
 class FCT_Sdrm_1:
     def __init__(self):
@@ -31,8 +33,6 @@ class FCT_Sdrm_1:
 
         df = pandas.concat([df, new_columns], axis=1)
 
-        # 返回结果
-        if 'datetime' in df.columns:
-            df = df.rename(columns={'datetime': 'date'})
-        result = df[['date', f'FCT_Sdrm_1@{length}']].copy()
+        # 返回结果（无日期）
+        result = df[[f'FCT_Sdrm_1@{length}']].copy()
         return result

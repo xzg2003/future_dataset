@@ -1,11 +1,13 @@
 # FCT_TSI_Ref_1：TSI（真实强度指标）参考因子，衡量价格趋势的强弱和方向
 
-import pandas
-import numpy
 import os
+
+import numpy
+import pandas
 
 # 设置工作目录为当前脚本所在的目录
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
 
 class FCT_TSI_Ref_1:
     def __init__(self):
@@ -48,7 +50,5 @@ class FCT_TSI_Ref_1:
         df = pandas.concat([df, new_columns], axis=1)
 
         # 返回结果
-        if 'datetime' in df.columns:
-            df = df.rename(columns={'datetime': 'date'})
-        result = df[['date', f'FCT_TSI_Ref_1']].copy()
+        result = df[[f'FCT_TSI_Ref_1']].copy()
         return result

@@ -1,11 +1,13 @@
 # FCT_R_Div_RStd:   收益率与波动率比值因子，衡量单位波动下的收益率（动量/风险调整）
 
-import pandas
-import numpy
 import os
+
+import numpy
+import pandas
 
 # 设置工作目录为当前脚本所在的目录
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
 
 class FCT_R_Div_RStd:
     def __init__(self):
@@ -43,8 +45,6 @@ class FCT_R_Div_RStd:
         # 合并进原始 df
         df = pandas.concat([df, new_columns], axis=1)
 
-        # 返回结果
-        if 'datetime' in df.columns:
-            df = df.rename(columns={'datetime': 'date'})
-        result = df[['date', f'FCT_R_Div_RStd@{length}']].copy()
+        # 返回结果（无日期）
+        result = df[[f'FCT_R_Div_RStd@{length}']].copy()
         return result

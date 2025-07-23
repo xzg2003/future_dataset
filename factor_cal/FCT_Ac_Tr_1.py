@@ -1,11 +1,13 @@
 # Ac_Tr_1：技术指标AC除以MA（TR）去量纲
 
-import pandas
-import numpy
 import os
+
+import numpy
+import pandas
 
 # 设置工作目录为当前脚本所在的目录
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
 
 class FCT_Ac_Tr_1:
     def __init__(self):
@@ -84,8 +86,6 @@ class FCT_Ac_Tr_1:
         # 合并进原始 df
         df = pandas.concat([df, new_columns], axis=1)
 
-        # 返回包含日期和Tr的结果
-        if 'datetime' in df.columns:
-            df = df.rename(columns={'datetime': 'date'})
-        result = df[['date', f'FCT_Ac_Tr_1@{length}']].copy()
+        # 返回结果（无日期）
+        result = df[[ f'FCT_Ac_Tr_1@{length}']].copy()
         return result

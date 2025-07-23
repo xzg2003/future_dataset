@@ -1,11 +1,13 @@
 # FCT_Si：SI（波动率指标）因子，衡量收盘价的绝对变化幅度的均值
 
-import pandas
-import numpy
 import os
+
+import numpy
+import pandas
 
 # 设置工作目录为当前脚本所在的目录
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
 
 class FCT_Si:
     def __init__(self):
@@ -36,8 +38,6 @@ class FCT_Si:
         # 合并进原始 df
         df = pandas.concat([df, new_columns], axis=1)
 
-        # 返回结果
-        if 'datetime' in df.columns:
-            df = df.rename(columns={'datetime': 'date'})
+        # 返回结果（无日期）
         result = df[['date', f'FCT_Si@{length}']].copy()
         return result

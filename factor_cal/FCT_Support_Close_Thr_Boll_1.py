@@ -1,11 +1,13 @@
 # FCT_Support_Close_Thr_Boll_1：收盘价接近布林带下轨的次数因子，衡量收盘价在窗口内低于下轨的次数
 
-import pandas
-import numpy
 import os
+
+import numpy
+import pandas
 
 # 设置工作目录为当前脚本所在的目录
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
 
 class FCT_Support_Close_Thr_Boll_1:
     def __init__(self):
@@ -21,7 +23,7 @@ class FCT_Support_Close_Thr_Boll_1:
 
         # 从字典中读取 length 和 n_std（布林带标准差倍数，默认为2）
         length = param.get('length', None)
-        n_std  = param.get('n_std', 2)
+        n_std = param.get('n_std', 2)
         if length is None:
             raise ValueError("param missing 'length'")
         print(f"Using length: {length}, n_std: {n_std}")
@@ -53,8 +55,6 @@ class FCT_Support_Close_Thr_Boll_1:
         # 一次性合并到原始 df
         df = pandas.concat([df, new_columns], axis=1)
 
-        # 返回结果
-        if 'datetime' in df.columns:
-            df = df.rename(columns={'datetime': 'date'})
-        result = df[['date', f'FCT_Support_Close_Thr_Boll_1@{length}']].copy()
+        # 返回结果（无日期）
+        result = df[[f'FCT_Support_Close_Thr_Boll_1@{length}']].copy()
         return result

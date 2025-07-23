@@ -1,11 +1,13 @@
 # FCT_Sdrm_Atr_Dfive：标准差动量与 ATR 归一化因子，衡量价格波动性与波动率的关系
 
-import pandas
-import numpy
 import os
+
+import numpy
+import pandas
 
 # 设置工作目录为当前脚本所在的目录
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
 
 class FCT_Sdrm_Atr_Dfive:
     def __init__(self):
@@ -20,8 +22,8 @@ class FCT_Sdrm_Atr_Dfive:
             raise TypeError("df must be DataFrame")
 
         # 参数
-        length      = param.get('length', 20)
-        atr_length  = param.get('atr_length', 14)
+        length = param.get('length', 20)
+        atr_length = param.get('atr_length', 14)
         print(f"Using length: {length}, atr_length: {atr_length}")
 
         new_columns = pandas.DataFrame(index=df.index)
@@ -42,8 +44,6 @@ class FCT_Sdrm_Atr_Dfive:
         # 合并到原始 df
         df = pandas.concat([df, new_columns], axis=1)
 
-        # 返回结果
-        if 'datetime' in df.columns:
-            df = df.rename(columns={'datetime': 'date'})
-        result = df[['date', f'FCT_Sdrm_Atr_Dfive@{length}']].copy()
+        # 返回结果（无日期）
+        result = df[[f'FCT_Sdrm_Atr_Dfive@{length}']].copy()
         return result

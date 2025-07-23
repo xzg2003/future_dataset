@@ -1,11 +1,13 @@
 # FCT_Pubu_Vol_Dfive：衡量短期均线在长期均线窗口内的分位数位置，并用成交量归一化，适合捕捉价格分布与成交活跃度的关系
 
-import pandas
-import numpy
 import os
+
+import numpy
+import pandas
 
 # 设置工作目录为当前脚本所在的目录
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
 
 class FCT_Pubu_Vol_Dfive:
     def __init__(self):
@@ -19,9 +21,9 @@ class FCT_Pubu_Vol_Dfive:
             raise TypeError("df must be DataFrame")
 
         # 均线和成交量周期参数
-        short       = param.get('short', 5)
-        long        = param.get('long', 20)
-        vol_length  = param.get('vol_length', 14)
+        short = param.get('short', 5)
+        long = param.get('long', 20)
+        vol_length = param.get('vol_length', 14)
         print(f"Using short: {short}, long: {long}, vol_length: {vol_length}")
 
         # 获取 instrument
@@ -63,8 +65,6 @@ class FCT_Pubu_Vol_Dfive:
         # 合并进原始 df
         df = pandas.concat([df, new_columns], axis=1)
 
-        # 返回结果
-        if 'datetime' in df.columns:
-            df = df.rename(columns={'datetime': 'date'})
-        result = df[['date', f'FCT_Pubu_Vol_Dfive']].copy()
+        # 返回结果（无日期）
+        result = df[[f'FCT_Pubu_Vol_Dfive']].copy()
         return result

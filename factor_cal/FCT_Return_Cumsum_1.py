@@ -1,11 +1,13 @@
 # FCT_Return_Cumsum_1:  累积收益率因子，衡量从起始到当前的累积对数收益
 
-import pandas
-import numpy
 import os
+
+import numpy
+import pandas
 
 # 设置工作目录为当前脚本所在的目录
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
 
 class FCT_Return_Cumsum_1:
     def __init__(self):
@@ -31,8 +33,6 @@ class FCT_Return_Cumsum_1:
         # 合并进原始 df
         df = pandas.concat([df, new_columns], axis=1)
 
-        # 返回结果
-        if 'datetime' in df.columns:
-            df = df.rename(columns={'datetime': 'date'})
-        result = df[['date', f'FCT_Return_Cumsum_1']].copy()
+        # 返回结果（无日期）
+        result = df[[f'FCT_Return_Cumsum_1']].copy()
         return result
