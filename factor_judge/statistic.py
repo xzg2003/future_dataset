@@ -1,4 +1,4 @@
-from factor_judge.factor_judge import factor_judge
+from factor_judge.Factor_judge import Factor_judge
 import scipy.stats as st
 from sklearn.preprocessing import StandardScaler
 import matplotlib.pyplot as plt
@@ -30,7 +30,7 @@ def get_avg(data):
 
     return last_10_avg, first_10_avg
 
-class statistic(factor_judge):
+class statistic(Factor_judge):
     def __init__(self, factor, method, k_line):
         # 调用父类 factor_judge 的构造函数
         super().__init__(factor, k_line)
@@ -56,11 +56,20 @@ class statistic(factor_judge):
         df_combined=[]
         for i in instruments:
             if i in self.df.keys():
+
                 df=self.df[i].copy()
+
             else:
+
                 continue
             df_combined.append(df)
+            print(df_combined)
+
+
         df_combined=pd.concat(df_combined,axis=0,ignore_index=True)
+
+        print("Columns in df_combined:", df_combined.columns.tolist())
+        print("Current factor name:", self.name)  # 应显示 'NewFactor@20'
 
         # 计算皮尔逊系数
         corr=df_combined.loc[:,[self.name,'yield']].corr(method='pearson').loc[self.name,'yield']
@@ -72,6 +81,9 @@ class statistic(factor_judge):
             self.div=-1
             
         factor = df_combined[self.name].dropna()
+        print('1')
+        print(factor)
+
         p25 = round(np.quantile(factor, 0.25),4) # 上四分位数
         p50 = round(np.quantile(factor, 0.5),4) # 中四分位数
         p75 = round(np.quantile(factor, 0.75),4) # 下四分位数

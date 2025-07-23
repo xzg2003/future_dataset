@@ -1,0 +1,29 @@
+{
+    "TSMOM": [
+        {"factor_name": "TSMOM@10", "length": 10},
+        {"factor_name": "TSMOM@120", "length": 120}
+    ],
+    "Acceleration": [
+        {"factor_name": "Acceleration@10", "length": 10},
+        {"factor_name": "Acceleration@120", "length": 120}
+    ],
+
+    "Bias": [
+        {"factor_name": "Bias@20", "length": 20},
+        {"factor_name": "Bias@40", "length": 40},
+        {"factor_name": "Bias@80", "length": 80}
+    ],
+
+    "FCT_Pubu_Atr_Dfive": [
+        {"factor_name":"FCT_Pubu_Atr_Dfive@20", "length": 20,"short": 5,"long": 20},
+        {"factor_name":"FCT_Pubu_Atr_Dfive@40", "length": 40,"short": 5,"long": 20},
+        {"factor_name":"FCT_Pubu_Atr_Dfive@80", "length": 80,"short": 5,"long": 20}
+    ],
+    "Tr": [
+        {"factor_name": "Tr"}
+    ],
+    "FCT_Pubu_1": [
+        {"factor_name":"FCT_Pubu_1", "short": 5,"long": 20}
+        ]
+
+}

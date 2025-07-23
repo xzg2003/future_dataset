@@ -113,8 +113,10 @@ class run_factor_judge():
 
 if __name__=='__main__':
     factors = pd.read_csv('factor_name.csv',encoding='utf-8')
+
     
     for i in factors:
+
         a = run_factor_judge(i,'M','1d')
         a.get_report()
         a.to_html()

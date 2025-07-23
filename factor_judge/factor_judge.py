@@ -3,7 +3,7 @@ import os
 import pandas as pd
 from config import *
 import numpy as np
-class factor_judge():
+class Factor_judge():
     def __init__(self, factor, k_line):
         self.name = factor
         self.k_line = k_line

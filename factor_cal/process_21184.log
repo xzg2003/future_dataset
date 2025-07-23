@@ -1,0 +1,65 @@
+2025-07-23 15:02:39,656 - INFO - [PID:21184] 开始处理品种: AL
+2025-07-23 15:02:39,656 - INFO - [PID:21184] 开始处理 AL 的 1d K线
+2025-07-23 15:02:39,656 - INFO - [PID:21184] 读取数据: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/AL/AL.csv
+2025-07-23 15:02:39,668 - INFO - [PID:21184] 将在 AL/1d 上计算 12 个因子
+2025-07-23 15:02:39,669 - INFO - [PID:21184] 计算中: AL FCT_Pubu_Atr_Dfive@20 1d
+2025-07-23 15:02:39,686 - INFO - [PID:21184] 计算成功: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/AL/FCT_Pubu_Atr_Dfive@20.csv
+2025-07-23 15:02:39,686 - INFO - [PID:21184] 计算中: AL FCT_Pubu_Atr_Dfive@40 1d
+2025-07-23 15:02:39,702 - INFO - [PID:21184] 计算成功: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/AL/FCT_Pubu_Atr_Dfive@40.csv
+2025-07-23 15:02:39,702 - INFO - [PID:21184] 计算中: AL FCT_Pubu_Atr_Dfive@80 1d
+2025-07-23 15:02:39,718 - INFO - [PID:21184] 计算成功: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/AL/FCT_Pubu_Atr_Dfive@80.csv
+2025-07-23 15:02:39,718 - INFO - [PID:21184] 进度: 10/12 (83.3%), 成功: 10, 失败: 0
+2025-07-23 15:02:39,719 - INFO - [PID:21184] AL/1d 完成: 总计 12, 成功 12, 失败 0
+2025-07-23 15:02:39,719 - INFO - [PID:21184] 品种 AL 处理完成: 总计因子 12, 成功 12, 失败 0
+2025-07-23 15:02:39,719 - INFO - [PID:21184] 开始处理品种: FG
+2025-07-23 15:02:39,719 - INFO - [PID:21184] 开始处理 FG 的 1d K线
+2025-07-23 15:02:39,719 - INFO - [PID:21184] 读取数据: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/FG/FG.csv
+2025-07-23 15:02:39,729 - INFO - [PID:21184] 将在 FG/1d 上计算 12 个因子
+2025-07-23 15:02:39,729 - INFO - [PID:21184] 计算中: FG FCT_Pubu_Atr_Dfive@20 1d
+2025-07-23 15:02:39,741 - INFO - [PID:21184] 计算成功: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/FG/FCT_Pubu_Atr_Dfive@20.csv
+2025-07-23 15:02:39,742 - INFO - [PID:21184] 计算中: FG FCT_Pubu_Atr_Dfive@40 1d
+2025-07-23 15:02:39,754 - INFO - [PID:21184] 计算成功: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/FG/FCT_Pubu_Atr_Dfive@40.csv
+2025-07-23 15:02:39,754 - INFO - [PID:21184] 计算中: FG FCT_Pubu_Atr_Dfive@80 1d
+2025-07-23 15:02:39,768 - INFO - [PID:21184] 计算成功: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/FG/FCT_Pubu_Atr_Dfive@80.csv
+2025-07-23 15:02:39,768 - INFO - [PID:21184] 进度: 10/12 (83.3%), 成功: 10, 失败: 0
+2025-07-23 15:02:39,768 - INFO - [PID:21184] FG/1d 完成: 总计 12, 成功 12, 失败 0
+2025-07-23 15:02:39,769 - INFO - [PID:21184] 品种 FG 处理完成: 总计因子 12, 成功 12, 失败 0
+2025-07-23 15:02:39,769 - INFO - [PID:21184] 开始处理品种: L
+2025-07-23 15:02:39,769 - INFO - [PID:21184] 开始处理 L 的 1d K线
+2025-07-23 15:02:39,769 - INFO - [PID:21184] 读取数据: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/L/L.csv
+2025-07-23 15:02:39,792 - INFO - [PID:21184] 将在 L/1d 上计算 12 个因子
+2025-07-23 15:02:39,792 - INFO - [PID:21184] 计算中: L FCT_Pubu_Atr_Dfive@20 1d
+2025-07-23 15:02:39,807 - INFO - [PID:21184] 计算成功: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/L/FCT_Pubu_Atr_Dfive@20.csv
+2025-07-23 15:02:39,808 - INFO - [PID:21184] 计算中: L FCT_Pubu_Atr_Dfive@40 1d
+2025-07-23 15:02:39,824 - INFO - [PID:21184] 计算成功: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/L/FCT_Pubu_Atr_Dfive@40.csv
+2025-07-23 15:02:39,824 - INFO - [PID:21184] 计算中: L FCT_Pubu_Atr_Dfive@80 1d
+2025-07-23 15:02:39,843 - INFO - [PID:21184] 计算成功: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/L/FCT_Pubu_Atr_Dfive@80.csv
+2025-07-23 15:02:39,844 - INFO - [PID:21184] 进度: 10/12 (83.3%), 成功: 10, 失败: 0
+2025-07-23 15:02:39,844 - INFO - [PID:21184] L/1d 完成: 总计 12, 成功 12, 失败 0
+2025-07-23 15:02:39,844 - INFO - [PID:21184] 品种 L 处理完成: 总计因子 12, 成功 12, 失败 0
+2025-07-23 15:02:39,844 - INFO - [PID:21184] 开始处理品种: SN
+2025-07-23 15:02:39,844 - INFO - [PID:21184] 开始处理 SN 的 1d K线
+2025-07-23 15:02:39,844 - INFO - [PID:21184] 读取数据: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/SN/SN.csv
+2025-07-23 15:02:39,852 - INFO - [PID:21184] 将在 SN/1d 上计算 12 个因子
+2025-07-23 15:02:39,852 - INFO - [PID:21184] 计算中: SN FCT_Pubu_Atr_Dfive@20 1d
+2025-07-23 15:02:39,870 - INFO - [PID:21184] 计算成功: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/SN/FCT_Pubu_Atr_Dfive@20.csv
+2025-07-23 15:02:39,870 - INFO - [PID:21184] 计算中: SN FCT_Pubu_Atr_Dfive@40 1d
+2025-07-23 15:02:39,887 - INFO - [PID:21184] 计算成功: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/SN/FCT_Pubu_Atr_Dfive@40.csv
+2025-07-23 15:02:39,888 - INFO - [PID:21184] 计算中: SN FCT_Pubu_Atr_Dfive@80 1d
+2025-07-23 15:02:39,900 - INFO - [PID:21184] 计算成功: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/SN/FCT_Pubu_Atr_Dfive@80.csv
+2025-07-23 15:02:39,901 - INFO - [PID:21184] 进度: 10/12 (83.3%), 成功: 10, 失败: 0
+2025-07-23 15:02:39,901 - INFO - [PID:21184] SN/1d 完成: 总计 12, 成功 12, 失败 0
+2025-07-23 15:02:39,901 - INFO - [PID:21184] 品种 SN 处理完成: 总计因子 12, 成功 12, 失败 0
+2025-07-23 15:02:39,902 - INFO - [PID:21184] 开始处理品种: ZN
+2025-07-23 15:02:39,902 - INFO - [PID:21184] 开始处理 ZN 的 1d K线
+2025-07-23 15:02:39,902 - INFO - [PID:21184] 读取数据: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/ZN/ZN.csv
+2025-07-23 15:02:39,913 - INFO - [PID:21184] 将在 ZN/1d 上计算 12 个因子
+2025-07-23 15:02:39,914 - INFO - [PID:21184] 计算中: ZN FCT_Pubu_Atr_Dfive@20 1d
+2025-07-23 15:02:39,930 - INFO - [PID:21184] 计算成功: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/ZN/FCT_Pubu_Atr_Dfive@20.csv
+2025-07-23 15:02:39,930 - INFO - [PID:21184] 计算中: ZN FCT_Pubu_Atr_Dfive@40 1d
+2025-07-23 15:02:39,945 - INFO - [PID:21184] 计算成功: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/ZN/FCT_Pubu_Atr_Dfive@40.csv
+2025-07-23 15:02:39,945 - INFO - [PID:21184] 计算中: ZN FCT_Pubu_Atr_Dfive@80 1d
+2025-07-23 15:02:39,957 - INFO - [PID:21184] 计算成功: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/ZN/FCT_Pubu_Atr_Dfive@80.csv
+2025-07-23 15:02:39,957 - INFO - [PID:21184] 进度: 10/12 (83.3%), 成功: 10, 失败: 0
+2025-07-23 15:02:39,957 - INFO - [PID:21184] ZN/1d 完成: 总计 12, 成功 12, 失败 0
+2025-07-23 15:02:39,957 - INFO - [PID:21184] 品种 ZN 处理完成: 总计因子 12, 成功 12, 失败 0

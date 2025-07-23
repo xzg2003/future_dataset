@@ -1,0 +1,170 @@
+2025-07-23 15:01:45,629 - INFO - [PID:10412] 开始处理品种: CU
+2025-07-23 15:01:45,630 - INFO - [PID:10412] 开始处理 CU 的 1d K线
+2025-07-23 15:01:45,630 - INFO - [PID:10412] 读取数据: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/CU/CU.csv
+2025-07-23 15:01:45,645 - INFO - [PID:10412] 将在 CU/1d 上计算 12 个因子
+2025-07-23 15:01:45,646 - INFO - [PID:10412] 计算中: CU FCT_Pubu_Atr_Dfive@20 1d
+2025-07-23 15:01:45,650 - ERROR - [PID:10412] 计算失败: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/CU/FCT_Pubu_Atr_Dfive@20.csv, 错误: FCT_Pubu_1 file not found: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/CU/FCT_Pubu_1.csv
+Traceback (most recent call last):
+  File "C:\Users\JAD\Desktop\jad\factor_cal\factor_cal.py", line 236, in calculate_factor_for_kline
+    result = calculator_instance.formula(param)
+  File "C:\Users\JAD\Desktop\jad\factor_cal\FCT_Pubu_Atr_Dfive.py", line 63, in formula
+    raise FileNotFoundError(f"FCT_Pubu_1 file not found: {pubu_data_path}")
+FileNotFoundError: FCT_Pubu_1 file not found: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/CU/FCT_Pubu_1.csv
+2025-07-23 15:01:45,651 - INFO - [PID:10412] 计算中: CU FCT_Pubu_Atr_Dfive@40 1d
+2025-07-23 15:01:45,655 - ERROR - [PID:10412] 计算失败: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/CU/FCT_Pubu_Atr_Dfive@40.csv, 错误: FCT_Pubu_1 file not found: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/CU/FCT_Pubu_1.csv
+Traceback (most recent call last):
+  File "C:\Users\JAD\Desktop\jad\factor_cal\factor_cal.py", line 236, in calculate_factor_for_kline
+    result = calculator_instance.formula(param)
+  File "C:\Users\JAD\Desktop\jad\factor_cal\FCT_Pubu_Atr_Dfive.py", line 63, in formula
+    raise FileNotFoundError(f"FCT_Pubu_1 file not found: {pubu_data_path}")
+FileNotFoundError: FCT_Pubu_1 file not found: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/CU/FCT_Pubu_1.csv
+2025-07-23 15:01:45,655 - INFO - [PID:10412] 计算中: CU FCT_Pubu_Atr_Dfive@80 1d
+2025-07-23 15:01:45,659 - ERROR - [PID:10412] 计算失败: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/CU/FCT_Pubu_Atr_Dfive@80.csv, 错误: FCT_Pubu_1 file not found: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/CU/FCT_Pubu_1.csv
+Traceback (most recent call last):
+  File "C:\Users\JAD\Desktop\jad\factor_cal\factor_cal.py", line 236, in calculate_factor_for_kline
+    result = calculator_instance.formula(param)
+  File "C:\Users\JAD\Desktop\jad\factor_cal\FCT_Pubu_Atr_Dfive.py", line 63, in formula
+    raise FileNotFoundError(f"FCT_Pubu_1 file not found: {pubu_data_path}")
+FileNotFoundError: FCT_Pubu_1 file not found: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/CU/FCT_Pubu_1.csv
+2025-07-23 15:01:45,659 - INFO - [PID:10412] 进度: 10/12 (83.3%), 成功: 7, 失败: 3
+2025-07-23 15:01:50,296 - INFO - [PID:10412] 计算中: CU FCT_Pubu_1 1d
+2025-07-23 15:01:50,332 - INFO - [PID:10412] 计算成功: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/CU/FCT_Pubu_1.csv
+2025-07-23 15:01:50,332 - INFO - [PID:10412] 进度: 12/12 (100.0%), 成功: 9, 失败: 3
+2025-07-23 15:01:50,332 - INFO - [PID:10412] CU/1d 完成: 总计 12, 成功 9, 失败 3
+2025-07-23 15:01:50,333 - INFO - [PID:10412] 品种 CU 处理完成: 总计因子 12, 成功 9, 失败 3
+2025-07-23 15:01:50,333 - INFO - [PID:10412] 开始处理品种: IC
+2025-07-23 15:01:50,333 - INFO - [PID:10412] 开始处理 IC 的 1d K线
+2025-07-23 15:01:50,333 - INFO - [PID:10412] 读取数据: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/IC/IC.csv
+2025-07-23 15:01:50,339 - INFO - [PID:10412] 将在 IC/1d 上计算 12 个因子
+2025-07-23 15:01:50,340 - INFO - [PID:10412] 计算中: IC FCT_Pubu_Atr_Dfive@20 1d
+2025-07-23 15:01:50,344 - ERROR - [PID:10412] 计算失败: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/IC/FCT_Pubu_Atr_Dfive@20.csv, 错误: FCT_Pubu_1 file not found: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/IC/FCT_Pubu_1.csv
+Traceback (most recent call last):
+  File "C:\Users\JAD\Desktop\jad\factor_cal\factor_cal.py", line 236, in calculate_factor_for_kline
+    result = calculator_instance.formula(param)
+  File "C:\Users\JAD\Desktop\jad\factor_cal\FCT_Pubu_Atr_Dfive.py", line 63, in formula
+    raise FileNotFoundError(f"FCT_Pubu_1 file not found: {pubu_data_path}")
+FileNotFoundError: FCT_Pubu_1 file not found: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/IC/FCT_Pubu_1.csv
+2025-07-23 15:01:50,345 - INFO - [PID:10412] 计算中: IC FCT_Pubu_Atr_Dfive@40 1d
+2025-07-23 15:01:50,348 - ERROR - [PID:10412] 计算失败: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/IC/FCT_Pubu_Atr_Dfive@40.csv, 错误: FCT_Pubu_1 file not found: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/IC/FCT_Pubu_1.csv
+Traceback (most recent call last):
+  File "C:\Users\JAD\Desktop\jad\factor_cal\factor_cal.py", line 236, in calculate_factor_for_kline
+    result = calculator_instance.formula(param)
+  File "C:\Users\JAD\Desktop\jad\factor_cal\FCT_Pubu_Atr_Dfive.py", line 63, in formula
+    raise FileNotFoundError(f"FCT_Pubu_1 file not found: {pubu_data_path}")
+FileNotFoundError: FCT_Pubu_1 file not found: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/IC/FCT_Pubu_1.csv
+2025-07-23 15:01:50,348 - INFO - [PID:10412] 计算中: IC FCT_Pubu_Atr_Dfive@80 1d
+2025-07-23 15:01:50,351 - ERROR - [PID:10412] 计算失败: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/IC/FCT_Pubu_Atr_Dfive@80.csv, 错误: FCT_Pubu_1 file not found: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/IC/FCT_Pubu_1.csv
+Traceback (most recent call last):
+  File "C:\Users\JAD\Desktop\jad\factor_cal\factor_cal.py", line 236, in calculate_factor_for_kline
+    result = calculator_instance.formula(param)
+  File "C:\Users\JAD\Desktop\jad\factor_cal\FCT_Pubu_Atr_Dfive.py", line 63, in formula
+    raise FileNotFoundError(f"FCT_Pubu_1 file not found: {pubu_data_path}")
+FileNotFoundError: FCT_Pubu_1 file not found: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/IC/FCT_Pubu_1.csv
+2025-07-23 15:01:50,352 - INFO - [PID:10412] 进度: 10/12 (83.3%), 成功: 7, 失败: 3
+2025-07-23 15:01:50,352 - INFO - [PID:10412] 计算中: IC FCT_Pubu_1 1d
+2025-07-23 15:01:50,376 - INFO - [PID:10412] 计算成功: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/IC/FCT_Pubu_1.csv
+2025-07-23 15:01:50,377 - INFO - [PID:10412] 进度: 12/12 (100.0%), 成功: 9, 失败: 3
+2025-07-23 15:01:50,377 - INFO - [PID:10412] IC/1d 完成: 总计 12, 成功 9, 失败 3
+2025-07-23 15:01:50,377 - INFO - [PID:10412] 品种 IC 处理完成: 总计因子 12, 成功 9, 失败 3
+2025-07-23 15:01:50,377 - INFO - [PID:10412] 开始处理品种: M
+2025-07-23 15:01:50,377 - INFO - [PID:10412] 开始处理 M 的 1d K线
+2025-07-23 15:01:50,377 - INFO - [PID:10412] 读取数据: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/M/M.csv
+2025-07-23 15:01:50,386 - INFO - [PID:10412] 将在 M/1d 上计算 12 个因子
+2025-07-23 15:01:50,387 - INFO - [PID:10412] 计算中: M FCT_Pubu_Atr_Dfive@20 1d
+2025-07-23 15:01:50,391 - ERROR - [PID:10412] 计算失败: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/M/FCT_Pubu_Atr_Dfive@20.csv, 错误: FCT_Pubu_1 file not found: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/M/FCT_Pubu_1.csv
+Traceback (most recent call last):
+  File "C:\Users\JAD\Desktop\jad\factor_cal\factor_cal.py", line 236, in calculate_factor_for_kline
+    result = calculator_instance.formula(param)
+  File "C:\Users\JAD\Desktop\jad\factor_cal\FCT_Pubu_Atr_Dfive.py", line 63, in formula
+    raise FileNotFoundError(f"FCT_Pubu_1 file not found: {pubu_data_path}")
+FileNotFoundError: FCT_Pubu_1 file not found: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/M/FCT_Pubu_1.csv
+2025-07-23 15:01:50,392 - INFO - [PID:10412] 计算中: M FCT_Pubu_Atr_Dfive@40 1d
+2025-07-23 15:01:50,395 - ERROR - [PID:10412] 计算失败: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/M/FCT_Pubu_Atr_Dfive@40.csv, 错误: FCT_Pubu_1 file not found: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/M/FCT_Pubu_1.csv
+Traceback (most recent call last):
+  File "C:\Users\JAD\Desktop\jad\factor_cal\factor_cal.py", line 236, in calculate_factor_for_kline
+    result = calculator_instance.formula(param)
+  File "C:\Users\JAD\Desktop\jad\factor_cal\FCT_Pubu_Atr_Dfive.py", line 63, in formula
+    raise FileNotFoundError(f"FCT_Pubu_1 file not found: {pubu_data_path}")
+FileNotFoundError: FCT_Pubu_1 file not found: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/M/FCT_Pubu_1.csv
+2025-07-23 15:01:50,396 - INFO - [PID:10412] 计算中: M FCT_Pubu_Atr_Dfive@80 1d
+2025-07-23 15:01:50,399 - ERROR - [PID:10412] 计算失败: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/M/FCT_Pubu_Atr_Dfive@80.csv, 错误: FCT_Pubu_1 file not found: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/M/FCT_Pubu_1.csv
+Traceback (most recent call last):
+  File "C:\Users\JAD\Desktop\jad\factor_cal\factor_cal.py", line 236, in calculate_factor_for_kline
+    result = calculator_instance.formula(param)
+  File "C:\Users\JAD\Desktop\jad\factor_cal\FCT_Pubu_Atr_Dfive.py", line 63, in formula
+    raise FileNotFoundError(f"FCT_Pubu_1 file not found: {pubu_data_path}")
+FileNotFoundError: FCT_Pubu_1 file not found: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/M/FCT_Pubu_1.csv
+2025-07-23 15:01:50,400 - INFO - [PID:10412] 进度: 10/12 (83.3%), 成功: 7, 失败: 3
+2025-07-23 15:01:50,400 - INFO - [PID:10412] 计算中: M FCT_Pubu_1 1d
+2025-07-23 15:01:50,433 - INFO - [PID:10412] 计算成功: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/M/FCT_Pubu_1.csv
+2025-07-23 15:01:50,433 - INFO - [PID:10412] 进度: 12/12 (100.0%), 成功: 9, 失败: 3
+2025-07-23 15:01:50,433 - INFO - [PID:10412] M/1d 完成: 总计 12, 成功 9, 失败 3
+2025-07-23 15:01:50,433 - INFO - [PID:10412] 品种 M 处理完成: 总计因子 12, 成功 9, 失败 3
+2025-07-23 15:01:50,434 - INFO - [PID:10412] 开始处理品种: SP
+2025-07-23 15:01:50,434 - INFO - [PID:10412] 开始处理 SP 的 1d K线
+2025-07-23 15:01:50,434 - INFO - [PID:10412] 读取数据: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/SP/SP.csv
+2025-07-23 15:01:50,439 - INFO - [PID:10412] 将在 SP/1d 上计算 12 个因子
+2025-07-23 15:01:50,439 - INFO - [PID:10412] 计算中: SP FCT_Pubu_Atr_Dfive@20 1d
+2025-07-23 15:01:50,442 - ERROR - [PID:10412] 计算失败: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/SP/FCT_Pubu_Atr_Dfive@20.csv, 错误: FCT_Pubu_1 file not found: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/SP/FCT_Pubu_1.csv
+Traceback (most recent call last):
+  File "C:\Users\JAD\Desktop\jad\factor_cal\factor_cal.py", line 236, in calculate_factor_for_kline
+    result = calculator_instance.formula(param)
+  File "C:\Users\JAD\Desktop\jad\factor_cal\FCT_Pubu_Atr_Dfive.py", line 63, in formula
+    raise FileNotFoundError(f"FCT_Pubu_1 file not found: {pubu_data_path}")
+FileNotFoundError: FCT_Pubu_1 file not found: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/SP/FCT_Pubu_1.csv
+2025-07-23 15:01:50,446 - INFO - [PID:10412] 计算中: SP FCT_Pubu_Atr_Dfive@40 1d
+2025-07-23 15:01:50,449 - ERROR - [PID:10412] 计算失败: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/SP/FCT_Pubu_Atr_Dfive@40.csv, 错误: FCT_Pubu_1 file not found: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/SP/FCT_Pubu_1.csv
+Traceback (most recent call last):
+  File "C:\Users\JAD\Desktop\jad\factor_cal\factor_cal.py", line 236, in calculate_factor_for_kline
+    result = calculator_instance.formula(param)
+  File "C:\Users\JAD\Desktop\jad\factor_cal\FCT_Pubu_Atr_Dfive.py", line 63, in formula
+    raise FileNotFoundError(f"FCT_Pubu_1 file not found: {pubu_data_path}")
+FileNotFoundError: FCT_Pubu_1 file not found: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/SP/FCT_Pubu_1.csv
+2025-07-23 15:01:50,449 - INFO - [PID:10412] 计算中: SP FCT_Pubu_Atr_Dfive@80 1d
+2025-07-23 15:01:50,451 - ERROR - [PID:10412] 计算失败: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/SP/FCT_Pubu_Atr_Dfive@80.csv, 错误: FCT_Pubu_1 file not found: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/SP/FCT_Pubu_1.csv
+Traceback (most recent call last):
+  File "C:\Users\JAD\Desktop\jad\factor_cal\factor_cal.py", line 236, in calculate_factor_for_kline
+    result = calculator_instance.formula(param)
+  File "C:\Users\JAD\Desktop\jad\factor_cal\FCT_Pubu_Atr_Dfive.py", line 63, in formula
+    raise FileNotFoundError(f"FCT_Pubu_1 file not found: {pubu_data_path}")
+FileNotFoundError: FCT_Pubu_1 file not found: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/SP/FCT_Pubu_1.csv
+2025-07-23 15:01:50,454 - INFO - [PID:10412] 进度: 10/12 (83.3%), 成功: 7, 失败: 3
+2025-07-23 15:01:50,454 - INFO - [PID:10412] 计算中: SP FCT_Pubu_1 1d
+2025-07-23 15:01:50,469 - INFO - [PID:10412] 计算成功: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/SP/FCT_Pubu_1.csv
+2025-07-23 15:01:50,469 - INFO - [PID:10412] 进度: 12/12 (100.0%), 成功: 9, 失败: 3
+2025-07-23 15:01:50,469 - INFO - [PID:10412] SP/1d 完成: 总计 12, 成功 9, 失败 3
+2025-07-23 15:01:50,469 - INFO - [PID:10412] 品种 SP 处理完成: 总计因子 12, 成功 9, 失败 3
+2025-07-23 15:01:50,469 - INFO - [PID:10412] 开始处理品种: TF
+2025-07-23 15:01:50,469 - INFO - [PID:10412] 开始处理 TF 的 1d K线
+2025-07-23 15:01:50,470 - INFO - [PID:10412] 读取数据: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/TF/TF.csv
+2025-07-23 15:01:50,478 - INFO - [PID:10412] 将在 TF/1d 上计算 12 个因子
+2025-07-23 15:01:50,478 - INFO - [PID:10412] 计算中: TF FCT_Pubu_Atr_Dfive@20 1d
+2025-07-23 15:01:50,482 - ERROR - [PID:10412] 计算失败: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/TF/FCT_Pubu_Atr_Dfive@20.csv, 错误: FCT_Pubu_1 file not found: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/TF/FCT_Pubu_1.csv
+Traceback (most recent call last):
+  File "C:\Users\JAD\Desktop\jad\factor_cal\factor_cal.py", line 236, in calculate_factor_for_kline
+    result = calculator_instance.formula(param)
+  File "C:\Users\JAD\Desktop\jad\factor_cal\FCT_Pubu_Atr_Dfive.py", line 63, in formula
+    raise FileNotFoundError(f"FCT_Pubu_1 file not found: {pubu_data_path}")
+FileNotFoundError: FCT_Pubu_1 file not found: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/TF/FCT_Pubu_1.csv
+2025-07-23 15:01:50,485 - INFO - [PID:10412] 计算中: TF FCT_Pubu_Atr_Dfive@40 1d
+2025-07-23 15:01:50,489 - ERROR - [PID:10412] 计算失败: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/TF/FCT_Pubu_Atr_Dfive@40.csv, 错误: FCT_Pubu_1 file not found: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/TF/FCT_Pubu_1.csv
+Traceback (most recent call last):
+  File "C:\Users\JAD\Desktop\jad\factor_cal\factor_cal.py", line 236, in calculate_factor_for_kline
+    result = calculator_instance.formula(param)
+  File "C:\Users\JAD\Desktop\jad\factor_cal\FCT_Pubu_Atr_Dfive.py", line 63, in formula
+    raise FileNotFoundError(f"FCT_Pubu_1 file not found: {pubu_data_path}")
+FileNotFoundError: FCT_Pubu_1 file not found: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/TF/FCT_Pubu_1.csv
+2025-07-23 15:01:50,489 - INFO - [PID:10412] 计算中: TF FCT_Pubu_Atr_Dfive@80 1d
+2025-07-23 15:01:50,492 - ERROR - [PID:10412] 计算失败: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/TF/FCT_Pubu_Atr_Dfive@80.csv, 错误: FCT_Pubu_1 file not found: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/TF/FCT_Pubu_1.csv
+Traceback (most recent call last):
+  File "C:\Users\JAD\Desktop\jad\factor_cal\factor_cal.py", line 236, in calculate_factor_for_kline
+    result = calculator_instance.formula(param)
+  File "C:\Users\JAD\Desktop\jad\factor_cal\FCT_Pubu_Atr_Dfive.py", line 63, in formula
+    raise FileNotFoundError(f"FCT_Pubu_1 file not found: {pubu_data_path}")
+FileNotFoundError: FCT_Pubu_1 file not found: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/TF/FCT_Pubu_1.csv
+2025-07-23 15:01:50,493 - INFO - [PID:10412] 进度: 10/12 (83.3%), 成功: 7, 失败: 3
+2025-07-23 15:01:50,493 - INFO - [PID:10412] 计算中: TF FCT_Pubu_1 1d
+2025-07-23 15:01:50,510 - INFO - [PID:10412] 计算成功: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/TF/FCT_Pubu_1.csv
+2025-07-23 15:01:50,510 - INFO - [PID:10412] 进度: 12/12 (100.0%), 成功: 9, 失败: 3
+2025-07-23 15:01:50,510 - INFO - [PID:10412] TF/1d 完成: 总计 12, 成功 9, 失败 3
+2025-07-23 15:01:50,510 - INFO - [PID:10412] 品种 TF 处理完成: 总计因子 12, 成功 9, 失败 3

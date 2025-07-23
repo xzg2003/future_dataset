@@ -1,0 +1,39 @@
+2025-07-23 15:02:39,792 - INFO - [PID:13332] 开始处理品种: NI
+2025-07-23 15:02:39,792 - INFO - [PID:13332] 开始处理 NI 的 1d K线
+2025-07-23 15:02:39,792 - INFO - [PID:13332] 读取数据: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/NI/NI.csv
+2025-07-23 15:02:39,802 - INFO - [PID:13332] 将在 NI/1d 上计算 12 个因子
+2025-07-23 15:02:39,803 - INFO - [PID:13332] 计算中: NI FCT_Pubu_Atr_Dfive@20 1d
+2025-07-23 15:02:39,817 - INFO - [PID:13332] 计算成功: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/NI/FCT_Pubu_Atr_Dfive@20.csv
+2025-07-23 15:02:39,817 - INFO - [PID:13332] 计算中: NI FCT_Pubu_Atr_Dfive@40 1d
+2025-07-23 15:02:39,830 - INFO - [PID:13332] 计算成功: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/NI/FCT_Pubu_Atr_Dfive@40.csv
+2025-07-23 15:02:39,830 - INFO - [PID:13332] 计算中: NI FCT_Pubu_Atr_Dfive@80 1d
+2025-07-23 15:02:39,842 - INFO - [PID:13332] 计算成功: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/NI/FCT_Pubu_Atr_Dfive@80.csv
+2025-07-23 15:02:39,842 - INFO - [PID:13332] 进度: 10/12 (83.3%), 成功: 10, 失败: 0
+2025-07-23 15:02:39,842 - INFO - [PID:13332] NI/1d 完成: 总计 12, 成功 12, 失败 0
+2025-07-23 15:02:39,842 - INFO - [PID:13332] 品种 NI 处理完成: 总计因子 12, 成功 12, 失败 0
+2025-07-23 15:02:39,842 - INFO - [PID:13332] 开始处理品种: SM
+2025-07-23 15:02:39,842 - INFO - [PID:13332] 开始处理 SM 的 1d K线
+2025-07-23 15:02:39,842 - INFO - [PID:13332] 读取数据: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/SM/SM.csv
+2025-07-23 15:02:39,850 - INFO - [PID:13332] 将在 SM/1d 上计算 12 个因子
+2025-07-23 15:02:39,850 - INFO - [PID:13332] 计算中: SM FCT_Pubu_Atr_Dfive@20 1d
+2025-07-23 15:02:39,862 - INFO - [PID:13332] 计算成功: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/SM/FCT_Pubu_Atr_Dfive@20.csv
+2025-07-23 15:02:39,862 - INFO - [PID:13332] 计算中: SM FCT_Pubu_Atr_Dfive@40 1d
+2025-07-23 15:02:39,874 - INFO - [PID:13332] 计算成功: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/SM/FCT_Pubu_Atr_Dfive@40.csv
+2025-07-23 15:02:39,874 - INFO - [PID:13332] 计算中: SM FCT_Pubu_Atr_Dfive@80 1d
+2025-07-23 15:02:39,892 - INFO - [PID:13332] 计算成功: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/SM/FCT_Pubu_Atr_Dfive@80.csv
+2025-07-23 15:02:39,892 - INFO - [PID:13332] 进度: 10/12 (83.3%), 成功: 10, 失败: 0
+2025-07-23 15:02:39,893 - INFO - [PID:13332] SM/1d 完成: 总计 12, 成功 12, 失败 0
+2025-07-23 15:02:39,893 - INFO - [PID:13332] 品种 SM 处理完成: 总计因子 12, 成功 12, 失败 0
+2025-07-23 15:02:39,893 - INFO - [PID:13332] 开始处理品种: TF
+2025-07-23 15:02:39,893 - INFO - [PID:13332] 开始处理 TF 的 1d K线
+2025-07-23 15:02:39,893 - INFO - [PID:13332] 读取数据: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/TF/TF.csv
+2025-07-23 15:02:39,902 - INFO - [PID:13332] 将在 TF/1d 上计算 12 个因子
+2025-07-23 15:02:39,902 - INFO - [PID:13332] 计算中: TF FCT_Pubu_Atr_Dfive@20 1d
+2025-07-23 15:02:39,915 - INFO - [PID:13332] 计算成功: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/TF/FCT_Pubu_Atr_Dfive@20.csv
+2025-07-23 15:02:39,915 - INFO - [PID:13332] 计算中: TF FCT_Pubu_Atr_Dfive@40 1d
+2025-07-23 15:02:39,928 - INFO - [PID:13332] 计算成功: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/TF/FCT_Pubu_Atr_Dfive@40.csv
+2025-07-23 15:02:39,928 - INFO - [PID:13332] 计算中: TF FCT_Pubu_Atr_Dfive@80 1d
+2025-07-23 15:02:39,940 - INFO - [PID:13332] 计算成功: C:\Users\JAD\Desktop\jad\factor_cal\../data/1d/TF/FCT_Pubu_Atr_Dfive@80.csv
+2025-07-23 15:02:39,940 - INFO - [PID:13332] 进度: 10/12 (83.3%), 成功: 10, 失败: 0
+2025-07-23 15:02:39,940 - INFO - [PID:13332] TF/1d 完成: 总计 12, 成功 12, 失败 0
+2025-07-23 15:02:39,940 - INFO - [PID:13332] 品种 TF 处理完成: 总计因子 12, 成功 12, 失败 0
