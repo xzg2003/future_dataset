@@ -4,19 +4,18 @@ from config import *
 import pandas as pd
 class mutal_IC():
     def __init__(self, k_line):
-        self.factors = pd.read_csv('factor_name.csv',encoding='utf-8')
         self.df = {}
         self.k_line = k_line
 
         # 提前读取每种期货的因子值并存储
-        for factor in self.factors['name']:
+        for factor in factors:
             df_combined = []
             if not os.path.exists(f'./result/{self.k_line}'):
                 os.makedirs(f'./result/{self.k_line}')
 
             for i in instruments:
-                if os.path.exists(f'./data/{k_line}/{i}/{factor}.csv'):
-                    df = pd.read_csv(f'./data/{k_line}/{i}/{factor}.csv',encoding='utf-8')
+                if os.path.exists(f'{DATA_DIR}/{k_line}/{i}/{factor}.csv'):
+                    df = pd.read_csv(f'{DATA_DIR}/{k_line}/{i}/{factor}.csv',encoding='utf-8')
                     df_combined.append(df)
 
             df_combined = pd.concat(df_combined,axis=0,ignore_index=True)

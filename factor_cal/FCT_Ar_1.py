@@ -4,33 +4,44 @@ import pandas
 
 class FCT_Ar_1:
     def __init__(self):
-        pass
+        self.factor_name = 'FCT_Ar_1'
 
     def formula(self, param):
-
-        # 从字典中提取DataFrame
+        # 从字典中提取 DataFrame
         df = param.get('df', None)
-        length = param.get('length', 5)
-        factor_name = f'FCT_Ar_1@{length}'
-
         if df is None:
-            raise ValueError("参数 'param' 中缺少 'df' 键或其值为空")
+            raise ValueError("no 'df' in param")
 
-        # 确保df是pandas.DataFrame类型
+        # 确保 df 是 pandas.DataFrame 类型
         if not isinstance(df, pandas.DataFrame):
-            raise TypeError("'df' 必须是 pandas.DataFrame 类型")
+            raise TypeError("df must be DataFrame")
 
-        # 计算开盘价与最高、最低价的差值
-        df['up']   = df['high'] - df['open']
-        df['down'] = df['open'] - df['low']
+        """
+        从字典中读取 length
+        获取 instrument 名称，用于提取mindiff中的数据
+        """
+        length = param.get('length', None)
+        if length is None:
+            raise ValueError("param missing 'length'")
+        print(f"Using length: {length}")
 
-        # 计算滑动求和
-        df['ar1'] = df['up'].rolling(window=length).sum()
-        df['ar2'] = df['down'].rolling(window=length).sum()
+        # 修改为 pd.concat 批量合并方式
+        new_columns = pandas.DataFrame(index=df.index)
 
-        # 计算特征值
-        df[factor_name] = (df['ar1'] - df['ar2']) / (df['ar1'] + df['ar2'])
+        new_columns['up'] = df['high'] - df['open']
+        new_columns['down'] = df['open'] - df['low']
+
+        new_columns['ar1'] = new_columns['up'].rolling(window=length).sum()
+        new_columns['ar2'] = new_columns['down'].rolling(window=length).sum()
+
+        new_columns[f'FCT_Ar_1@{length}'] = (new_columns['ar1'] - new_columns['ar2']) / (
+                new_columns['ar1'] + new_columns['ar2'])
+
+        # 合并进原始 df
+        df = pandas.concat([df, new_columns], axis=1)
 
         # 返回结果
-        result = df[factor_name].copy()
+        if 'datetime' in df.columns:
+            df = df.rename(columns={'datetime': 'date'})
+        result = df[['date', f'FCT_Ar_1@{length}']].copy()
         return result

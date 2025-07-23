@@ -1,11 +1,14 @@
+from process_data import process_data
 import pandas as pd
 import csv
 import os
 import shutil
 from bs4 import BeautifulSoup
+import multiprocessing
 from factor_judge.mutal_IC import mutal_IC
 from factor_judge.layer_yield import layer_yield
 from factor_judge.statistic import statistic
+from config import *
 
 class run_factor_judge():
     def __init__(self, factor, method, k_line):
@@ -112,12 +115,12 @@ class run_factor_judge():
         print(f"\nHTML文件已生成：{html_output}")
 
 if __name__=='__main__':
-    factors = pd.read_csv('factor_name.csv',encoding='utf-8')
+    cpu_cores = multiprocessing.cpu_count()
     
     for i in factors:
-        a = run_factor_judge(i,'M','1d')
+        a = run_factor_judge(i,'M', k_line_type)
         a.get_report()
         a.to_html()
         print(f'{i} finished！')
     
-    mutal_IC('1d').cal_mutal_IC()
+    mutal_IC(k_line_type).cal_mutal_IC()

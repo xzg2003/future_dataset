@@ -46,9 +46,9 @@ class factor_judge():
 
         # 提前读取每种期货的因子值并存储
         for i in instruments:
-            if os.path.exists(f'./data/{k_line}/{i}/{self.name}.csv'):
-                df = pd.read_csv(f'./data/{k_line}/{i}/{i}.csv',encoding='utf-8')
-                df1 = pd.read_csv(f'./data/{k_line}/{i}/{self.name}.csv',encoding='utf-8')
+            if os.path.exists(f'{DATA_DIR}/{k_line}/{i}/{self.name}.csv'):
+                df = pd.read_csv(f'{DATA_DIR}/{k_line}/{i}/{i}.csv',encoding='utf-8')
+                df1 = pd.read_csv(f'{DATA_DIR}/{k_line}/{i}/{self.name}.csv',encoding='utf-8')
                 df1 = df1.replace([np.inf, -np.inf], np.nan)
                 df[self.name] = df1[self.name]
                 if k_line == '5m':
@@ -61,7 +61,7 @@ class factor_judge():
 
 if __name__ == "__main__":
     # 测试因子判断类
-    factor = '50_IC'
+    factor = 'FCT_Ac_Tr_1'
     k_line = '1d'
     judge = factor_judge(factor, k_line)
     df_combined = []
