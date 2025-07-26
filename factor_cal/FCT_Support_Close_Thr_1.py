@@ -14,19 +14,25 @@ class FCT_Support_Close_Thr_1:
         self.factor_name = 'FCT_Support_Close_Thr_1'
 
     def formula(self, param):
-        # 从字典中提取 DataFrame
+        # 从参数字典中提取 DataFrame
         df = param.get('df', None)
         if df is None:
             raise ValueError("no 'df' in param")
-        if not isinstance(df, pandas.DataFrame):
-            raise TypeError("df must be DataFrame")
 
-        # 从字典中读取 length 和 thr（分位数阈值，默认0.3）
+        # 从参数字典中读取 length
         length = param.get('length', None)
-        thr = param.get('thr', 0.3)
         if length is None:
             raise ValueError("param missing 'length'")
-        print(f"Using length: {length}, thr: {thr}")
+
+        # 从参数字典中读取thr
+        thr = param.get('thr', 0.3)
+        if thr is None:
+            raise ValueError("param missing 'thr'")
+
+        # 从参数字典中读取 factor_name
+        factor_name = param.get('factor_name', None)
+        if factor_name is None:
+            raise ValueError("param missing 'factor_name'")
 
         # 初始化 new_columns 用于统一管理新增列
         new_columns = pandas.DataFrame(index=df.index)
@@ -37,12 +43,12 @@ class FCT_Support_Close_Thr_1:
             return numpy.sum(x <= threshold)
 
         # 使用 rolling.apply 获取结果，并赋值给 new_columns
-        new_columns[f'FCT_Support_Close_Thr_1'] = df['close'].rolling(window=length, min_periods=length).apply(
+        new_columns[f'{factor_name}'] = df['close'].rolling(window=length, min_periods=length).apply(
             support_count, raw=True)
 
         # 合并到主表（一次性合并）
         df = pandas.concat([df, new_columns], axis=1)
 
         # 返回结果（无日期）
-        result = df[[f'FCT_Support_Close_Thr_1']].copy()
+        result = df[[f'{factor_name}']].copy()
         return result

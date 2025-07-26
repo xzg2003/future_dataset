@@ -14,20 +14,26 @@ class FCT_Tsi_Atr_Dfive:
         self.factor_name = 'FCT_Tsi_Atr_Dfive'
 
     def formula(self, param):
-        # 从字典中提取 DataFrame
+        # 从参数字典中提取 DataFrame
         df = param.get('df', None)
         if df is None:
             raise ValueError("no 'df' in param")
-        if not isinstance(df, pandas.DataFrame):
-            raise TypeError("df must be DataFrame")
 
-        # 调取参数
-        short = param.get('short', 25)
-        long = param.get('long', 13)
-        atr_length = param.get('atr_length', 14)
-        if short is None or long is None or atr_length is None:
-            raise ValueError("param missing 'short', 'long' or 'atr_length'")
-        print(f"Using short: {short}, long: {long}, atr_length: {atr_length}")
+        # 从参数字典中提取 short, long
+        short = param.get('short', None)
+        long = param.get('long', None)
+        if short or long is None:
+            raise ValueError("no 'short' or 'long' in param")
+
+        # 从参数字典中提取 atr_length
+        atr_length = param.get('atr_length', None)
+        if atr_length is None:
+            raise ValueError("no 'atr_length' in param")
+
+        # 从参数字典中提取 factor_name
+        factor_name = param.get('factor_name', None)
+        if factor_name is None:
+            raise ValueError("no 'factor_name' in param")
 
         # 初始化 new_columns 用于统一管理中间变量
         new_columns = pandas.DataFrame(index=df.index)
@@ -50,11 +56,11 @@ class FCT_Tsi_Atr_Dfive:
         new_columns['ATR'] = tr.rolling(window=atr_length).mean()
 
         # 归一化：TSI / ATR
-        new_columns[f'FCT_Tsi_Atr_Dfive'] = new_columns['TSI'] / (new_columns['ATR'] + 1e-10)
+        new_columns[f'{factor_name}'] = new_columns['TSI'] / (new_columns['ATR'] + 1e-10)
 
         # 合并到主表
         df = pandas.concat([df, new_columns], axis=1)
 
         # 返回结果（无日期）
-        result = df[[f'FCT_Tsi_Atr_Dfive']].copy()
+        result = df[[f'{factor_name}']].copy()
         return result

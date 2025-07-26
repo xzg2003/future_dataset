@@ -4,8 +4,11 @@ instruments= ['A','AG','AL','AP','AU','BU','C','CF','CJ','CS',
             'PB','PF','PG','PK','PP','RB','RM','RU','SA','SF',
             'SM','SN','SP','SR','SC','SS','TA','T','TF','UR','V','Y','ZN'] #期货类型
 
+DATA_DIR = 'D:/LEE32/QuantTrading/future_dataset/data'
+MIN_DIFF = f'{DATA_DIR}/mindiff/mindiff.csv'
+
 # k线类型
-k_line_types = ['5m', '1d']
+k_line_type = '1d'
 
 # 滑动长度
 lengths = [10, 20, 40, 80, 120, 180]
@@ -20,7 +23,7 @@ factor_names = [
     "XSMOM",
     "Acceleration",
     "Bias",
-    "RSI",
+     "RSI",
     "IntradayMOM",
     "OvernightMOM",
     "RobustMOM",

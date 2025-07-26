@@ -14,39 +14,36 @@ class FCT_Ac_Tr_1:
         self.factor_name = 'FCT_Ac_Tr_1'
 
     def formula(self, param):
-        # 从字典中提取 DataFrame
+        # 从参数字典中获取 df
         df = param.get('df', None)
         if df is None:
             raise ValueError("no 'df' in param")
 
-        # 确保 df 是 pandas.DataFrame 类型
-        if not isinstance(df, pandas.DataFrame):
-            raise TypeError("df must be DataFrame")
-
-        """
-        从字典中读取 length
-        获取 instrument 名称，用于提取mindiff中的数据
-        """
+        # 从参数字典中获取 length
         length = param.get('length', None)
+
         if length is None:
             raise ValueError("param missing 'length'")
-        print(f"Using length: {length}")
 
-        # 获取instrument
+        # 从参数字典中获取 instrument
         instrument = param.get('instrument', None)
         if instrument is None:
             raise ValueError("param miss instrument")
 
-        # 获取mindiff
-        mindiff = param.get('mindiff', None)
-        if mindiff is None:
-            raise ValueError(f"param miss mindiff for instrument: {param.get('instrument', 'unknown')}")
-        print(f"Using mindiff: {mindiff}")
-
-        # 获取k_line_type
+        # 从参数字典中获取 k_line_type
         k_line_type = param.get('k_line_type', None)
         if k_line_type is None:
-            raise ValueError("param missing instrument")
+            raise ValueError("param missing k_line_type")
+
+        # 从参数字典中获取 factor_name
+        factor_name = param.get('factor_name', None)
+        if factor_name is None:
+            raise ValueError("param missing factor_name")
+
+        # 从参数字典中获取 mindiff
+        mindiff = param.get('mindiff', None)
+        if mindiff is None:
+            raise ValueError("param missing mindiff")
 
         # 修改为 pd.concat 批量合并方式
         # 构建新的列 DataFrame
@@ -77,7 +74,7 @@ class FCT_Ac_Tr_1:
 
         # 最终因子计算
         rolling_mean_tr = new_columns['Tr'].rolling(window=length).mean().fillna(0)
-        new_columns[f'FCT_Ac_Tr_1@{length}'] = numpy.where(
+        new_columns[f'{factor_name}'] = numpy.where(
             rolling_mean_tr < mindiff,
             0,
             new_columns['AC'] / rolling_mean_tr
@@ -87,5 +84,5 @@ class FCT_Ac_Tr_1:
         df = pandas.concat([df, new_columns], axis=1)
 
         # 返回结果（无日期）
-        result = df[[ f'FCT_Ac_Tr_1@{length}']].copy()
+        result = df[[f'{factor_name}']].copy()
         return result

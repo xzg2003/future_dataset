@@ -14,19 +14,25 @@ class FCT_Support_Close_Thr_Boll_1:
         self.factor_name = 'FCT_Support_Close_Thr_Boll_1'
 
     def formula(self, param):
-        # 从字典中提取 DataFrame
+        # 从参数字典中读取 DataFrame
         df = param.get('df', None)
         if df is None:
             raise ValueError("no 'df' in param")
-        if not isinstance(df, pandas.DataFrame):
-            raise TypeError("df must be DataFrame")
 
-        # 从字典中读取 length 和 n_std（布林带标准差倍数，默认为2）
+        # 从参数字典中读取 length
         length = param.get('length', None)
-        n_std = param.get('n_std', 2)
         if length is None:
             raise ValueError("param missing 'length'")
-        print(f"Using length: {length}, n_std: {n_std}")
+
+        # 从参数字典中读取 n_std（布林带标准差倍数）
+        n_std = param.get('n_std', None)
+        if n_std is None:
+            raise ValueError("param missing 'n_std'")
+
+        # 从参数字典中读取 factor_name
+        factor_name = param.get('factor_name', None)
+        if factor_name is None:
+            raise ValueError("param missing 'factor_name'")
 
         # 初始化 new_columns 用于集中管理新增列
         new_columns = pandas.DataFrame(index=df.index)
@@ -50,11 +56,11 @@ class FCT_Support_Close_Thr_Boll_1:
             count_array[i] = numpy.sum(window_close <= window_lower)
 
         # 写入 new_columns
-        new_columns[f'FCT_Support_Close_Thr_Boll_1@{length}'] = count_array
+        new_columns[f'{factor_name}'] = count_array
 
         # 一次性合并到原始 df
         df = pandas.concat([df, new_columns], axis=1)
 
         # 返回结果（无日期）
-        result = df[[f'FCT_Support_Close_Thr_Boll_1@{length}']].copy()
+        result = df[[f'{factor_name}']].copy()
         return result

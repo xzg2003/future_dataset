@@ -1,0 +1,182 @@
+{
+  "Tr": [
+    {
+      "factor_name": "Tr"
+    }
+  ],
+  "FCT_Ac_Tr_1": [
+    {
+      "factor_name": "FCT_Ac_Tr_1@5",
+      "length": 5,
+      "Tr": "Need"
+    },
+    {
+      "factor_name": "FCT_Ac_Tr_1@20",
+      "length": 20,
+      "Tr": "Need"
+    },
+    {
+      "factor_name": "FCT_Ac_Tr_1@40",
+      "length": 40,
+      "Tr": "Need"
+    },
+    {
+      "factor_name": "FCT_Ac_Tr_1@80",
+      "length": 80,
+      "Tr": "Need"
+    }
+  ],
+  "FCT_Bias_1": [
+    {
+      "factor_name": "FCT_Bias_1@5",
+      "length": 5,
+      "Tr": "Need"
+    }
+  ],
+  "FCT_Br_1": [
+    {
+      "factor_name": "FCT_Br_1@5",
+      "length": 5
+    }
+  ],
+  "FCT_Cmf_1": [
+    {
+      "factor_name": "FCT_Cmf_1@5",
+      "length": 5
+    }
+  ],
+  "FCT_Pubu_1": [
+    {
+      "factor_name": "FCT_Pubu_1@5_20",
+      "short": 5,
+      "long": 20
+    }
+  ],
+  "FCT_Pubu_Atr_Dfive": [
+    {
+      "factor_name": "FCT_Pubu_Atr_Dfive@5_20_14",
+      "short": 5,
+      "long": 20,
+      "atr_length": 14,
+      "FCT_Pubu_1": "Need"
+    }
+  ],
+  "FCT_Pubu_Vol_Dfive": [
+    {
+      "factor_name": "FCT_Pubu_Vol_Dfive@5_20_14",
+      "short": 5,
+      "long": 20,
+      "atr_length": 14,
+      "FCT_Pubu_1": "Need"
+    }
+  ],
+  "FCT_R_Div_RStd": [
+    {
+      "factor_name": "FCT_R_Div_RStd",
+      "length": 5
+    }
+  ],
+  "FCT_Return_Cumsum_1": [
+    {
+      "factor_name": "FCT_Return_Cumsum_1"
+    }
+  ],
+  "FCT_Sdrm_1": [
+    {
+      "factor_name": "FCT_Sdrm_1@5",
+      "length": 5
+    }
+  ],
+  "FCT_Sdrm_Atr_Dfive": [
+    {
+      "factor_name": "FCT_Sdrm_Atr_Dfive@5_14",
+      "length": 5,
+      "atr_length": 14
+    }
+  ],
+  "FCT_Si": [
+    {
+      "factor_name": "FCT_Si@5",
+      "length": 5
+    }
+  ],
+  "FCT_Srmi": [
+    {
+      "factor_name": "FCT_Srmi@5",
+      "length": 5
+    }
+  ],
+  "FCT_Support_Close_Thr_1": [
+    {
+      "factor_name": "FCT_Support_Close_Thr_1@5_0.3",
+      "length": 5,
+      "thr": 0.3
+    }
+  ],
+  "FCT_Support_Close_Thr_Boll_1": [
+    {
+      "factor_name": "FCT_Support_Close_Thr_Boll_1@5_2",
+      "length": 5,
+      "n_std": 2
+    }
+  ],
+  "FCT_Tsi_1": [
+    {
+      "factor_name": "FCT_Tsi_1@5_20",
+      "short": 5,
+      "long": 20
+    }
+  ],
+  "FCT_Tsi_Atr_Dfive": [
+    {
+      "factor_name": "FCT_Tsi_Atr_Dfive@5_20_2",
+      "short": 5,
+      "long": 20,
+      "atr_length": 14
+    }
+  ],
+  "FCT_Tsi_Ref_1": [
+    {
+      "factor_name": "FCT_Tsi_Ref_1@5_20",
+      "short": 5,
+      "long": 20
+    }
+  ],
+  "FCT_Tsi_Vol_Dfive": [
+    {
+      "factor_name": "FCT_Tsi_Vol_Dfive@5_20_14",
+      "short": 5,
+      "long": 20,
+      "vol_length": 14
+    }
+  ],
+  "FCT_Col_Close_Corr_1": [
+    {
+      "factor_name": "FCT_Col_Close_Corr_1@5",
+      "length": 5
+    }
+  ],
+  "FCT_Vol_Cumsum_1": [
+    {
+      "factor_name": "FCT_Vol_Cumsum_1"
+    }
+  ],
+  "FCT_Vol_DFive_1": [
+    {
+      "factor_name": "FCT_Vol_DFive_1",
+      "length": 5
+    }
+  ],
+  "FCT_Vol_Return_Corr_1": [
+    {
+      "factor_name": "FCT_Vol_Return_Corr_1@5",
+      "length": 5
+    }
+  ],
+  "FCT_Vr": [
+    {
+      "factor_name": "FCT_Vr@5",
+      "length": 5
+    }
+  ]
+}

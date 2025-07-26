@@ -14,16 +14,21 @@ class FCT_Pubu_1:
         self.factor_name = 'FCT_Pubu_1'
 
     def formula(self, param):
-        # 从字典中提取 DataFrame
+        # 从参数字典中提取 DataFrame
         df = param.get('df', None)
         if df is None:
             raise ValueError("no 'df' in param")
-        if not isinstance(df, pandas.DataFrame):
-            raise TypeError("df must be DataFrame")
 
-        # 均线周期调用
-        short = param.get('short', 5)  # 默认5
-        long = param.get('long', 20)  # 默认20
+        # 从参数字典中提取 short, long
+        short = param.get('short', None)
+        long = param.get('long', None)
+        if short or long is None:
+            raise ValueError("no 'short' or 'long' in param")
+
+        # 从参数字典中提取 factor_name
+        factor_name = param.get('factor_name', None)
+        if factor_name is None:
+            raise ValueError("no 'factor_name' in param")
 
         # 修改为 pd.concat 批量合并方式
         new_columns = pandas.DataFrame(index=df.index)
@@ -39,12 +44,12 @@ class FCT_Pubu_1:
                 return numpy.nan
             return numpy.sum(window <= window[-1]) / long
 
-        new_columns[f'FCT_Pubu_1'] = new_columns['ma_short'].rolling(window=long, min_periods=long).apply(
+        new_columns[f'{factor_name}'] = new_columns['ma_short'].rolling(window=long, min_periods=long).apply(
             pubu_percentile, raw=True)
 
         # 合并进原始 df
         df = pandas.concat([df, new_columns], axis=1)
 
         # 返回结果（无日期）
-        result = df[[f'FCT_Pubu_1']].copy()
+        result = df[[f'{factor_name}']].copy()
         return result

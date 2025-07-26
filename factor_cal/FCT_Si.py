@@ -14,18 +14,20 @@ class FCT_Si:
         self.factor_name = 'FCT_Si'
 
     def formula(self, param):
-        # 从字典中提取 DataFrame
+        # 从参数字典中提取 DataFrame
         df = param.get('df', None)
         if df is None:
             raise ValueError("no 'df' in param")
-        if not isinstance(df, pandas.DataFrame):
-            raise TypeError("df must be DataFrame")
 
-        # 从字典中读取 length
+        # 从参数字典中读取 length
         length = param.get('length', None)
         if length is None:
             raise ValueError("param missing 'length'")
-        print(f"Using length: {length}")
+
+        # 从参数字典中读取 factor_name
+        factor_name = param.get('factor_name', None)
+        if factor_name is None:
+            raise ValueError("param missing 'factor_name'")
 
         new_columns = pandas.DataFrame(index=df.index)
 
@@ -33,11 +35,11 @@ class FCT_Si:
         new_columns['abs_diff'] = numpy.abs(df['close'].diff())
 
         # 计算 SI 指标（绝对变化幅度的均值）
-        new_columns[f'FCT_Si@{length}'] = new_columns['abs_diff'].rolling(window=length).mean()
+        new_columns[f'{factor_name}'] = new_columns['abs_diff'].rolling(window=length).mean()
 
         # 合并进原始 df
         df = pandas.concat([df, new_columns], axis=1)
 
         # 返回结果（无日期）
-        result = df[['date', f'FCT_Si@{length}']].copy()
+        result = df[[f'{factor_name}']].copy()
         return result

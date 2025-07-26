@@ -5,6 +5,8 @@ import os
 import numpy
 import pandas
 
+from graphic.merge import factor
+
 # 设置工作目录为当前脚本所在的目录
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
@@ -14,18 +16,20 @@ class FCT_Vol_Close_Corr_1:
         self.factor_name = 'FCT_Vol_Close_Corr_1'
 
     def formula(self, param):
-        # 从字典中提取 DataFrame
+        # 从参数字典中提取 DataFrame
         df = param.get('df', None)
         if df is None:
             raise ValueError("no 'df' in param")
-        if not isinstance(df, pandas.DataFrame):
-            raise TypeError("df must be DataFrame")
 
         # 从字典中读取 length
         length = param.get('length', None)
         if length is None:
             raise ValueError("param missing 'length'")
-        print(f"Using length: {length}")
+
+        # 从字典中读取 factor_name
+        factor_name = param.get('factor_name', None)
+        if factor_name is None:
+            raise ValueError("param missing 'factor_name'")
 
         # 初始化 new_columns 用于统一管理中间变量
         new_columns = pandas.DataFrame(index=df.index)
@@ -46,11 +50,11 @@ class FCT_Vol_Close_Corr_1:
             window = combined[i - length + 1:i + 1]
             corr_array[i] = corr_func(window)
 
-        new_columns[f'FCT_Vol_Close_Corr_1@{length}'] = corr_array
+        new_columns[f'{factor_name}'] = corr_array
 
         # 合并到主表
         df = pandas.concat([df, new_columns], axis=1)
 
         # 返回结果（无日期）
-        result = df[[f'FCT_Vol_Close_Corr_1@{length}']].copy()
+        result = df[[f'{factor_name}']].copy()
         return result

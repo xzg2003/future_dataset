@@ -4,6 +4,7 @@ import os
 
 import numpy
 import pandas
+from sympy import factor_terms
 
 # 设置工作目录为当前脚本所在的目录
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
@@ -14,19 +15,21 @@ class FCT_TSI_Ref_1:
         self.factor_name = 'FCT_TSI_Ref_1'
 
     def formula(self, param):
-        # 从字典中提取 DataFrame
+        # 从参数字典中提取 DataFrame
         df = param.get('df', None)
         if df is None:
             raise ValueError("no 'df' in param")
-        if not isinstance(df, pandas.DataFrame):
-            raise TypeError("df must be DataFrame")
 
-        # 从字典中读取短期和长期参数
-        short = param.get('short', 25)
-        long = param.get('long', 13)
-        if short is None or long is None:
-            raise ValueError("param missing 'short' or 'long'")
-        print(f"Using short: {short}, long: {long}")
+        # 从参数字典中读取 short, long
+        short = param.get('short', None)
+        long = param.get('long', None)
+        if short or long is None:
+            raise ValueError("no 'short' or 'long' in param")
+
+        # 从参数字典中读取 factor_name
+        factor_name = param.get('factor_name', None)
+        if factor_name is None:
+            raise ValueError("no 'factor_name' in param")
 
         # 初始化 new_columns 用于统一管理中间变量
         new_columns = pandas.DataFrame(index=df.index)
@@ -44,11 +47,11 @@ class FCT_TSI_Ref_1:
         abs_ema_2 = abs_ema_1.ewm(span=long, adjust=False).mean()
 
         # 计算 TSI
-        new_columns[f'FCT_TSI_Ref_1'] = 100 * (ema_2 / (abs_ema_2 + 1e-10))
+        new_columns[f'{factor_name}'] = 100 * (ema_2 / (abs_ema_2 + 1e-10))
 
         # 合并到主表
         df = pandas.concat([df, new_columns], axis=1)
 
         # 返回结果
-        result = df[[f'FCT_TSI_Ref_1']].copy()
+        result = df[[f'{factor_name}']].copy()
         return result

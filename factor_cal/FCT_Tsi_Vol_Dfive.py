@@ -12,20 +12,26 @@ class FCT_Tsi_Vol_Dfive:
         self.factor_name = 'FCT_Tsi_Vol_Dfive'
 
     def formula(self, param):
-        # 从字典中提取 DataFrame
+        # 从参数字典中提取 DataFrame
         df = param.get('df', None)
         if df is None:
             raise ValueError("no 'df' in param")
-        if not isinstance(df, pandas.DataFrame):
-            raise TypeError("df must be DataFrame")
 
-        # 参数
-        short = param.get('short', 25)
-        long = param.get('long', 13)
-        vol_length = param.get('vol_length', 14)
-        if short is None or long is None or vol_length is None:
-            raise ValueError("param missing 'short', 'long' or 'vol_length'")
-        print(f"Using short: {short}, long: {long}, vol_length: {vol_length}")
+        # 从参数字典中提取 short, long
+        short = param.get('short', None)
+        long = param.get('long', None)
+        if short or long is None:
+            raise ValueError("no 'short' or 'long' in param")
+
+        # 从参数字典中提取 vol_length
+        vol_length = param.get('vol_length', None)
+        if vol_length is None:
+            raise ValueError("no 'vol_length' in param")
+
+        # 从参数字典中提取 factor_name
+        factor_name = param.get('factor_name', None)
+        if factor_name is None:
+            raise ValueError("no 'factor_name' in param")
 
         # 建议做法：初始化 new_columns 用于统一管理中间变量
         new_columns = pandas.DataFrame(index=df.index)
@@ -45,11 +51,11 @@ class FCT_Tsi_Vol_Dfive:
 
         # 成交量归一化
         new_columns['vol_mean'] = df['volume'].rolling(window=vol_length).mean()
-        new_columns[f'FCT_Tsi_Vol_Dfive'] = new_columns['TSI'] / (new_columns['vol_mean'] + 1e-10)
+        new_columns[f'{factor_name}'] = new_columns['TSI'] / (new_columns['vol_mean'] + 1e-10)
 
         # 最终合并
-        df = pandas.concat([df, new_columns[[f'FCT_Tsi_Vol_Dfive']]], axis=1)
+        df = pandas.concat([df, new_columns[[f'{factor_name}']]], axis=1)
 
         # 返回结果（无日期）
-        result = df[[f'FCT_Tsi_Vol_Dfive']].copy()
+        result = df[[f'{factor_name}']].copy()
         return result

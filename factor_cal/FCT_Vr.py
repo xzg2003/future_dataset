@@ -13,18 +13,20 @@ class FCT_Vr:
         self.factor_name = 'FCT_Vr'
 
     def formula(self, param):
-        # 从字典中提取 DataFrame
+        # 从参数字典中提取 DataFrame
         df = param.get('df', None)
         if df is None:
             raise ValueError("no 'df' in param")
-        if not isinstance(df, pandas.DataFrame):
-            raise TypeError("df must be DataFrame")
 
-        # 从字典中读取 length
+        # 从参数字典中读取 length
         length = param.get('length', None)
         if length is None:
             raise ValueError("param missing 'length'")
-        print(f"Using length: {length}")
+
+        # 从参数字典中提取 factor_name
+        factor_name = param.get('factor_name', None)
+        if factor_name is None:
+            raise ValueError("param missing 'factor_name'")
 
         # 确保索引有序
         if not df.index.is_monotonic_increasing:
@@ -38,11 +40,11 @@ class FCT_Vr:
 
         # 计算量比因子
         new_column = volume / avg_vol
-        new_column.name = f'{self.factor_name}@{length}'
+        new_column.name = f'{factor_name}'
 
         # 合并进原始 df
         df = pandas.concat([df, new_column], axis=1)
 
         # 返回结果（无日期）
-        result = df[[f'FCT_Vr@{length}']].copy()
+        result = df[[f'{factor_name}']].copy()
         return result

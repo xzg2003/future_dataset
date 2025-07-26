@@ -17,18 +17,21 @@ class FCT_Vol_Cumsum_1:
         df = param.get('df', None)
         if df is None:
             raise ValueError("no 'df' in param")
-        if not isinstance(df, pandas.DataFrame):
-            raise TypeError("df must be DataFrame")
+
+        # 从字典中提取 factor_name
+        factor_name = param.get('factor_name', None)
+        if factor_name is None:
+            raise ValueError("no 'factor_name' in param")
 
         # 初始化 new_columns 用于统一管理中间变量
         new_columns = pandas.DataFrame(index=df.index)
 
         # 计算累积成交量
-        new_columns['FCT_Vol_Cumsum_1'] = df['volume'].cumsum().fillna(0)
+        new_columns[f'{factor_name}'] = df['volume'].cumsum().fillna(0)
 
         # 合并到主表
         df = pandas.concat([df, new_columns], axis=1)
 
         # 返回结果（无日期）
-        result = df[[f'FCT_Vol_Cumsum_1']].copy()
+        result = df[[f'{factor_name}']].copy()
         return result

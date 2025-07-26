@@ -14,6 +14,9 @@ class Tr:
         if df is None:
             raise ValueError("参数 'param' 中缺少 'df' 键或其值为空")
 
+        # 从字典中提取影子名称
+        factor_name = param.get('factor_name', None)
+
         # 确保df是pandas.DataFrame类型
         if not isinstance(df, pandas.DataFrame):
             raise TypeError("'df' 必须是 pandas.DataFrame 类型")
@@ -48,5 +51,5 @@ class Tr:
         df = df.assign(**{new_column.name: new_column})
 
         # 返回结果（无日期）
-        result = df[[''Tr']].copy()
+        result = df[[f'{factor_name}']].copy()
         return result

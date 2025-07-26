@@ -14,29 +14,34 @@ class FCT_Pubu_Vol_Dfive:
         self.factor_name = 'FCT_Pubu_Vol_Dfive'
 
     def formula(self, param):
+        # 从参数字典中获取 DataFrame
         df = param.get('df', None)
         if df is None:
             raise ValueError("no 'df' in param")
-        if not isinstance(df, pandas.DataFrame):
-            raise TypeError("df must be DataFrame")
 
-        # 均线和成交量周期参数
-        short = param.get('short', 5)
-        long = param.get('long', 20)
-        vol_length = param.get('vol_length', 14)
-        print(f"Using short: {short}, long: {long}, vol_length: {vol_length}")
+        # 从参数字典中获取 short 和 long
+        short = param.get('short', None)
+        long = param.get('long', None)
+        # 从参数字典中获取 vol_length
+        vol_length = param.get('vol_length', None)
 
-        # 获取 instrument
-        instrument = param.get('instrument', None)
-        if instrument is None:
-            raise ValueError("param miss instrument")
-        # 计算成交量均值
-        df['vol_mean'] = df['volume'].rolling(window=vol_length).mean()
-
-        # 获取k_line_type
+        # 从参数字典中获取 k_line_type
         k_line_type = param.get('k_line_type', None)
         if k_line_type is None:
             raise ValueError("param missing instrument")
+
+        # 从参数字典中获取 instrument
+        instrument = param.get('instrument', None)
+        if instrument is None:
+            raise ValueError("param miss instrument")
+
+        # 从参数字典中获取 factor_name
+        factor_name = param.get('factor_name', None)
+        if factor_name is None:
+            raise ValueError("param miss factor_name")
+
+        # 计算成交量均值
+        df['vol_mean'] = df['volume'].rolling(window=vol_length).mean()
 
         # 修改为 pd.concat 批量合并方式
         new_columns = pandas.DataFrame(index=df.index)
@@ -60,11 +65,11 @@ class FCT_Pubu_Vol_Dfive:
         new_columns['FCT_Pubu_1'] = pubu_series
 
         # 用成交量均值归一化
-        new_columns[f'FCT_Pubu_Vol_Dfive'] = new_columns['FCT_Pubu_1'] / (new_columns['vol_mean'] + 1e-10)
+        new_columns[f'{factor_name}'] = new_columns['FCT_Pubu_1'] / (new_columns['vol_mean'] + 1e-10)
 
         # 合并进原始 df
         df = pandas.concat([df, new_columns], axis=1)
 
         # 返回结果（无日期）
-        result = df[[f'FCT_Pubu_Vol_Dfive']].copy()
+        result = df[[f'{factor_name}']].copy()
         return result

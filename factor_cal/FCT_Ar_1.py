@@ -8,23 +8,20 @@ class FCT_Ar_1:
         self.factor_name = 'FCT_Ar_1'
 
     def formula(self, param):
-        # 从字典中提取 DataFrame
+        # 从参数字典中获取 df
         df = param.get('df', None)
         if df is None:
             raise ValueError("no 'df' in param")
 
-        # 确保 df 是 pandas.DataFrame 类型
-        if not isinstance(df, pandas.DataFrame):
-            raise TypeError("df must be DataFrame")
-
-        """
-        从字典中读取 length
-        获取 instrument 名称，用于提取mindiff中的数据
-        """
+        # 从参数字典中获取length
         length = param.get('length', None)
         if length is None:
             raise ValueError("param missing 'length'")
-        print(f"Using length: {length}")
+
+        # 从参数字典中获取factor_name
+        factor_name = param.get('factor_name', None)
+        if factor_name is None:
+            raise ValueError("param missing factor_name")
 
         # 修改为 pd.concat 批量合并方式
         new_columns = pandas.DataFrame(index=df.index)
@@ -35,12 +32,12 @@ class FCT_Ar_1:
         new_columns['ar1'] = new_columns['up'].rolling(window=length).sum()
         new_columns['ar2'] = new_columns['down'].rolling(window=length).sum()
 
-        new_columns[f'FCT_Ar_1@{length}'] = (new_columns['ar1'] - new_columns['ar2']) / (
+        new_columns[f'{factor_name}'] = (new_columns['ar1'] - new_columns['ar2']) / (
                 new_columns['ar1'] + new_columns['ar2'])
 
         # 合并进原始 df
         df = pandas.concat([df, new_columns], axis=1)
 
         # 返回结果（无日期）
-        result = df[[f'FCT_Ar_1@{length}']].copy()
+        result = df[[f'{factor_name}']].copy()
         return result

@@ -14,17 +14,25 @@ class FCT_Sdrm_Atr_Dfive:
         self.factor_name = 'FCT_Sdrm_Atr_Dfive'
 
     def formula(self, param):
-        # 从字典中提取 DataFrame
+        # 从参数字典中提取 DataFrame
         df = param.get('df', None)
         if df is None:
             raise ValueError("no 'df' in param")
-        if not isinstance(df, pandas.DataFrame):
-            raise TypeError("df must be DataFrame")
 
-        # 参数
-        length = param.get('length', 20)
-        atr_length = param.get('atr_length', 14)
-        print(f"Using length: {length}, atr_length: {atr_length}")
+        # 从参数字典中提取 length
+        length = param.get('length', None)
+        if length is None:
+            raise ValueError("no 'length' in param")
+
+        # 从参数字典中提取 atr_length
+        atr_length = param.get('atr_length', None)
+        if atr_length is None:
+            raise ValueError("no 'atr_length' in param")
+
+        # 从参数字典中提取 factor_name
+        factor_name = param.get('factor_name', None)
+        if factor_name is None:
+            raise ValueError("no 'factor_name' in param")
 
         new_columns = pandas.DataFrame(index=df.index)
 
@@ -39,11 +47,11 @@ class FCT_Sdrm_Atr_Dfive:
         new_columns['ATR'] = tr.rolling(window=atr_length).mean()
 
         # 归一化：标准差 / ATR
-        new_columns[f'FCT_Sdrm_Atr_Dfive@{length}'] = new_columns['std_close'] / (new_columns['ATR'] + 1e-10)
+        new_columns[f'{factor_name}'] = new_columns['std_close'] / (new_columns['ATR'] + 1e-10)
 
         # 合并到原始 df
         df = pandas.concat([df, new_columns], axis=1)
 
         # 返回结果（无日期）
-        result = df[[f'FCT_Sdrm_Atr_Dfive@{length}']].copy()
+        result = df[[f'{factor_name}']].copy()
         return result
