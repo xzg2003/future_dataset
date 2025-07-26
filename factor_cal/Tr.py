@@ -5,8 +5,7 @@ import numpy
 
 class Tr:
     def __init__(self):
-        self.factor_name = 'Tr'     # 设置因子的名称
-
+        pass
 
     def formula(self, param):
         # 从字典中提取DataFrame
@@ -47,9 +46,7 @@ class Tr:
         # 使用 assign 添加新列，避免 concat，减少内存碎片
         df = df.assign(**{new_column.name: new_column})
 
-        # 返回包含日期和Tr的结果
-        if 'datetime' in df.columns:
-            df = df.rename(columns={'datetime': 'date'})
-        result = df[['date', 'Tr']].copy()
+        # Tr的结果
+        result = df['Tr'].copy()
         return result
 

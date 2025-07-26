@@ -46,7 +46,11 @@ class FCT_Ac_Tr_1:
         if k_line_type is None:
             raise ValueError("param missing instrument")
 
-        # 修改为 pd.concat 批量合并方式
+        # 获取因子名称
+        factor_name = param.get('factor_name', None)
+        if factor_name is None:
+            raise ValueError("param missing factor_name for FCT_Ac_Tr_1")
+        
         # 构建新的列 DataFrame
         new_columns = pandas.DataFrame(index=df.index)
 
@@ -60,32 +64,20 @@ class FCT_Ac_Tr_1:
         new_columns['close_pre'] = df['close'].shift(1)
 
         # Tr 数据来自外部文件
-        tr_data_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                                    f'../data/{k_line_type}/{instrument}/Tr.csv')
-        if not os.path.exists(tr_data_path):
-            raise FileNotFoundError(f"Tr file not found: {tr_data_path}")
+        tr = param.get('Tr', None)
+        if tr is None:
+            raise ValueError("param missing 'Tr' for FCT_Ac_Tr_1")
 
-        tr_df = pandas.read_csv(tr_data_path)
-        if 'datetime' in df.columns and 'datetime' in tr_df.columns:
-            tr_series = pandas.merge(df[['datetime']], tr_df, on='datetime', how='left')['Tr']
-        else:
-            tr_series = tr_df['Tr']
-
-        new_columns['Tr'] = tr_series.reset_index(drop=True)
+        new_columns['Tr'] = tr
 
         # 最终因子计算
         rolling_mean_tr = new_columns['Tr'].rolling(window=length).mean().fillna(0)
-        new_columns[f'FCT_Ac_Tr_1@{length}'] = numpy.where(
+        new_columns[factor_name] = numpy.where(
             rolling_mean_tr < mindiff,
             0,
             new_columns['AC'] / rolling_mean_tr
         )
 
-        # 合并进原始 df
-        df = pandas.concat([df, new_columns], axis=1)
 
-        # 返回包含日期和Tr的结果
-        if 'datetime' in df.columns:
-            df = df.rename(columns={'datetime': 'date'})
-        result = df[['date', f'FCT_Ac_Tr_1@{length}']].copy()
+        result = new_columns[factor_name].copy()
         return result

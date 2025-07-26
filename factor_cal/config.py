@@ -4,12 +4,10 @@ instruments= ['A','AG','AL','AP','AU','BU','C','CF','CJ','CS',
             'PB','PF','PG','PK','PP','RB','RM','RU','SA','SF',
             'SM','SN','SP','SR','SC','SS','TA','T','TF','UR','V','Y','ZN'] #期货类型
 
-# 最小变化单位文件路径
-MINDIFF_DIR = '../mindiff.csv'
 DATA_DIR = 'C:/wzx/KCL/dataset/future_data'
 
 # k线类型
-k_line_types = ['1d']
+k_line_type = '1d'
 
 # 滑动长度
 lengths = [10, 20, 40, 80, 120, 180]
