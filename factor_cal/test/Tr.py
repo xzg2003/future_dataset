@@ -1,17 +1,21 @@
 # tr：波动幅度，当前k线的高低点与上根k线收盘价三者两两做差，取绝对值的最大作为tr波幅
 
-import pandas
 import numpy
+import pandas
+
 
 class Tr:
     def __init__(self):
-        pass
+        self.factor_name = 'Tr'  # 设置因子的名称
 
     def formula(self, param):
         # 从字典中提取DataFrame
         df = param.get('df', None)
         if df is None:
             raise ValueError("参数 'param' 中缺少 'df' 键或其值为空")
+
+        # 从字典中提取影子名称
+        factor_name = param.get('factor_name', None)
 
         # 确保df是pandas.DataFrame类型
         if not isinstance(df, pandas.DataFrame):
@@ -46,7 +50,6 @@ class Tr:
         # 使用 assign 添加新列，避免 concat，减少内存碎片
         df = df.assign(**{new_column.name: new_column})
 
-        # Tr的结果
-        result = df['Tr'].copy()
+        # 返回结果（无日期）
+        result = df[[f'{factor_name}']].copy()
         return result
-

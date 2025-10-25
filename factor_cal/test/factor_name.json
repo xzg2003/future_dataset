@@ -1,0 +1,88 @@
+{
+  "Tr": [
+    {
+      "factor_name": "Tr"
+    }
+  ],
+  "FCT_Ac_Tr_1": [
+    {
+      "factor_name": "FCT_Ac_Tr_1@3",
+      "length": 3,
+      "depend_on": "Tr"
+    },
+    {
+      "factor_name": "FCT_Ac_Tr_1@5",
+      "length": 5,
+      "depend_on": "Tr"
+    },
+    {
+      "factor_name": "FCT_Ac_Tr_1@10",
+      "length": 10,
+      "depend_on": "Tr"
+    },
+    {
+      "factor_name": "FCT_Ac_Tr_1@20",
+      "length": 20,
+      "depend_on": "Tr"
+    },
+    {
+      "factor_name": "FCT_Ac_Tr_1@30",
+      "length": 30,
+      "depend_on": "Tr"
+    }
+  ],
+  "FCT_Tsi_1": [
+    {
+      "factor_name": "FCT_Tsi_1@3",
+      "length": 3
+    },
+    {
+      "factor_name": "FCT_Tsi_1@5",
+      "length": 5
+    },
+    {
+      "factor_name": "FCT_Tsi_1@10",
+      "length": 10
+    },
+    {
+      "factor_name": "FCT_Tsi_1@20",
+      "length": 20
+    },
+    {
+      "factor_name": "FCT_Tsi_1@30",
+      "length": 30
+    }
+  ],
+  "FCT_Tsi_Vol_Dfive": [
+    {
+      "factor_name": "FCT_Tsi_Vol_Dfive@3_1_5",
+      "length": 3,
+      "vol_length": 5,
+      "depend_on": "FCT_Tsi_1@3"
+    },
+    {
+      "factor_name": "FCT_Tsi_Vol_Dfive@5_1_5",
+      "length": 5,
+      "vol_length": 5,
+      "depend_on": "FCT_Tsi_1@5"
+    },
+    {
+      "factor_name": "FCT_Tsi_Vol_Dfive@10_1_5",
+      "length": 10,
+      "vol_length": 5,
+      "depend_on": "FCT_Tsi_1@10"
+    },
+    {
+      "factor_name": "FCT_Tsi_Vol_Dfive@20_1_5",
+      "length": 20,
+      "vol_length": 5,
+      "depend_on": "FCT_Tsi_1@20"
+    },
+    {
+      "factor_name": "FCT_Tsi_Vol_Dfive@30_1_5",
+      "length": 30,
+      "vol_length": 5,
+      "depend_on": "FCT_Tsi_1@30"
+    }
+  ]
+}
