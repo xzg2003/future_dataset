@@ -1,6 +1,8 @@
 # 建立数据库
 import os
 import pandas as pd
+import sys
+sys.path.append('.')
 from config import *
 import numpy as np
 import matplotlib.pyplot as plt

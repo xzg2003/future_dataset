@@ -1,5 +1,7 @@
 # 计算因子之间的相关系数
 import os
+import sys
+sys.path.append('.')
 from config import *
 import pandas as pd
 class mutal_IC():

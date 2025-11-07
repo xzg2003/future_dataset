@@ -1,0 +1,137 @@
+{
+   "TSMOM":[
+    {
+      "factor_name": "TSMOM@3",
+      "length": 3
+    },
+    {
+      "factor_name": "TSMOM@5",
+      "length": 5
+    },
+    {
+      "factor_name": "TSMOM@10",
+      "length": 10
+    },
+    {
+      "factor_name": "TSMOM@20",
+      "length": 20
+    },
+    {
+      "factor_name": "TSMOM@30",
+      "length": 30
+    }
+   ],
+   "XSMOM":[
+    {
+      "factor_name": "XSMOM@3",
+      "length": 3,
+      "depend_on": "TSMOM@3"
+    },
+    {
+      "factor_name": "XSMOM@5",
+      "length": 5,
+      "depend_on": "TSMOM@5"
+    },
+    {
+      "factor_name": "XSMOM@10",
+      "length": 10,
+      "depend_on": "TSMOM@10"
+    },
+    {
+      "factor_name": "XSMOM@20",
+      "length": 20,
+      "depend_on": "TSMOM@20"
+    },
+    {
+      "factor_name": "XSMOM@30",
+      "length": 30,
+      "depend_on": "TSMOM@30"
+    }
+   ],
+   "RobustMOM":[
+    {
+      "factor_name": "RobustMOM@3",
+      "length": 3
+    },
+    {
+      "factor_name": "RobustMOM@5",
+      "length": 5
+    },
+    {
+      "factor_name": "RobustMOM@10",
+      "length": 10
+    },
+    {
+      "factor_name": "RobustMOM@20",
+      "length": 20
+    },
+    {
+      "factor_name": "RobustMOM@30",
+      "length": 30
+    }
+   ],
+   "OvernightMOM":[
+      {
+        "factor_name": "OvernightMOM"
+      }
+   ],
+   "IDMOM":[
+      {
+        "factor_name": "IDMOM"
+      }
+   ],
+   "IntradayMOM":[
+      {
+        "factor_name": "IntradayMOM"
+      }
+   ],
+   "TrendStrength":[
+      {
+        "factor_name": "TrendStrength@3",
+        "length": 3
+      },
+      {
+        "factor_name": "TrendStrength@5",
+        "length": 5
+      },
+      {
+        "factor_name": "TrendStrength@10",
+        "length": 10
+      },
+      {
+        "factor_name": "TrendStrength@20",
+        "length": 20
+      },
+      {
+        "factor_name": "TrendStrength@30",
+        "length": 30
+      }
+   ],
+   "Acceleration":[
+      {
+        "factor_name": "Acceleration@3",
+        "length": 3,
+        "depend_on": "TSMOM@3"
+      },
+      {
+        "factor_name": "Acceleration@5",
+        "length": 5,
+        "depend_on": "TSMOM@5"
+      },
+      {
+        "factor_name": "Acceleration@10",
+        "length": 10,
+        "depend_on": "TSMOM@10"
+      },
+      {
+        "factor_name": "Acceleration@20",
+        "length": 20,
+        "depend_on": "TSMOM@20"
+      },
+      {
+        "factor_name": "Acceleration@30",
+        "length": 30,
+        "depend_on": "TSMOM@30"
+      }
+   ]
+}

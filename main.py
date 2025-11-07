@@ -1,10 +1,5 @@
-from process_data import process_data
 import pandas as pd
-import csv
-import os
-import shutil
 from bs4 import BeautifulSoup
-import multiprocessing
 from factor_judge.mutal_IC import mutal_IC
 from factor_judge.layer_yield import layer_yield
 from factor_judge.statistic import statistic
@@ -115,8 +110,6 @@ class run_factor_judge():
         print(f"\nHTML文件已生成：{html_output}")
 
 if __name__=='__main__':
-    cpu_cores = multiprocessing.cpu_count()
-    
     for i in factors:
         a = run_factor_judge(i,'M', k_line_type)
         a.get_report()

@@ -24,7 +24,7 @@ k_line_type = '1d'
 ```
 ### 代码编写规则
 - 因子的计算代码存储在 `./factor_cal/xxx` 中，由 `factor_total.py` 集成调用
-- 因子计算的参数存放在 `./factor_cal/xxx/factor_name.json` 中
+- 因子计算的参数存放在 `./factor_cal/xxx/factor_param.json` 中
 - 获取已经计算出的因子数据的代码为 `./factor_cal/get_exist_data.py`
 - 每一类因子的计算代码命名为 `./factor_cal/xxx/{factor}.py`，代码中类的封装规则如下：
 ``` py
@@ -33,8 +33,8 @@ import numpy
 import pandas
 import sys
 sys.path.append('.')
-from factor_cal.config import *
 from factor_cal.get_exist_data import get_exist_data
+
 class factor:
     def __init__(self):
         pass
@@ -73,11 +73,11 @@ class factor:
         exist_data = get_exist_data(instrument, depend_on)
 
         # todo
-        # df[f'{facotr_name}'] = ...        
+        # df[facotr_name] = ...        
         result = df[[f'{factor_name}']].copy()
         return result
 ```
-- 因子计算结果保存在 `f'./{DATA_DIR}/{k_line_type}/{instrument}/{factor_name}.csv'` 中
+- 因子计算结果保存在 `f'{DATA_DIR}/{k_line_type}/{instrument}/{factor_name}.csv'` 中
 ### 因子参数命名规则
 - 每个因子类的名称作为字典的一个键名
 - 键名对应的键值是字典列表，列表中每个字典包含计算该因子需要用到的参数，键名表示参数名称，键值表示参数值

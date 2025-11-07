@@ -1,10 +1,12 @@
+import sys
+sys.path.append('.')
 from factor_judge.factor_judge import factor_judge
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
-import os
 import pandas as pd
 import numpy as np
 from config import *
+
 class layer_yield(factor_judge):
     def __init__(self, factor, k_line):
         super().__init__(factor, k_line)

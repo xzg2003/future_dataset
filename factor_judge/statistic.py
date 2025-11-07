@@ -1,3 +1,5 @@
+import sys
+sys.path.append('.')
 from factor_judge.factor_judge import factor_judge
 import scipy.stats as st
 from sklearn.preprocessing import StandardScaler

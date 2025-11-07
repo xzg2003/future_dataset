@@ -200,7 +200,7 @@ if __name__ == "__main__":
         logger.warning(f"No mindiff for following instruments: {', '.join(missing_instruments)}")
 
     # 遍历所有因子
-    factor_params_list = list(iterate_factor_parameters(os.path.join(os.path.dirname(__file__),'factor_name.json')))
+    factor_params_list = list(iterate_factor_parameters(os.path.join(os.path.dirname(__file__),'factor_param.json')))
     for factor_params in factor_params_list:
         # 准备进程池任务，固定因子参数，对品种进行多线程计算
         tasks = [
